@@ -1,0 +1,34 @@
+name: Core
+main: TheNote\core\Main
+version: 5.0.0
+mcpe-protocol:
+  - 388 # 1.13.x
+  - 389 # 1.14.x
+  - 390 # 1.14.60
+  - 391 # 1.15.x
+  - 407 # 1.16.0
+  - 408 # 1.16.40
+  - 419 # 1.16.100
+  - 422 # 1.16.200
+  - 428 # 1.16.210
+api:
+  - 3.9.0
+  - 4.0.0
+author: TheNote/Rudolf2000
+authors:
+  - TheNote/Rudolf2000 #Inhaber der Core
+  - tim03we #BanSystem usw
+  - xxflow #Heiraten,Payall
+  - Aneoxic #Grundgerüst
+  - FleekRush #Booster
+  - JackMD #Discord
+  - LookItsAku #Hilfe
+  - Hagnbrain #homesystem
+  - EnderDirt #füraltecodes
+  - HyperEnte #race
+  - FlussRaplay #proxysystem, Waterfall
+  - Crasher508 #Fixxer
+  - CortexPE #Braustand und mehr
+description: Core v5.0.0 Alpha Release
+
+permissions:
