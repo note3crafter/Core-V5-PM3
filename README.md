@@ -5,8 +5,9 @@ Die Core wurde nur für Altay Server entwickelt und stehts erweitert! Es können
 # Fehler & Bugs
 Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren kann... Ihr dürft auch Vorschläge machen was ich sonmnst noch reinmachen kann.
 # Mindestanforderungen 
-- 4 Kern CPU (Besten Falls hohe Singelcore Performance
-- 4GB Ram ist das Minimum
+- 4 Kern CPU (Besten Falls hohe Singelcore Performance)
+- 4GB Ram Sollten schon vorhanden sein!
+Das heißt nicht das sie auch auf schlechterer Ausstattung funktioniert!
 
 # Ohne dies Funktioniert die Core nicht 
 - MyPlot 
