@@ -1,0 +1,24 @@
+---
+#Allgemeine Einstellungen
+
+#ItemDisplay
+inames: false #aktiviere/deaktiviere die ItemNamen
+
+#Blitze beim Join
+blitze: false #aktiviere/deaktiviere Blitze beim Joinen des Servers
+
+#NetzwerkName
+networkname: "CoreV5" #schreibe hier dein servername oder was frag mich rein...
+
+#Weitere Einstellungen
+defaultspawn: true
+rejoinserverip: 127.0.0.1
+rejoinserverport: 19132
+maxhomes: 10 #Setze ein Limit für Homes
+collision: true #aktiviere/deaktiviere collision/schubsen
+
+#LiftSystem
+helferprivatliftuse: true
+helperprivateLift: true
+checkFloor: true
+...

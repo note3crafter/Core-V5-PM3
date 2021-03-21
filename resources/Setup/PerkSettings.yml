@@ -1,0 +1,13 @@
+---
+#Stelle hier die Preise der Perks ein.
+explode: 50000
+angry: 50000
+redstone: 50000
+smoke: 50000
+lava: 50000
+heart: 50000
+flame: 50000
+portal: 50000
+spore: 50000
+splash: 50000
+...

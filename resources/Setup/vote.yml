@@ -1,0 +1,11 @@
+---
+##Einstellungen für das Voten
+
+#Voten Aktivieren/Deaktivieren
+votes: false # aktiviere oder deaktiviere den /vote command
+
+#
+#Aktiviere/Deaktiviere den MindestVote
+MussVoten: true #nutze true/false zum Aktivieren oder Deaktivieren. Standart ist false
+Mindestvotes: 1 #ändere die anzahl der Votes die man Benötigt um in den Chat zu schreiben oder eine MSG zu schreiben etc
+...

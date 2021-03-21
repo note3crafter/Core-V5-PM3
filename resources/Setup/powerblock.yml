@@ -1,0 +1,16 @@
+---
+##PowerBlock Einstellungen
+
+##PowerBlock 1
+BlockID1: 100 #oder Blockname wie DIRT oder STONE
+BlockStaerke1: 1
+BlockSound1: AnvilFallSound
+
+##PowerBlock 2
+BlockID2: 133 #oder Blockname wie DIRT oder STONE
+BlockStaerke2: 2
+BlockSound: GhastShootSound
+
+##Verfügbare Sounds
+#AnvilFallSound, ClickSound, EndermanTeleportSound, GhastShootSound, PopSound
+...

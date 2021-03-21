@@ -1,0 +1,12 @@
+---
+#DiscordEinstellungen
+
+#Möchtest du MCPE to Discord funktion Aktivieren?
+DC: false #setze auf true um es zu aktivieren
+
+dclink: "Discord-Link"
+chatname: "Chat"
+webhookurl: "" #füge hier deine Webhockurl ein
+webhookdc: "https://discordapp.com/api/webhooks/"
+webhookname: "Name"
+...
