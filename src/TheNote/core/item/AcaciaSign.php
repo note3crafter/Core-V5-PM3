@@ -22,7 +22,7 @@ class AcaciaSign extends Item {
         parent::__construct(self::ACACIA_SIGN, $meta, "Acacia Sign");
     }
     public function getBlock() : Block{
-        return BlockFactory::get(Block::SIG);
+        return BlockFactory::get(Block::SIGN_POST);
     }
     public function getMaxStackSize() : int{
         return 16;
