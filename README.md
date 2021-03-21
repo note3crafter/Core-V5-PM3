@@ -1,6 +1,6 @@
-# Core-V5
+# Core-V5 ALPHA Release
 
-Die Core wurde nur für Altay Server entwickelt und stehts erweitert!
+Die Core wurde nur für Altay Server entwickelt und stehts erweitert! Es können Bugs etc auftreten!
 
 # Fehler & Bugs
 Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren kann... Ihr dürft auch Vorschläge machen was ich sonmnst noch reinmachen kann.
@@ -38,9 +38,9 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
    - [X] Armbrust
    - [X] Schilder (Man kann sie Craften und setzen)
 
--[X] /adminitems /fake
--[X] MCPE to Discord by JackMD mit Intregriert BETA (Könnte eventuell nicht Funktinieren)
--[X] VoteSystem 
+- [X] /adminitems /fake
+- [X] MCPE to Discord by JackMD mit Intregriert BETA (Könnte eventuell nicht Funktinieren)
+- [X] VoteSystem 
 
 # Hilfe & Support
 Ich werde die Core solange wie Möglich Aktuell halten und Updaten sofern es meine Zeit zulässt
