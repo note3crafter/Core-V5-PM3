@@ -54,6 +54,7 @@ Und an unseren Forker! Gebt das Plugin nicht als Euers aus! Ich habe eine menge 
 - Crasher508 aka KommandToasti (Fürs repaieren mancher dinge! und er ist der Beste!)
 - CortexPE (Für ein Teil das ich von Teaspoon mit Intregiert habe)
 - LookitsAku & und vielen vielen weiteren Helfern!
+- HimmelKreis4865 (Für AntiXray)
 
 2017-2021 ©NoteLand & TheNote/Rudolf2000 
 
