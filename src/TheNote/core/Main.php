@@ -189,10 +189,10 @@ class Main extends PluginBase implements Listener
 
 
     //PluginVersion
-    public static $version = "5.0.0ALPHA";
+    public static $version = "5.0.1ALPHA";
     public static $protokoll = "428";
     public static $mcpeversion = "1.16.210";
-    public static $dateversion = "21.03.2021";
+    public static $dateversion = "22.03.2021";
     public static $plname = "CoreV5";
 
     //Configs
@@ -275,201 +275,184 @@ class Main extends PluginBase implements Listener
         @mkdir($this->getDataFolder() . "Cloud/players/Inventare");
         @mkdir($this->getDataFolder() . "Cloud/players/Stats");
         @mkdir($this->getDataFolder() . "Cloud/players/CustomScoreboard");
+        $this->saveResource("liesmich.txt", true);
         $this->saveResource("Setup/settings.json", false);
         $this->saveResource("Setup/powerblock.yml", false);
         $this->saveResource("Setup/vote.yml", false);
         $this->saveResource("Setup/discordsettings.yml", false);
         $this->saveResource("Setup/Config.yml", false);
         $this->saveResource("Setup/PerkSettings.yml", false);
-        if (!$this->isSpoon()) {
-            $this->default = "";
-            if (strlen($this->default) > 1) {
-                $this->getLogger()->warning("The \"default\" property in config.yml has an error - the value is too long! Assuming as \"_\".");
-                $this->default = "_";
-            }
-            $this->padding = "";
-            $this->min = 3;
-            $this->max = 16;
-            if ($this->max === -1 or $this->max === "-1") {
-                $this->max = PHP_INT_MAX;
-            }
-            $this->multibyte = function_exists("mb_substr") and function_exists("mb_strlen");
 
-            self::$instance = $this;
-
-
-            $configs = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);
-            $config = new Config($this->getDataFolder() . Main::$setup . "settings.json", Config::JSON);
-
-            $serverstats = new Config($this->getDataFolder() . "Cloud/stats.json", Config::JSON);
-            $serverstats->set("aktiviert", $serverstats->get("aktivieret") + 1);
-            $serverstats->save();
-            $this->getServer()->getPluginManager()->registerEvents($this, $this);
-            $this->getServer()->getNetwork()->setName($configs->get("networkname"));
-            $this->economy = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-            $this->getLogger()->info($config->get("prefix") . "§6Wird Geladen...");
-
-            //Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("clear"));
-            Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("version"));
-            Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("tell"));
-            Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("ban"));
-            Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("unban"));
-            Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("banlist"));
-
-            $this->myplot = $this->getServer()->getPluginManager()->getPlugin("MyPlot");
-            $this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-            $this->pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
-            $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-
-            if ($this->myplot === null) {
-                $this->getLogger()->error("§cMyPlot fehlt bitte installiere dies bevor du die Core benutzt!");
-                $this->setEnabled(false);
-                return;
-            }
-            if ($this->economyapi === null) {
-                $this->getLogger()->error("§cEconomyAPI fehlt bitte installiere dies bevor du die Core benutzt!");
-                $this->setEnabled(false);
-                return;
-            }
-            if ($this->pureperms === null) {
-                $this->getLogger()->error("§cPurePerms fehlt bitte installiere dies bevor du die Core benutzt!");
-                $this->setEnabled(false);
-                return;
-            }
-            $this->getLogger()->info($config->get("prefix") . "§6Plugins wurden Erfolgreich geladen!");
-            $this->bank = new Config($this->getDataFolder() . "bank.json", Config::JSON);
-            new Config($this->getDataFolder() . Main::$cloud . "Count.json", Config::JSON);
-            $votes = new Config($this->getDataFolder() . Main::$setup . "vote.yml", Config::YAML);
-            //Blocks
-            $this->getServer()->getPluginManager()->registerEvents(new PowerBlock($this), $this);
-
-            //Commands
-            $this->getServer()->getCommandMap()->register("gma", new AbenteuerCommand($this));
-            $this->getServer()->getCommandMap()->register("adminitem", new AdminItemsCommand($this));
-            $this->getServer()->getCommandMap()->register("animation", new AnimationCommand($this));
-            $this->getServer()->getCommandMap()->register("ban", new BanCommand($this));
-            $this->getServer()->getCommandMap()->register("banids", new BanIDListCommand($this));
-            $this->getServer()->getCommandMap()->register("banlist", new BanListCommand($this));
-            $this->getServer()->getCommandMap()->register("booster", new BoosterCommand($this));
-            $this->getServer()->getCommandMap()->register("chatclear", new ChatClearCommand($this));
-            $this->getServer()->getCommandMap()->register("clan", new ClanCommand($this));
-            $this->getServer()->getCommandMap()->register("clear", new ClearCommand($this));
-            $this->getServer()->getCommandMap()->register("clearlagg", new ClearlaggCommand($this));
-            $this->getServer()->getCommandMap()->register("craft", new CraftCommand($this));
-            $this->getServer()->getCommandMap()->register("day", new DayCommand($this));
-            $this->getServer()->getCommandMap()->register("delhome", new DelHomeCommand($this));
-            $this->getServer()->getCommandMap()->register("ec", new EnderChestCommand($this));
-            $this->getServer()->getCommandMap()->register("erfolg", new ErfolgCommand($this));
-            $this->getServer()->getCommandMap()->register("fake", new FakeCommand($this));
-            $this->getServer()->getCommandMap()->register("feed", new FeedCommand($this));
-            $this->getServer()->getCommandMap()->register("fly", new FlyCommand($this));
-            $this->getServer()->getCommandMap()->register("friend", new FriendCommand($this));
-            $this->getServer()->getCommandMap()->register("givecoins", new GiveCoinsCommand($this));
-            $this->getServer()->getCommandMap()->register("group", new GruppeCommand($this));
-            $this->getServer()->getCommandMap()->register("heal", new HealCommand($this));
-            $this->getServer()->getCommandMap()->register("heiraten", new HeiratenCommand($this));
-            $this->getServer()->getCommandMap()->register("home", new HomeCommand($this));
-            $this->getServer()->getCommandMap()->register("kickall", new KickallCommand($this));
-            $this->getServer()->getCommandMap()->register("kit", new KitCommand($this));
-            $this->getServer()->getCommandMap()->register("gmc", new KreativCommand($this));
-            $this->getServer()->getCommandMap()->register("listhome", new ListHomeCommand($this));
-            $this->getServer()->getCommandMap()->register("mycoins", new MyCoinsCommand($this));
-            $this->getServer()->getCommandMap()->register("nick", new NickCommand($this));
-            $this->getServer()->getCommandMap()->register("night", new NightCommand($this));
-            $this->getServer()->getCommandMap()->register("nightvision", new NightVisionCommand($this));
-            $this->getServer()->getCommandMap()->register("notell", new NoDMCommand($this));
-            $this->getServer()->getCommandMap()->register("payall", new PayallCommand($this));
-            $this->getServer()->getCommandMap()->register("paycoins", new PayCoinsCommand($this));
-            $this->getServer()->getCommandMap()->register("perk", new PerkCommand($this));
-            $this->getServer()->getCommandMap()->register("perkshop", new PerkShopCommand($this));
-            $this->getServer()->getCommandMap()->register("position", new PosCommand($this));
-            $this->getServer()->getCommandMap()->register("rename", new RenameCommand($this));
-            $this->getServer()->getCommandMap()->register("repair", new RepairCommand($this));
-            $this->getServer()->getCommandMap()->register("reply", new ReplyCommand($this));
-            $this->getServer()->getCommandMap()->register("serverstats", new ServerStatsCommand($this));
-            $this->getServer()->getCommandMap()->register("sethome", new SetHomeCommand($this));
-            $this->getServer()->getCommandMap()->register("servermute", new ServermuteCommand($this));
-            $this->getServer()->getCommandMap()->register("sign", new SignCommand($this));
-            $this->getServer()->getCommandMap()->register("stats", new StatsCommand($this));
-            $this->getServer()->getCommandMap()->register("supervanish", new SuperVanishCommand($this));
-            $this->getServer()->getCommandMap()->register("gms", new SurvivalCommand($this));
-            $this->getServer()->getCommandMap()->register("tell", new TellCommand($this));
-            $this->getServer()->getCommandMap()->register("tpall", new TpallCommand($this));
-            $this->getServer()->getCommandMap()->register("tree", new TreeCommand($this));
-            $this->getServer()->getCommandMap()->register("unban", new UnbanCommand($this));
-            $this->getServer()->getCommandMap()->register("unnick", new UnnickCommand($this));
-            $this->getServer()->getCommandMap()->register("userdata", new UserdataCommand($this));
-            $this->getServer()->getCommandMap()->register("vanish", new VanishCommand($this));
-            if ($votes->get("votes") == true) {
-                $this->getServer()->getCommandMap()->register("vote", new VoteCommand($this));
-            } elseif ($votes->get("votes") == false) {
-                $this->getLogger()->alert("Das Voten ist Deaktiviert... Aktiviere es in den Einstellungen wenn du es Benutzen möchtest.");
-            }
-            $this->getServer()->getCommandMap()->register("gmspc", new ZuschauerCommand($this));
-
-            //Emotes
-            $this->getServer()->getCommandMap()->register("burb", new burb($this));
-            $this->getServer()->getCommandMap()->register("geil", new geil($this));
-            $this->getServer()->getCommandMap()->register("happy", new happy($this));
-            $this->getServer()->getCommandMap()->register("sauer", new sauer($this));
-            $this->getServer()->getCommandMap()->register("traurig", new traurig($this));
-
-            //Events
-            $this->getServer()->getPluginManager()->registerEvents(new BanEventListener($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new ColorChat($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new DeathMessages($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new Particle($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new AdminItemsEvents($this), $this);
-
-            //listener
-            $this->getServer()->getPluginManager()->registerEvents(new BackListener($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new CollisionsListener($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new GroupListener($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new HeiratsListener($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new UserdataListener($this), $this);
-
-            //LiftSystem
-            $this->getServer()->getPluginManager()->registerEvents(new BlockBreakListener($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new BlockPlaceListener($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new PlayerInteractListener($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new PlayerJumpListener($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new PlayerToggleSneakListener($this), $this);
-
-            //Server
-            $this->getServer()->getPluginManager()->registerEvents(new PlotBewertung($this), $this);
-            $this->getServer()->getCommandMap()->register("restart", new RestartServer($this));
-            $this->getServer()->getPluginManager()->registerEvents(new Rezept($this), $this);
-            $this->getServer()->getPluginManager()->registerEvents(new Stats($this), $this);
-            $this->getServer()->getCommandMap()->register("version", new Version($this));
-
-
-            //Task
-            $this->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "particle"]), 10);
-            $this->getScheduler()->scheduleRepeatingTask(new OnlineTask($this), 20);
-            $this->getScheduler()->scheduleDelayedTask(new RTask($this), (20 * 60 * 10));
-            $this->getScheduler()->scheduleRepeatingTask(new StatstextTask($this), 60);
-
-
-            $this->getLogger()->info($config->get("prefix") . "§6Die Commands wurden Erfolgreich Regestriert");
-            $this->getLogger()->info($config->get("prefix") . "§6Die Core ist nun Einsatzbereit!");
-            $this->Banner();
+        $this->default = "";
+        if (strlen($this->default) > 1) {
+            $this->getLogger()->warning("The \"default\" property in config.yml has an error - the value is too long! Assuming as \"_\".");
+            $this->default = "_";
         }
-    }
-
-    public function isSpoon()
-    {
-        $config = new Config($this->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        if ($this->getServer()->getName() !== "Altay") {
-            $this->getLogger()->error($config->get("error") . "Die Core wurde nicht auh Pocketmine ausgelegt sondern ist nur in Verbindung mit Altay zu benutzen!");
-            return true;
+        $this->padding = "";
+        $this->min = 3;
+        $this->max = 16;
+        if ($this->max === -1 or $this->max === "-1") {
+            $this->max = PHP_INT_MAX;
         }
-        /*if($this->getDescription()->getVersion() !== Main::$version || $this->getDescription()->getName() !== "Core"){
-            $this->getLogger()->error($config->get("error") . "Du benutzt keine Originale Version der Core!");
-            return true;
-        }*/
-        return false;
-    }
+        $this->multibyte = function_exists("mb_substr") and function_exists("mb_strlen");
 
+        self::$instance = $this;
+
+
+        $configs = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);
+        $config = new Config($this->getDataFolder() . Main::$setup . "settings.json", Config::JSON);
+
+        $serverstats = new Config($this->getDataFolder() . "Cloud/stats.json", Config::JSON);
+        $serverstats->set("aktiviert", $serverstats->get("aktivieret") + 1);
+        $serverstats->save();
+        $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        $this->getServer()->getNetwork()->setName($configs->get("networkname"));
+        $this->economy = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+        $this->getLogger()->info($config->get("prefix") . "§6Wird Geladen...");
+
+        //Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("clear"));
+        Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("version"));
+        Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("tell"));
+        Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("ban"));
+        Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("unban"));
+        Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("banlist"));
+
+        $this->myplot = $this->getServer()->getPluginManager()->getPlugin("MyPlot");
+        $this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+        $this->pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
+        $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+
+        if ($this->myplot === null) {
+            $this->getLogger()->error("§cMyPlot fehlt bitte installiere dies bevor du die Core benutzt!");
+            $this->setEnabled(false);
+            return;
+        }
+        if ($this->economyapi === null) {
+            $this->getLogger()->error("§cEconomyAPI fehlt bitte installiere dies bevor du die Core benutzt!");
+            $this->setEnabled(false);
+            return;
+        }
+        if ($this->pureperms === null) {
+            $this->getLogger()->error("§cPurePerms fehlt bitte installiere dies bevor du die Core benutzt!");
+            $this->setEnabled(false);
+            return;
+        }
+        $this->getLogger()->info($config->get("prefix") . "§6Plugins wurden Erfolgreich geladen!");
+        $this->bank = new Config($this->getDataFolder() . "bank.json", Config::JSON);
+        new Config($this->getDataFolder() . Main::$cloud . "Count.json", Config::JSON);
+        $votes = new Config($this->getDataFolder() . Main::$setup . "vote.yml", Config::YAML);
+        //Blocks
+        $this->getServer()->getPluginManager()->registerEvents(new PowerBlock($this), $this);
+
+        //Commands
+        $this->getServer()->getCommandMap()->register("gma", new AbenteuerCommand($this));
+        $this->getServer()->getCommandMap()->register("adminitem", new AdminItemsCommand($this));
+        $this->getServer()->getCommandMap()->register("animation", new AnimationCommand($this));
+        $this->getServer()->getCommandMap()->register("ban", new BanCommand($this));
+        $this->getServer()->getCommandMap()->register("banids", new BanIDListCommand($this));
+        $this->getServer()->getCommandMap()->register("banlist", new BanListCommand($this));
+        $this->getServer()->getCommandMap()->register("booster", new BoosterCommand($this));
+        $this->getServer()->getCommandMap()->register("chatclear", new ChatClearCommand($this));
+        $this->getServer()->getCommandMap()->register("clan", new ClanCommand($this));
+        $this->getServer()->getCommandMap()->register("clear", new ClearCommand($this));
+        $this->getServer()->getCommandMap()->register("clearlagg", new ClearlaggCommand($this));
+        $this->getServer()->getCommandMap()->register("craft", new CraftCommand($this));
+        $this->getServer()->getCommandMap()->register("day", new DayCommand($this));
+        $this->getServer()->getCommandMap()->register("delhome", new DelHomeCommand($this));
+        $this->getServer()->getCommandMap()->register("ec", new EnderChestCommand($this));
+        $this->getServer()->getCommandMap()->register("erfolg", new ErfolgCommand($this));
+        $this->getServer()->getCommandMap()->register("fake", new FakeCommand($this));
+        $this->getServer()->getCommandMap()->register("feed", new FeedCommand($this));
+        $this->getServer()->getCommandMap()->register("fly", new FlyCommand($this));
+        $this->getServer()->getCommandMap()->register("friend", new FriendCommand($this));
+        $this->getServer()->getCommandMap()->register("givecoins", new GiveCoinsCommand($this));
+        $this->getServer()->getCommandMap()->register("group", new GruppeCommand($this));
+        $this->getServer()->getCommandMap()->register("heal", new HealCommand($this));
+        $this->getServer()->getCommandMap()->register("heiraten", new HeiratenCommand($this));
+        $this->getServer()->getCommandMap()->register("home", new HomeCommand($this));
+        $this->getServer()->getCommandMap()->register("kickall", new KickallCommand($this));
+        $this->getServer()->getCommandMap()->register("kit", new KitCommand($this));
+        $this->getServer()->getCommandMap()->register("gmc", new KreativCommand($this));
+        $this->getServer()->getCommandMap()->register("listhome", new ListHomeCommand($this));
+        $this->getServer()->getCommandMap()->register("mycoins", new MyCoinsCommand($this));
+        $this->getServer()->getCommandMap()->register("nick", new NickCommand($this));
+        $this->getServer()->getCommandMap()->register("night", new NightCommand($this));
+        $this->getServer()->getCommandMap()->register("nightvision", new NightVisionCommand($this));
+        $this->getServer()->getCommandMap()->register("notell", new NoDMCommand($this));
+        $this->getServer()->getCommandMap()->register("payall", new PayallCommand($this));
+        $this->getServer()->getCommandMap()->register("paycoins", new PayCoinsCommand($this));
+        $this->getServer()->getCommandMap()->register("perk", new PerkCommand($this));
+        $this->getServer()->getCommandMap()->register("perkshop", new PerkShopCommand($this));
+        $this->getServer()->getCommandMap()->register("position", new PosCommand($this));
+        $this->getServer()->getCommandMap()->register("rename", new RenameCommand($this));
+        $this->getServer()->getCommandMap()->register("repair", new RepairCommand($this));
+        $this->getServer()->getCommandMap()->register("reply", new ReplyCommand($this));
+        $this->getServer()->getCommandMap()->register("serverstats", new ServerStatsCommand($this));
+        $this->getServer()->getCommandMap()->register("sethome", new SetHomeCommand($this));
+        $this->getServer()->getCommandMap()->register("servermute", new ServermuteCommand($this));
+        $this->getServer()->getCommandMap()->register("sign", new SignCommand($this));
+        $this->getServer()->getCommandMap()->register("stats", new StatsCommand($this));
+        $this->getServer()->getCommandMap()->register("supervanish", new SuperVanishCommand($this));
+        $this->getServer()->getCommandMap()->register("gms", new SurvivalCommand($this));
+        $this->getServer()->getCommandMap()->register("tell", new TellCommand($this));
+        $this->getServer()->getCommandMap()->register("tpall", new TpallCommand($this));
+        $this->getServer()->getCommandMap()->register("tree", new TreeCommand($this));
+        $this->getServer()->getCommandMap()->register("unban", new UnbanCommand($this));
+        $this->getServer()->getCommandMap()->register("unnick", new UnnickCommand($this));
+        $this->getServer()->getCommandMap()->register("userdata", new UserdataCommand($this));
+        $this->getServer()->getCommandMap()->register("vanish", new VanishCommand($this));
+        if ($votes->get("votes") == true) {
+            $this->getServer()->getCommandMap()->register("vote", new VoteCommand($this));
+        } elseif ($votes->get("votes") == false) {
+            $this->getLogger()->alert("Das Voten ist Deaktiviert... Aktiviere es in den Einstellungen wenn du es Benutzen möchtest.");
+        }
+        $this->getServer()->getCommandMap()->register("gmspc", new ZuschauerCommand($this));
+
+        //Emotes
+        $this->getServer()->getCommandMap()->register("burb", new burb($this));
+        $this->getServer()->getCommandMap()->register("geil", new geil($this));
+        $this->getServer()->getCommandMap()->register("happy", new happy($this));
+        $this->getServer()->getCommandMap()->register("sauer", new sauer($this));
+        $this->getServer()->getCommandMap()->register("traurig", new traurig($this));
+
+        //Events
+        $this->getServer()->getPluginManager()->registerEvents(new BanEventListener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new ColorChat($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new DeathMessages($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new Particle($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new AdminItemsEvents($this), $this);
+
+        //listener
+        $this->getServer()->getPluginManager()->registerEvents(new BackListener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new CollisionsListener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new GroupListener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new HeiratsListener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new UserdataListener($this), $this);
+
+        //LiftSystem
+        $this->getServer()->getPluginManager()->registerEvents(new BlockBreakListener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new BlockPlaceListener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new PlayerInteractListener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new PlayerJumpListener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new PlayerToggleSneakListener($this), $this);
+
+        //Server
+        $this->getServer()->getPluginManager()->registerEvents(new PlotBewertung($this), $this);
+        $this->getServer()->getCommandMap()->register("restart", new RestartServer($this));
+        $this->getServer()->getPluginManager()->registerEvents(new Rezept($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new Stats($this), $this);
+        $this->getServer()->getCommandMap()->register("version", new Version($this));
+
+        //Task
+        $this->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "particle"]), 10);
+        $this->getScheduler()->scheduleRepeatingTask(new OnlineTask($this), 20);
+        $this->getScheduler()->scheduleDelayedTask(new RTask($this), (20 * 60 * 10));
+        $this->getScheduler()->scheduleRepeatingTask(new StatstextTask($this), 60);
+
+        $this->getLogger()->info($config->get("prefix") . "§6Die Commands wurden Erfolgreich Regestriert");
+        $this->getLogger()->info($config->get("prefix") . "§6Die Core ist nun Einsatzbereit!");
+        $this->Banner();
+    }
     private function Banner()
     {
         $banner = strval(
@@ -666,12 +649,16 @@ class Main extends PluginBase implements Listener
         $sstats = new Config($this->getDataFolder() . Main::$cloud . "stats.json", Config::JSON);
         $hei = new Config($this->getDataFolder() . Main::$heifile . $player->getLowerCaseName() . ".json", Config::JSON);
         $config = new Config($this->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+        $configs = new Config($this->getDataFolder() . Main::$setup . "Config" . ".yml", Config::YAML);
+
 
         $log->set("Name", $player->getName());
         $log->set("last-IP", $player->getAddress());
         $log->set("last-XboxID", $player->getPlayer()->getXuid());
-        $log->set("last-Geraet", $player->getPlayer()->getDeviceModel());
-        $log->set("last-ID", $player->getPlayer()->getDeviceId());
+        if ($configs->get("serverversion") == "altay") {
+            $log->set("last-Geraet", $player->getPlayer()->getDeviceModel());
+            $log->set("last-ID", $player->getPlayer()->getDeviceId());
+        }
         $log->set("last-online", $fj);
         if ($user->get("heistatus") === false) {
             $player->sendMessage($config->get("heirat") . "Du bist nicht verheiratet!");
@@ -687,8 +674,10 @@ class Main extends PluginBase implements Listener
             $log->set("first-join", $fj);
             $log->set("first-ip", $player->getAddress());
             $log->set("first-XboxID", $player->getXuid());
-            $log->set("first-gereat", $player->getDeviceModel());
-            $log->set("first-ID", $player->getPlayer()->getDeviceId());
+            if ($configs->get("serverversion") == "altay") {
+                $log->set("first-gereat", $player->getDeviceModel());
+                $log->set("first-ID", $player->getPlayer()->getDeviceId());
+            }
             $log->save();
             $gruppe->set("Default", true);
             $gruppe->set("Owner", false);

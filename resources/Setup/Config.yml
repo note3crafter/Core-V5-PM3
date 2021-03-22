@@ -16,6 +16,7 @@ rejoinserverip: 127.0.0.1
 rejoinserverport: 19132
 maxhomes: 10 #Setze ein Limit für Homes
 collision: true #aktiviere/deaktiviere collision/schubsen
+serverversion: pocketmine #nutze altay oder pocketmine um zwichen den verschiedenen versionen zu wechseln
 
 #LiftSystem
 helferprivatliftuse: true

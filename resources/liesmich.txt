@@ -1,0 +1,18 @@
+Wichtige Information zum Nutzen der Core
+
+Gruppensystem:
+Es gibt 11 Gruppen die ihr in PurePerms erstellen müsst
+Das wären folgende:
+Spieler
+Owner
+Administrator
+Developer
+Moderator
+Builder
+Supporter
+YouTuber
+Hero
+Suppremium
+Premium
+
+Es dürfen keine farbcodes etc verwendet werden!
