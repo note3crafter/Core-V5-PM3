@@ -52,7 +52,7 @@ Und an unseren Forker! Gebt das Plugin nicht als Euers aus! Ich habe eine menge 
 - FleekRush (Für das Boostersystem)
 - JackMD (Für die MCPE to Discord Codes die ich verwende)
 - Crasher508 aka KommandToasti (Fürs repaieren mancher dinge! und er ist der Beste!)
-- CortexPE (Für ein Teil das ivh von Teaspoon mit Intregiert habe)
+- CortexPE (Für ein Teil das ich von Teaspoon mit Intregiert habe)
 - LookitsAku & und vielen vielen weiteren Helfern!
 
 2017-2021 ©NoteLand & TheNote/Rudolf2000 
