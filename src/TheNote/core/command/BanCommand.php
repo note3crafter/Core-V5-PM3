@@ -87,10 +87,10 @@ class BanCommand extends Command
                     $sender->sendMessage("3333");
                 }
             } else {
-                $sender->sendMessage(Main::$ban . "Nutze : /ban <player|id> Hilfe : /banids");
+                $sender->sendMessage($config->get("ban") . "Nutze : /ban <player|id> Hilfe : /banids");
             }
         } else {
-            $sender->sendMessage(Main::$ban . "Nutze : /ban <player|id> Hilfe : /banids");
+            $sender->sendMessage($config->get("ban") . "Nutze : /ban <player|id> Hilfe : /banids");
         }
         return false;
     }

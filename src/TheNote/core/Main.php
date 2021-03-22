@@ -11,6 +11,7 @@
 
 namespace TheNote\core;
 
+
 use pocketmine\block\Block;
 use pocketmine\block\Sapling;
 use pocketmine\command\CommandSender;
@@ -27,6 +28,7 @@ use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\event\server\QueryRegenerateEvent;
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
 use pocketmine\item\Tool;
 use pocketmine\level\ChunkManager;
 use pocketmine\level\generator\object\BirchTree;
@@ -35,7 +37,9 @@ use pocketmine\level\generator\object\OakTree;
 use pocketmine\level\generator\object\SpruceTree;
 use pocketmine\level\particle\DustParticle;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
+use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
 use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
@@ -111,6 +115,7 @@ use TheNote\core\command\UnbanCommand;
 use TheNote\core\command\AdminItemsCommand;
 
 //Server
+use TheNote\core\item\Fireworks;
 use TheNote\core\server\Version;
 
 //Events
@@ -119,6 +124,7 @@ use TheNote\core\events\Particle;
 use TheNote\core\events\DeathMessages;
 use TheNote\core\events\BanEventListener;
 use TheNote\core\events\AdminItemsEvents;
+use TheNote\core\events\AntiXrayEvent;
 
 //listener
 use TheNote\core\listener\UserdataListener;
@@ -182,6 +188,7 @@ class Main extends PluginBase implements Listener
     public $config;
     public $economyapi;
     public $pureperms;
+    public $ores = [14, 15, 21, 22, 41, 42, 56, 57, 73, 129, 133, 152];
     /** @var array $cooldown */
     public $cooldown = [];
     /** @var array $interactCooldown */
@@ -189,7 +196,7 @@ class Main extends PluginBase implements Listener
 
 
     //PluginVersion
-    public static $version = "5.0.1ALPHA";
+    public static $version = "5.0.2ALPHA";
     public static $protokoll = "428";
     public static $mcpeversion = "1.16.210";
     public static $dateversion = "22.03.2021";
@@ -220,7 +227,14 @@ class Main extends PluginBase implements Listener
     public $price = null;
     public $economy;
     private $lastSent;
+    private $sessions = [];
 
+    final public static function getPacketsFromBatch(BatchPacket $packet) {
+        $stream = new NetworkBinaryStream($packet->payload);
+        while(!$stream->feof()){
+            yield $stream->getString();
+        }
+    }
     function onJoin(PlayerJoinEvent $event)
     {
         $player = $event->getPlayer();
@@ -237,6 +251,7 @@ class Main extends PluginBase implements Listener
     {
         return self::$instance;
     }
+  
 
     public function onLoad()
     {
@@ -261,6 +276,7 @@ class Main extends PluginBase implements Listener
 
     public function onEnable()
     {
+
 
         @mkdir($this->getDataFolder() . "Setup");
         @mkdir($this->getDataFolder() . "Cloud");
@@ -421,6 +437,7 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getPluginManager()->registerEvents(new DeathMessages($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new Particle($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new AdminItemsEvents($this), $this);
+        //$this->getServer()->getPluginManager()->registerEvents(new AntiXrayEvent($this), $this); Nicht Fertig Impleminriert
 
         //listener
         $this->getServer()->getPluginManager()->registerEvents(new BackListener($this), $this);
@@ -1170,7 +1187,28 @@ class Main extends PluginBase implements Listener
     {
         $this->universalMute = $bool;
     }
-
+    public function getSessionById(int $id){
+        if(isset($this->sessions[$id])){
+            return $this->sessions[$id];
+        }else{
+            return null;
+        }
+    }
+    public function destroySession(Player $player): bool{
+        if(isset($this->sessions[$player->getId()])){
+            unset($this->sessions[$player->getId()]);
+            return true;
+        }
+        return false;
+    }
+    public function getSessionByName(string $name){
+        foreach($this->sessions as $session){
+            if($session->getPlayer()->getName() == $name){
+                return $session;
+            }
+        }
+        return null;
+    }
     public function onDisable()
     {
         $config = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);

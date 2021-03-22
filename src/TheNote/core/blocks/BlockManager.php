@@ -27,6 +27,6 @@ class BlockManager {
         BlockFactory::registerBlock(new EndPortal(), true);
         BlockFactory::registerBlock(new Portal(), true);
         BlockFactory::registerBlock(new Obsidian(), true);
-
+        //BlockFactory::registerBlock(new Jukebox(), true); Nicht Funktionsfähig
     }
 }

@@ -7,23 +7,30 @@
 //     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
 //     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
 //   Copyright by TheNote! Not for Resale! Not for others
-//                        2017-2020
+//
 
 declare(strict_types = 1);
 
-namespace TheNote\core\tile;
+namespace TheNote\core\item;
 
+use pocketmine\entity\Entity;
+use pocketmine\item\Item;
+use pocketmine\Player;
 
-use pocketmine\tile\Tile as Tile;
-
-abstract class Tiles extends Tile
+class Schild extends Item
 {
-    public const
-        /*JUKEBOX = "Jukebox",*/ CAULDRON = "Cauldron";
+    public function __construct(int $meta = 0)
+    {
+        parent::__construct(self::SHIELD, $meta, "Shield");
+    }
 
+    public function onUpdate(Player $player): void
+    {
+        $player->setGenericFlag(Entity::DATA_FLAG_BLOCKING, $player->isSneaking());
+    }
 
-    public static function init() {
-        self::registerTile(BrewingStand::class);
-        self::registerTile(Cauldron::class);
+    public function getMaxStackSize(): int
+    {
+        return 1;
     }
 }
