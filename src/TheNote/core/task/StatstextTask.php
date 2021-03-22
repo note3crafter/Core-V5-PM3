@@ -39,35 +39,36 @@ class StatstextTask extends Task
 
         foreach ($all as $player) {
 
-            $name = $player->getName();
-            $level = $this->plugin->getServer()->getDefaultLevel();
+            $config = new Config($this->plugin->getDataFolder() . Main::$setup . "Config" . ".yml", Config::YAML);
+            $level = $this->plugin->getServer()->getLevelByName($config->get("level"));
             $text = $this->getText($player);
-            $x = -2493.5;
-            $y = 18;
-            $z = 616.5;
+            $x = $config->get("X");
+            $y = $config->get("Y");
+            $z = $config->get("Z");
 
             if ($this->plugin->anni === 1) {
                 $this->plugin->anni = 2;
             } elseif ($this->plugin->anni === 2) {
                 $this->plugin->anni = 1;
             }
-
-            if (!isset($this->floattext[$player->getName()])) {
-                # existiert noch nicht
-                $this->floattext[$player->getName()] = new FloatingTextParticle(new Vector3($x, $y, $z), $text);
-                $particle = $this->floattext[$player->getName()];
-                #$packet = $particle->encode()
-                $particle->setInvisible(false);
-                $level->addParticle($particle, [$player]);
-            } else {
-                # is schon da
-                $particle = $this->floattext[$player->getName()];
-                $particle->setInvisible(true);
-                $level->addParticle($particle, [$player]);
-                $this->floattext[$player->getName()] = new FloatingTextParticle(new Vector3($x, $y, $z), $text);
-                $newparticle = $this->floattext[$player->getName()];
-                $newparticle->setInvisible(false);
-                $level->addParticle($newparticle, [$player]);
+            if ($config->get("statstext") == true) {
+                if (!isset($this->floattext[$player->getName()])) {
+                    # existiert noch nicht
+                    $this->floattext[$player->getName()] = new FloatingTextParticle(new Vector3($x, $y, $z), $text);
+                    $particle = $this->floattext[$player->getName()];
+                    #$packet = $particle->encode()
+                    $particle->setInvisible(false);
+                    $level->addParticle($particle, [$player]);
+                } else {
+                    # is schon da
+                    $particle = $this->floattext[$player->getName()];
+                    $particle->setInvisible(true);
+                    $level->addParticle($particle, [$player]);
+                    $this->floattext[$player->getName()] = new FloatingTextParticle(new Vector3($x, $y, $z), $text);
+                    $newparticle = $this->floattext[$player->getName()];
+                    $newparticle->setInvisible(false);
+                    $level->addParticle($newparticle, [$player]);
+                }
             }
         }
     }

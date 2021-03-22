@@ -22,4 +22,11 @@ serverversion: pocketmine #nutze altay oder pocketmine um zwichen den verschiede
 helferprivatliftuse: true
 helperprivateLift: true
 checkFloor: true
+
+#Statstext
+statstext: false
+X: 0
+Y: 0
+Z: 0
+level: world
 ...
