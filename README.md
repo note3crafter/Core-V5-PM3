@@ -40,6 +40,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - [X] /adminitems /fake
 - [X] MCPE to Discord by JackMD mit Intregriert BETA (Könnte eventuell nicht Funktinieren)
 - [X] VoteSystem 
+- [X] AntiXray & AutoClicker detection
 
 # Hilfe & Support
 Ich werde die Core solange wie Möglich Aktuell halten und Updaten sofern es meine Zeit zulässt
@@ -52,9 +53,10 @@ Und an unseren Forker! Gebt das Plugin nicht als Euers aus! Ich habe eine menge 
 - FleekRush (Für das Boostersystem)
 - JackMD (Für die MCPE to Discord Codes die ich verwende)
 - Crasher508 aka KommandToasti (Fürs repaieren mancher dinge! und er ist der Beste!)
-- CortexPE (Für ein Teil das ich von Teaspoon mit Intregiert habe)
-- LookitsAku & und vielen vielen weiteren Helfern!
+- CortexPE (Für ein Teil das ich von Teaspoon mit Intregiert habe) 
 - HimmelKreis4865 (Für AntiXray)
+- LookitsAku & und vielen vielen weiteren Helfern!
+
 
 2017-2021 ©NoteLand & TheNote/Rudolf2000 
 
