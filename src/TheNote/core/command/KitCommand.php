@@ -40,7 +40,8 @@ class KitCommand extends Command
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return true;
         }
         if ($sender instanceof Player) {
             if ($sender instanceof Player) {
@@ -56,6 +57,7 @@ class KitCommand extends Command
                     switch ($result) {
                         case 0: #+7 day
                             $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+                            $kit = new Config($this->plugin->getDataFolder() . Main::$setup . "kitsettings.yml", Config::YAML);
                             $name = $sender->getName();
                             $bannedtime = $user->get("weekcrate");
                             $time = new DateTime("$bannedtime", new \DateTimeZone("Europe/Berlin"));
@@ -64,36 +66,37 @@ class KitCommand extends Command
                             $emptySlots = $inv->getSize() - count($inv->getContents());
 
                             if ($time->format("d.m.Y H:i") > $now->format("d.m.Y H:i")) {
-                                $sender->sendMessage($config->get("kit") . "§r§6Du kannst deine Wöchentliche Belohnung erst am§c $bannedtime h §6wieder abholen.");
+                                $sender->sendMessage($config->get("kits") . "§r§6Du kannst deine Wöchentliche Belohnung erst am§c $bannedtime h §6wieder abholen.");
 
                             } elseif (count($inv->getContents()) >= $inv->getSize()) {
-                                $sender->sendMessage($config->get("kit") . "§cDu benötigst mindestens 9 Freie Slots in deinem Inventarum dieses Kit zu Claimen!");
+                                $sender->sendMessage($config->get("kits") . "§cDu benötigst mindestens " . $kit->get("weeklyslots") . " Freie Slots in deinem Inventarum dieses Kit zu Claimen!");
                                 return true;
 
-                            } elseif ($emptySlots === 9) {
+                            } elseif ($emptySlots === $kit->get("weeklyslots")) {
                                 $newtime = new \DateTime("now", new \DateTimeZone("Europe/Berlin"));
                                 $newtime->modify("+7 day");
                                 $user->set("weekcrate", $newtime->format("d.m.Y H:i"));
                                 $user->save();
-                                $mymoney->addMoney($sender, 5000);
+                                $mymoney->addMoney($sender, $kit->get("moneyweekly"));
                                 $user->set("coins", $user->get("coins") + 200);
                                 $user->save();
-                                $item->getInventory()->addItem(Item::get(17, 0, 64));
-                                $item->getInventory()->addItem(Item::get(272, 0, 1));
-                                $item->getInventory()->addItem(Item::get(275, 0, 1));
-                                $item->getInventory()->addItem(Item::get(274, 0, 1));
-                                $item->getInventory()->addItem(Item::get(291, 0, 1));
-                                $item->getInventory()->addItem(Item::get(273, 0, 1));
-                                $item->getInventory()->addItem(Item::get(264, 0, 16));
-                                $item->getInventory()->addItem(Item::get(297, 0, 32));
-                                $item->getInventory()->addItem(Item::get(263, 0, 32));
-                                $sender->sendMessage($config->get("kit") . "Du hast dein Wöchentliches Kit erhalten sowie 5000$ sowie 200 Coins Bekommen!");
+                                $item->getInventory()->addItem(Item::get($kit->get("item1w")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item2w")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item3w")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item4w")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item5w")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item6w")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item7w")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item8w")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item9w")));
+                                $sender->sendMessage($config->get("kits") . "Du hast dein Wöchentliches Kit erhalten sowie " . $kit->get("moneyweekly") . "$ sowie " . $kit->get("coinsweekly") . " Coins Bekommen!");
                             } else {
-                                $sender->sendMessage($config->get("kit") . "§cDu benötigst mindestens 9 Freie Slots in deinem Inventar um dieses Kit zu Claimen!");
+                                $sender->sendMessage($config->get("kits") . "§cDu benötigst mindestens " . $kit->get("weeklyslots") . " Freie Slots in deinem Inventar um dieses Kit zu Claimen!");
                             }
                             break;
                         case 1: #+1 day
                             $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+                            $kit = new Config($this->plugin->getDataFolder() . Main::$setup . "kitsettings.yml", Config::YAML);
                             $name = $sender->getName();
                             $inv = $sender->getInventory();
                             $emptySlots = $inv->getSize() - count($inv->getContents());
@@ -102,28 +105,36 @@ class KitCommand extends Command
                             $now = new DateTime("now", new \DateTimeZone("Europe/Berlin"));
 
                             if ($time->format("d.m.Y H:i") > $now->format("d.m.Y H:i")) {
-                                $sender->sendMessage($config->get("kit") . "§r§6Du kannst deine Tägliche Belohnung erst morgen den§c $bannedtime h §6wieder abholen.");
+                                $sender->sendMessage($config->get("kits") . "§r§6Du kannst deine Tägliche Belohnung erst morgen den§c $bannedtime h §6wieder abholen.");
                             } elseif (count($inv->getContents()) >= $inv->getSize()) {
-                                $sender->sendMessage($config->get("kit") . "§cDu benötigst mindestens 2 Freie Slots in deinem Inventar um dieses Kit zu Claimen!");
+                                $sender->sendMessage($config->get("kits") . "§cDu benötigst mindestens " . $kit->get("dailyslots") . " Freie Slots in deinem Inventar um dieses Kit zu Claimen!");
                                 return true;
-                            } elseif ($emptySlots === 2) {
+                            } elseif ($emptySlots === $kit->get("dailyslots")) {
                                 $newtime = new \DateTime("now", new \DateTimeZone("Europe/Berlin"));
                                 $newtime->modify("+1 day");
                                 $user->set("dailycrate", $newtime->format("d.m.Y H:i"));
                                 $user->save();
                                 $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), 'key Daily ' . $name . ' 1');
-                                $mymoney->addMoney($sender, 700);
-                                $user->set("coins", $user->get("coins") + 50);
+                                $mymoney->addMoney($sender, $kit->get("moneydaily"));
+                                $user->set("coins", $user->get("coins") + $kit->get("coinsdaily"));
                                 $user->save();
-                                $item->getInventory()->addItem(Item::get(297, 0, 16));
-                                $item->getInventory()->addItem(Item::get(265, 0, 16));
-                                $sender->sendMessage($config->get("kit") . "Du hast dein Tägliches Kit erhalten sowie 700$, 50 Coins und 1 Dailykey!");
+                                $item->getInventory()->addItem(Item::get($kit->get("item1d")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item2d")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item3d")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item4d")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item5d")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item6d")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item7d")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item8d")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item9d")));
+                                $sender->sendMessage($config->get("kits") . "Du hast dein Tägliches Kit erhalten sowie " . $kit->get("moneydaily") . "$, " . $kit->get("coinsdaily") . " Coins und 1 Dailykey!");
                             } else {
-                                $sender->sendMessage($config->get("kit") . "§cDu benötigst mindestens 2 Freie Slots in deinem Inventar um dieses Kit zu Claimen!");
+                                $sender->sendMessage($config->get("kits") . "§cDu benötigst mindestens " . $kit->get("dailyslots") . " Freie Slots in deinem Inventar um dieses Kit zu Claimen!");
                             }
                             break;
                         case 2: #+ 1 hour
                             $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+                            $kit = new Config($this->plugin->getDataFolder() . Main::$setup . "kitsettings.yml", Config::YAML);
                             $name = $sender->getName();
                             $inv = $sender->getInventory();
                             $emptySlots = $inv->getSize() - count($inv->getContents());
@@ -132,9 +143,9 @@ class KitCommand extends Command
                             $now = new DateTime("now", new \DateTimeZone("Europe/Berlin"));
 
                             if ($time->format("d.m.Y H:i") > $now->format("d.m.Y H:i")) {
-                                $sender->sendMessage($config->get("kit") . "§r§6Du kannst deine Stündliche Belohnung erst um§c $bannedtime h §6wieder abholen.");
+                                $sender->sendMessage($config->get("kits") . "§r§6Du kannst deine Stündliche Belohnung erst um§c $bannedtime h §6wieder abholen.");
                             } else if (count($inv->getContents()) >= $inv->getSize()) {
-                                $sender->sendMessage($config->get("kit") . "§cDu benötigst mindestens 2 Freie Slots in deinem Inventar um dieses Kit zu Claimen!");
+                                $sender->sendMessage($config->get("kits") . "§cDu benötigst mindestens " . $kit->get("hourslots") . "Freie Slots in deinem Inventar um dieses Kit zu Claimen!");
                                 return true;
                             } elseif ($emptySlots === 2) {
                                 $newtime = new \DateTime("now", new \DateTimeZone("Europe/Berlin"));
@@ -142,43 +153,59 @@ class KitCommand extends Command
                                 $user->set("hourcrate", $newtime->format("d.m.Y H:i"));
                                 $user->save();
                                 $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), 'key Stundlicher ' . $name . ' 1');
-                                $mymoney->addMoney($sender, 100);
-                                $item->getInventory()->addItem(Item::get(357, 0, 16));
-                                $item->getInventory()->addItem(Item::get(354, 0, 1));
-                                $sender->sendMessage($config->get("kit") . "Du hast dein Stündliches Kit erhalten sowie 100$ und 1 Stündlicher Key!");
+                                $mymoney->addMoney($sender, $kit->get("moneyhour"));
+                                $item->getInventory()->addItem(Item::get($kit->get("item1h")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item2h")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item3h")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item4h")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item5h")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item6h")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item7h")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item8h")));
+                                $item->getInventory()->addItem(Item::get($kit->get("item9h")));
+                                $sender->sendMessage($config->get("kits") . "Du hast dein Stündliches Kit erhalten sowie " . $kit->get("moneyhour") . "$ und 1 Stündlicher Key!");
                             } else {
-                                $sender->sendMessage($config->get("kit") . "§cDu benötigst mindestens 2 Freie Slots in deinem Inventar um dieses Kit zu Claimen!");
+                                $sender->sendMessage($config->get("kits") . "§cDu benötigst mindestens " . $kit->get("hourslots") . " Freie Slots in deinem Inventar um dieses Kit zu Claimen!");
                             }
                             break;
                     }
                 });
                 $name = $sender->getLowerCaseName();
                 $user = new Config($this->plugin->getDataFolder() . Main::$userfile . $name . ".json", Config::JSON);
+                $kit = new Config($this->plugin->getDataFolder() . Main::$setup . "kitsettings.yml", Config::YAML);
                 $now = new DateTime("now", new \DateTimeZone("Europe/Berlin"));
+
+                $week = $user->get("weekcrate");
+                $day = $user->get("dailycrate");
+                $hour = $user->get("hourcrate");
+
+                $timew = new DateTime("$week", new \DateTimeZone("Europe/Berlin"));
+                $timed = new DateTime("$day", new \DateTimeZone("Europe/Berlin"));
+                $timeh = new DateTime("$hour", new \DateTimeZone("Europe/Berlin"));
 
                 $form->setTitle($config->get("uiname"));
                 $form->setContent("§eWähle dein Kit");
-                $week = $user->get("weekcrate");
-                $timew = new DateTime("$week", new \DateTimeZone("Europe/Berlin"));
+
+
                 if ($timew->format("d.m.Y H:i") > $now->format("d.m.Y H:i")) {
                     $form->addButton("§0Wöchentliches Kit\n§r§cAbholbar am : $week");
                 } else {
                     $form->addButton("§0Wöchentliches Kit");
                 }
-                $day = $user->get("dailycrate");
-                $timed = new DateTime("$day", new \DateTimeZone("Europe/Berlin"));
+
                 if ($timed->format("d.m.Y H:i") > $now->format("d.m.Y H:i")) {
                     $form->addButton("§0Tägliches Kit\n§r§cAbholbar am : $day");
                 } else {
                     $form->addButton("§0Tägliches Kit");
                 }
-                $hour = $user->get("hourcrate");
-                $timeh = new DateTime("$hour", new \DateTimeZone("Europe/Berlin"));
+
+
                 if ($timeh->format("d.m.Y H:i") > $now->format("d.m.Y H:i")) {
                     $form->addButton("§0Stündliches Kit\n§r§cAbholbar um: $hour");
                 } else {
                     $form->addButton("§0Stündliches Kit");
                 }
+
                 $form->sendToPlayer($sender);
             }
         }

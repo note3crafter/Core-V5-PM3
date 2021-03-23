@@ -1,6 +1,9 @@
 ---
 #Allgemeine Einstellungen
 
+#Commands & Funktionen
+AntiXray: false
+BoosterCommand: false
 #ItemDisplay
 inames: false #aktiviere/deaktiviere die ItemNamen
 

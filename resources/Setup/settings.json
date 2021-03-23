@@ -15,7 +15,7 @@
     "voten": "§f[§dVoten§f] §6",
     "kits": "§f[§dKits§f] §6",
     "ban": "§f[§cBan§f] §e",
-    "uiname": "Titelname",
+    "uiname": "§0======§f[§fCore§4V5§f]§0======",
     "votelink": "votelink",
     "slots": 10,
     "GRUPPENNAMEN": 0,
@@ -45,4 +45,5 @@
     "void": "konnte das Ende der Welt genießen um kam dabei ums Leben!",
     "selbstmord": "ist von der Brücke gesprungen... Dabei verlor er sein Leben!",
     "magic": "hat sich mit einer Hexe angelegt die zu Cool war..."
+
 }

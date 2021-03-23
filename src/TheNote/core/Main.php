@@ -196,10 +196,10 @@ class Main extends PluginBase implements Listener
 
 
     //PluginVersion
-    public static $version = "5.0.2ALPHA";
+    public static $version = "5.0.3ALPHA";
     public static $protokoll = "428";
     public static $mcpeversion = "1.16.210";
-    public static $dateversion = "22.03.2021";
+    public static $dateversion = "23.03.2021";
     public static $plname = "CoreV5";
 
     //Configs
@@ -229,12 +229,14 @@ class Main extends PluginBase implements Listener
     private $lastSent;
     private $sessions = [];
 
-    final public static function getPacketsFromBatch(BatchPacket $packet) {
+    final public static function getPacketsFromBatch(BatchPacket $packet)
+    {
         $stream = new NetworkBinaryStream($packet->payload);
-        while(!$stream->feof()){
+        while (!$stream->feof()) {
             yield $stream->getString();
         }
     }
+
     function onJoin(PlayerJoinEvent $event)
     {
         $player = $event->getPlayer();
@@ -251,7 +253,7 @@ class Main extends PluginBase implements Listener
     {
         return self::$instance;
     }
-  
+
 
     public function onLoad()
     {
@@ -298,6 +300,8 @@ class Main extends PluginBase implements Listener
         $this->saveResource("Setup/discordsettings.yml", false);
         $this->saveResource("Setup/Config.yml", false);
         $this->saveResource("Setup/PerkSettings.yml", false);
+        $this->saveResource("Setup/starterkit.yml", false);
+        $this->saveResource("Setup/kitsettings.yml", false);
 
         $this->default = "";
         if (strlen($this->default) > 1) {
@@ -312,11 +316,15 @@ class Main extends PluginBase implements Listener
         }
         $this->multibyte = function_exists("mb_substr") and function_exists("mb_strlen");
 
+        /*$cfg = new Config($this->getDataFolder() . Main::$setup . "starterkit.yml", Config::YAML);
+        $this->items = (array)$cfg->get("Slots");*/
+
         self::$instance = $this;
 
 
         $configs = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);
         $config = new Config($this->getDataFolder() . Main::$setup . "settings.json", Config::JSON);
+        $kit = new Config($this->getDataFolder() . Main::$setup . "kitsettings.yml", Config::YAML);
 
         $serverstats = new Config($this->getDataFolder() . "Cloud/stats.json", Config::JSON);
         $serverstats->set("aktiviert", $serverstats->get("aktivieret") + 1);
@@ -367,7 +375,9 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("ban", new BanCommand($this));
         $this->getServer()->getCommandMap()->register("banids", new BanIDListCommand($this));
         $this->getServer()->getCommandMap()->register("banlist", new BanListCommand($this));
-        $this->getServer()->getCommandMap()->register("booster", new BoosterCommand($this));
+        if ($votes->get("BoosterCommand") == true) {
+            $this->getServer()->getCommandMap()->register("booster", new BoosterCommand($this));
+        }
         $this->getServer()->getCommandMap()->register("chatclear", new ChatClearCommand($this));
         $this->getServer()->getCommandMap()->register("clan", new ClanCommand($this));
         $this->getServer()->getCommandMap()->register("clear", new ClearCommand($this));
@@ -387,7 +397,9 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("heiraten", new HeiratenCommand($this));
         $this->getServer()->getCommandMap()->register("home", new HomeCommand($this));
         $this->getServer()->getCommandMap()->register("kickall", new KickallCommand($this));
-        $this->getServer()->getCommandMap()->register("kit", new KitCommand($this));
+        if ($kit->get("KitCommand") == true) {
+            $this->getServer()->getCommandMap()->register("kit", new KitCommand($this));
+        }
         $this->getServer()->getCommandMap()->register("gmc", new KreativCommand($this));
         $this->getServer()->getCommandMap()->register("listhome", new ListHomeCommand($this));
         $this->getServer()->getCommandMap()->register("mycoins", new MyCoinsCommand($this));
@@ -420,7 +432,7 @@ class Main extends PluginBase implements Listener
         if ($votes->get("votes") == true) {
             $this->getServer()->getCommandMap()->register("vote", new VoteCommand($this));
         } elseif ($votes->get("votes") == false) {
-            $this->getLogger()->alert("Das Voten ist Deaktiviert... Aktiviere es in den Einstellungen wenn du es Benutzen möchtest.");
+            $this->getLogger()->alert("Voten ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstelungen..");
         }
         $this->getServer()->getCommandMap()->register("gmspc", new ZuschauerCommand($this));
 
@@ -437,7 +449,11 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getPluginManager()->registerEvents(new DeathMessages($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new Particle($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new AdminItemsEvents($this), $this);
-        //$this->getServer()->getPluginManager()->registerEvents(new AntiXrayEvent($this), $this); Nicht Fertig Impleminriert
+        if ($configs->get("AntiXray") == true) {
+            $this->getServer()->getPluginManager()->registerEvents(new AntiXrayEvent($this), $this);
+        } elseif ($configs->get("AntiXray") == false) {
+            $this->getLogger()->alert("AntiXray ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstelungen.");
+        }
 
         //listener
         $this->getServer()->getPluginManager()->registerEvents(new BackListener($this), $this);
@@ -470,6 +486,7 @@ class Main extends PluginBase implements Listener
         $this->getLogger()->info($config->get("prefix") . "§6Die Core ist nun Einsatzbereit!");
         $this->Banner();
     }
+
     private function Banner()
     {
         $banner = strval(
@@ -618,15 +635,15 @@ class Main extends PluginBase implements Listener
             $playername = $event->getPlayer()->getName();
             $ar = getdate();
             $time = $ar['hours'] . ":" . $ar['minutes'];
-            $format = "**" . $dcname . " : {time} : {player} : hat den CityBuild Server Betreten!**";
+            $format = "**" . $dcname . " : {time} : {player} : hat den Server Betreten!**";
             $msg = str_replace("{time}", $time, str_replace("{player}", $playername, $format));
             $this->sendMessage($playername, $msg);
         }
 
         //Weiteres
         $player = $event->getPlayer();
-        $pl = $player->getName();
         $this->isAdd[$player->getName()] = false;
+        $ainv = $player->getArmorInventory();
         $all = $this->getServer()->getOnlinePlayers();
         $event->setJoinMessage("");
         $nicks = new Config($this->getDataFolder() . Main::$gruppefile . $player->getName() . ".json", Config::JSON);
@@ -667,7 +684,7 @@ class Main extends PluginBase implements Listener
         $hei = new Config($this->getDataFolder() . Main::$heifile . $player->getLowerCaseName() . ".json", Config::JSON);
         $config = new Config($this->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         $configs = new Config($this->getDataFolder() . Main::$setup . "Config" . ".yml", Config::YAML);
-
+        $this->cfg = new Config($this->getDataFolder() . Main::$setup . "starterkit.yml", Config::YAML, array());
 
         $log->set("Name", $player->getName());
         $log->set("last-IP", $player->getAddress());
@@ -685,6 +702,19 @@ class Main extends PluginBase implements Listener
         }
         //Spieler Erster Join
         if ($user->get("register") == null) {
+
+            /*if ($this->cfg->get("Inventory" === true)) {
+                foreach ($this->items as $item) {
+                    $player->getInventory()->setItem($item["slot"], ItemFactory::get($item["slot"]["Slot1"]["id"], $item["slot"]["Slot1"]["damage"], $item["slot"]["Slot1"]["count"])->setCustomName($item["slot"]["Slot1"][$this->cfg->getNestet("name")]), $item["slot"]->setLore(["Slot1"][$this->cfg->getNestet("lore")]));
+                }
+            }
+            if ($this->cfg->get("Amor" === true)) {
+                $ainv->setHelmet(Item::get($this->items["helm"]["id"])->setCustomName($this->items["helm"][$this->cfg->getNestet("name")])->setLore($this->items["helm"][$this->cfg->getNestet("lore")]));
+                $ainv->setChestplate(Item::get($this->items["chest"]["id"])->setCustomName($this->items["chest"][$this->cfg->getNestet("name")])->setLore($this->items["chest"][$this->cfg->getNestet("lore")]));
+                $ainv->setLeggings(Item::get($this->items["leggins"]["id"])->setCustomName($this->items["leggins"][$this->cfg->getNestet("name")])->setLore($this->items["leggins"][$this->cfg->getNestet("lore")]));
+                $ainv->setBoots(Item::get($this->items["boots"]["id"])->setCustomName($this->items["boots"][$this->cfg->getNestet("name")])->setLore($this->items["boots"][$this->cfg->getNestet("lore")]));
+            }*/
+
             //Resgister
             $sstats->set("Users", $sstats->get("Users") + 1);
             $sstats->save();
@@ -1187,28 +1217,35 @@ class Main extends PluginBase implements Listener
     {
         $this->universalMute = $bool;
     }
-    public function getSessionById(int $id){
-        if(isset($this->sessions[$id])){
+
+    public function getSessionById(int $id)
+    {
+        if (isset($this->sessions[$id])) {
             return $this->sessions[$id];
-        }else{
+        } else {
             return null;
         }
     }
-    public function destroySession(Player $player): bool{
-        if(isset($this->sessions[$player->getId()])){
+
+    public function destroySession(Player $player): bool
+    {
+        if (isset($this->sessions[$player->getId()])) {
             unset($this->sessions[$player->getId()]);
             return true;
         }
         return false;
     }
-    public function getSessionByName(string $name){
-        foreach($this->sessions as $session){
-            if($session->getPlayer()->getName() == $name){
+
+    public function getSessionByName(string $name)
+    {
+        foreach ($this->sessions as $session) {
+            if ($session->getPlayer()->getName() == $name) {
                 return $session;
             }
         }
         return null;
     }
+
     public function onDisable()
     {
         $config = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);

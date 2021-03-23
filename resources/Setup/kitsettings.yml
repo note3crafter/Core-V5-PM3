@@ -1,0 +1,48 @@
+---
+#Kit Einstellungen
+
+KitCommand: false #Aktiviere oder Deaktiviere den Command!
+
+#Wöchentliches Kit
+moneyweekly: 5000
+coinsweekly: 200
+weeklyslots: 9 #Ändere die Slotanzahl die man braucht damit man das Kit benutzen kann!
+#Items ID, Meta, Menge
+Item1w:  17, 0, 1
+Item2w: 272, 0, 1
+Item3w: 275, 0, 1
+Item4w: 274, 0, 1
+Item5w: 291, 0, 1
+Item6w: 273, 0, 1
+Item7w: 264, 0, 16
+Item8w: 297, 0, 32
+Item9w: 263, 0, 32
+
+#Tägliches Kit
+moneydaily: 1000
+coinsdaily: 50
+dailyslots: 2
+Item1d: 297, 0, 16
+Item2d: 265, 0, 16
+Item3d: 0, 0, 0
+Item4d: 0, 0, 0
+Item5d: 0, 0, 0
+Item6d: 0, 0, 0
+Item7d: 0, 0, 0
+Item8d: 0, 0, 0
+Item9d: 0, 0, 0
+
+#Stündliches Kit
+moneyhour: 100
+#coinshour: 3
+hourslots: 2
+Item1h: 357, 0, 16
+Item2h: 354, 0, 1
+Item3h: 0, 0, 0
+Item4h: 0, 0, 0
+Item5h: 0, 0, 0
+Item6h: 0, 0, 0
+Item7h: 0, 0, 0
+Item8h: 0, 0, 0
+Item9h: 0, 0, 0
+...

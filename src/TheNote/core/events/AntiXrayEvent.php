@@ -23,9 +23,15 @@ use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
 use pocketmine\Server;
 use TheNote\core\Main;
 use TheNote\core\task\ChunkModificationTask;
+use TheNote\core\server\ModifiedChunk;
 use function array_chunk;
 
 class AntiXrayEvent implements Listener {
+
+    public function __construct(Main $plugin)
+    {
+        $this->plugin = $plugin;
+    }
 
 	public function onDataSend(DataPacketSendEvent $event) {
 		/** @var $batch BatchPacket */
