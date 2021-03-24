@@ -302,6 +302,7 @@ class Main extends PluginBase implements Listener
         $this->saveResource("Setup/PerkSettings.yml", false);
         $this->saveResource("Setup/starterkit.yml", false);
         $this->saveResource("Setup/kitsettings.yml", false);
+        $this->saveResource("permissions.md", true);
 
         $this->default = "";
         if (strlen($this->default) > 1) {
@@ -710,7 +711,7 @@ class Main extends PluginBase implements Listener
                         $player->getInventory()->setItem($item["slot"], $result);
                     }
                 }
-                if ($cfg->get("Amor", false)) {
+                if ($cfg->get("Armor", false)) {
                     $data = $cfg->get("helm");
                     $item = Item::get($data["id"]);
                     $item->setCustomName($data["name"]);

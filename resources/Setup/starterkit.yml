@@ -3,7 +3,7 @@
 # You Can now setup more Features
 
 # set it to false to deactivate the Amor!
-Amor: true
+Armor: true
 
 # id = This is the ItemID
 # name = Set a Custom Name for the Item
