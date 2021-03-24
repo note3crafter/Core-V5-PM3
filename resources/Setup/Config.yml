@@ -4,6 +4,7 @@
 #Commands & Funktionen
 AntiXray: false
 BoosterCommand: false
+StarterKit: false
 #ItemDisplay
 inames: false #aktiviere/deaktiviere die ItemNamen
 

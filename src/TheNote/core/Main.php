@@ -196,10 +196,10 @@ class Main extends PluginBase implements Listener
 
 
     //PluginVersion
-    public static $version = "5.0.3ALPHA";
+    public static $version = "5.0.4ALPHA";
     public static $protokoll = "428";
     public static $mcpeversion = "1.16.210";
-    public static $dateversion = "23.03.2021";
+    public static $dateversion = "24.03.2021";
     public static $plname = "CoreV5";
 
     //Configs
@@ -315,9 +315,6 @@ class Main extends PluginBase implements Listener
             $this->max = PHP_INT_MAX;
         }
         $this->multibyte = function_exists("mb_substr") and function_exists("mb_strlen");
-
-        /*$cfg = new Config($this->getDataFolder() . Main::$setup . "starterkit.yml", Config::YAML);
-        $this->items = (array)$cfg->get("Slots");*/
 
         self::$instance = $this;
 
@@ -684,7 +681,7 @@ class Main extends PluginBase implements Listener
         $hei = new Config($this->getDataFolder() . Main::$heifile . $player->getLowerCaseName() . ".json", Config::JSON);
         $config = new Config($this->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         $configs = new Config($this->getDataFolder() . Main::$setup . "Config" . ".yml", Config::YAML);
-        $this->cfg = new Config($this->getDataFolder() . Main::$setup . "starterkit.yml", Config::YAML, array());
+        $cfg = new Config($this->getDataFolder() . Main::$setup . "starterkit.yml", Config::YAML, array());
 
         $log->set("Name", $player->getName());
         $log->set("last-IP", $player->getAddress());
@@ -701,19 +698,44 @@ class Main extends PluginBase implements Listener
             $player->sendMessage($config->get("clans") . "Du bist im keinem Clan!");
         }
         //Spieler Erster Join
-        if ($user->get("register") == null) {
+        if ($user->get("register") == null or false) {
+            $player = $event->getPlayer();
+            $ainv = $player->getArmorInventory();
+            if ($configs->get("StarterKit") == true) {
+                if ($cfg->get("Inventory", false)) {
+                    foreach ($cfg->get("Slots", []) as $item) {
+                        $result = Item::get($item["id"], $item["damage"], $item["count"]);
+                        $result->setCustomName($item["name"]);
+                        $result->setLore([$item["lore"]]);
+                        $player->getInventory()->setItem($item["slot"], $result);
+                    }
+                }
+                if ($cfg->get("Amor", false)) {
+                    $data = $cfg->get("helm");
+                    $item = Item::get($data["id"]);
+                    $item->setCustomName($data["name"]);
+                    $item->setLore([$data["lore"]]);
+                    $ainv->setHelmet($item);
 
-            /*if ($this->cfg->get("Inventory" === true)) {
-                foreach ($this->items as $item) {
-                    $player->getInventory()->setItem($item["slot"], ItemFactory::get($item["slot"]["Slot1"]["id"], $item["slot"]["Slot1"]["damage"], $item["slot"]["Slot1"]["count"])->setCustomName($item["slot"]["Slot1"][$this->cfg->getNestet("name")]), $item["slot"]->setLore(["Slot1"][$this->cfg->getNestet("lore")]));
+                    $data = $cfg->get("chest");
+                    $item = Item::get($data["id"]);
+                    $item->setCustomName($data["name"]);
+                    $item->setLore([$data["lore"]]);
+                    $ainv->setChestplate($item);
+
+                    $data = $cfg->get("leggins");
+                    $item = Item::get($data["id"]);
+                    $item->setCustomName($data["name"]);
+                    $item->setLore([$data["lore"]]);
+                    $ainv->setLeggings($item);
+
+                    $data = $cfg->get("boots");
+                    $item = Item::get($data["id"]);
+                    $item->setCustomName($data["name"]);
+                    $item->setLore([$data["lore"]]);
+                    $ainv->setBoots($item);
                 }
             }
-            if ($this->cfg->get("Amor" === true)) {
-                $ainv->setHelmet(Item::get($this->items["helm"]["id"])->setCustomName($this->items["helm"][$this->cfg->getNestet("name")])->setLore($this->items["helm"][$this->cfg->getNestet("lore")]));
-                $ainv->setChestplate(Item::get($this->items["chest"]["id"])->setCustomName($this->items["chest"][$this->cfg->getNestet("name")])->setLore($this->items["chest"][$this->cfg->getNestet("lore")]));
-                $ainv->setLeggings(Item::get($this->items["leggins"]["id"])->setCustomName($this->items["leggins"][$this->cfg->getNestet("name")])->setLore($this->items["leggins"][$this->cfg->getNestet("lore")]));
-                $ainv->setBoots(Item::get($this->items["boots"]["id"])->setCustomName($this->items["boots"][$this->cfg->getNestet("name")])->setLore($this->items["boots"][$this->cfg->getNestet("lore")]));
-            }*/
 
             //Resgister
             $sstats->set("Users", $sstats->get("Users") + 1);
