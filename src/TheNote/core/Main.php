@@ -430,7 +430,7 @@ class Main extends PluginBase implements Listener
         if ($votes->get("votes") == true) {
             $this->getServer()->getCommandMap()->register("vote", new VoteCommand($this));
         } elseif ($votes->get("votes") == false) {
-            $this->getLogger()->alert("Voten ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstelungen..");
+            $this->getLogger()->alert("Voten ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstellungen..");
         }
         $this->getServer()->getCommandMap()->register("gmspc", new ZuschauerCommand($this));
 
@@ -450,7 +450,7 @@ class Main extends PluginBase implements Listener
         if ($configs->get("AntiXray") == true) {
             $this->getServer()->getPluginManager()->registerEvents(new AntiXrayEvent($this), $this);
         } elseif ($configs->get("AntiXray") == false) {
-            $this->getLogger()->alert("AntiXray ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstelungen.");
+            $this->getLogger()->alert("AntiXray ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstellungen.");
         }
 
         //listener
