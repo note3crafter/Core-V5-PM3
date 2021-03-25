@@ -1,6 +1,6 @@
 name: Core
 main: TheNote\core\Main
-version: 5.0.4
+version: 5.0.5
 mcpe-protocol:
   - 388 # 1.13.x
   - 389 # 1.14.x
@@ -30,5 +30,129 @@ authors:
   - Crasher508 #Fixxer
   - CortexPE #Braustand und mehr
   - HimmelKreis4865 #AntiXray
-description: Core v5.0.4 Alpha Release
-#permissions:
+description: Core v5.0.5 Alpha Release
+
+permissions:
+  core.command.adventure:
+    description: "Setze deinen Spielermodus zu Abendteuer"
+    default: op
+  core.command.adminitems:
+    description: "Sei der King und benutze die Wunderwaffen"
+    default: op
+  core.command.animation:
+    description: "Teste verschiednene Animationen aus"
+    default: op
+  core.command.ban:
+    description: "Banne einen anderen Spieler"
+    default: op
+  core.command.banlist:
+    description: "Siehe die Banlist"
+    default: op
+  core.command.chatclear:
+    description: "Lösche den Chat"
+    default: op
+  core.command.clear:
+    description: "Cleare dein Inventar"
+    default: op
+  core.command.clearlagg:
+    description: "Lösche alle Items & Blöcke die auf dem Boden Liegen"
+    default: op
+  core.command.craft:
+    description: "Nutze die Werkbank als Command"
+    default: op
+  core.command.creativ:
+    description: "Setze deinen Spielmodus zu Kreativ"
+    default: op
+  core.command.datenbank:
+    description: "Siehe in die DatenBank"
+    default: op
+  core.command.day:
+    description: "Setze die Zeit auf Tag"
+    default: op
+  core.command.delwarp:
+    description: "Lösche ein Warp"
+    default: op
+  core.command.enderchest:
+    description: "Nutze deine Enderchest jederzeit"
+    default: op
+  core.command.fake:
+    description: "Mache ein Fake leave/join"
+    default: op
+  core.command.feed:
+    description: "Fress dich voll"
+    default: op
+  core.command.fly:
+    description: "Redbull verleiht dir die Macht zu fliegen!"
+    default: op
+  core.comamnd.givecoins:
+    description: "Geld für die Armen"
+    default: op
+  core.command.group:
+    description: "Stelle deine Gruppe ein"
+    default: op
+  core.command.heal:
+    description: "Der lauch ist stark in dir und das heilt dich!"
+    default: op
+  core.command.kickall:
+    description: "Kick alle weg und sei allein!"
+    default: op
+  core.command.nick:
+    description: "Nicke dich und das bitte gesittet"
+    default: op
+  core.command.night:
+    description: "Komm auf die dunkle Seite."
+    default: op
+  core.command.nightvision:
+    description: "Obwohl es Nacht ist ist es Tag!"
+    default: op
+  core.command.paycoins:
+    description: "Schenke einen Armen Geld"
+    default: op
+  core.command.position:
+    description: "Schaue deine Position"
+    default: op
+  core.command.rename:
+    description: "Nenne deinen Stein Horst"
+    default: op
+  core.command.repair:
+    description: "Nutze dein Item unendlich Lang"
+    default: op
+  core.command.restart:
+    description: "Restarte deinen Server"
+    default: op
+  core.command.servermute:
+    description: "Stelle den Chat für Alle Stumm"
+    default: op
+  core.command.setwarp:
+    description: "Setze ein Warp"
+    default: op
+  core.command.sign:
+    description: "Signiere dein Stein"
+    default: op
+  core.command.spectator:
+    description: "Setze deinen Spielmodus zu Zuschauer"
+    default: op
+  core.command.sudo:
+    description: "Führe eine Nachrricht/Command über ein anderen Spieler aus"
+    default: op
+  core.command.supervanish:
+    description: "Sei unsichtbar für alle!"
+    default: op
+  core.command.survival:
+    description: "Setze deinen Spielmodus zu Survival"
+    default: op
+  core.command.tpall:
+    description: "Teleportiere alle Spieler zu dir"
+    default: op
+  core.command.tree:
+    description: "Tuh was gutes für die Umwelt und Pflanze ein Baum!"
+    default: op
+  core.command.unban:
+    description: "Entbanne einen Spieler"
+    default: op
+  core.command.userdata:
+    description: "Siehe die Userdaten eines Spieleres ein"
+    default: op
+  core.command.vanish:
+    description: "Versteckt dich ohne Items in der Hand"
+    default: op

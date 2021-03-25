@@ -4,7 +4,7 @@
 #Commands & Funktionen
 AntiXray: false
 BoosterCommand: false
-StarterKit: false
+StarterKit: true
 #ItemDisplay
 inames: false #aktiviere/deaktiviere die ItemNamen
 
@@ -21,6 +21,8 @@ rejoinserverport: 19132
 maxhomes: 10 #Setze ein Limit für Homes
 collision: true #aktiviere/deaktiviere collision/schubsen
 serverversion: pocketmine #nutze altay oder pocketmine um zwichen den verschiedenen versionen zu wechseln
+keepinventory: false #setze auf true um dein Inventar zu Behalten
+PingLimit: 300 #Setze das Maximale Pinglimit ein
 
 #LiftSystem
 helferprivatliftuse: true

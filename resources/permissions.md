@@ -13,6 +13,7 @@ core.command.craft
 core.command.creativ
 core.command.datenbank
 core.command.day
+core.command.delwarp
 core.command.enderchest
 core.command.fake
 core.command.feed
@@ -30,8 +31,10 @@ core.command.rename
 core.command.repair
 core.command.restart
 core.command.servermute
+core.command.setwarp
 core.command.sign
 core.command.spectator
+core.command.sudo
 core.command.supervanish
 core.command.survival
 core.command.tpall

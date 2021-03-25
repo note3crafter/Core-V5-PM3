@@ -9,22 +9,27 @@
 //   Copyright by TheNote! Not for Resale! Not for others
 //
 
-declare(strict_types = 1);
+namespace TheNote\core\task;
 
-namespace TheNote\core\item;
+use pocketmine\scheduler\Task;
+use pocketmine\utils\Config;
+use TheNote\core\Main;
 
-use pocketmine\block\Block;
-use pocketmine\block\BlockFactory;
-use pocketmine\item\Item;
+class PingTask extends Task
+{
 
-class AcaciaSign extends Item {
-    public function __construct($meta = 0){
-        parent::__construct(self::ACACIA_SIGN, $meta, "Acacia Sign");
+    public function __construct(Main $main)
+    {
+        $this->plugin = $main;
     }
-    public function getBlock() : Block{
-        return BlockFactory::get(Block::SIGN_POST);
-    }
-    public function getMaxStackSize() : int{
-        return 16;
+    public function onRun(int $currentTick)
+    {
+        $config = new Config($this->plugin->getDataFolder() . Main::$setup . "Config" . ".yml", Config::YAML);
+        $settings = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+        foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
+            if ($player->getPing() >= $config->get("PingLimit")) {
+                $player->kick($settings->get("prefix") . "Du wurdest wegen einem zu Hohen Ping gekickt! Das Limit beträgt" . $config->get("PingLimit" ));
+            }
+        }
     }
 }

@@ -37,7 +37,7 @@ class TreeCommand extends Command
     {
         $this->plugin = $plugin;
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        parent::__construct("tree", $config->get("prefixm") . "Lasse ein Baum Spawnen", "/tree", ["baum"]);
+        parent::__construct("tree", $config->get("prefix") . "Lasse ein Baum Spawnen", "/tree", ["baum"]);
         $this->setPermission("core.command.tree");
     }
 
@@ -69,7 +69,7 @@ class TreeCommand extends Command
                         return true;
                     }
                     $this->plugin->Baum($ev->getPosition()->getLevel(), $ev->getPosition()->getFloorX(), $ev->getPosition()->getFloorY() + 1, $ev->getPosition()->getFloorZ(), new Random(), $type);
-                    $sender->sendMessage($config->get("info") . "Der Eichebaum wurde gesetzt!");
+                    $sender->sendMessage($config->get("info") . "Der Eichenbaum wurde gesetzt!");
                 }
             }
             if ($args[0] == "spruce") {

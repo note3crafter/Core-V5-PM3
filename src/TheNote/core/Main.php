@@ -49,21 +49,22 @@ use pocketmine\Server;
 use pocketmine\utils\Binary;
 use pocketmine\utils\Config;
 use pocketmine\command\ConsoleCommandSender;
-
-//informationen
-
 use pocketmine\utils\Random;
 
 //Command
 use TheNote\core\command\DayCommand;
+use TheNote\core\command\DelWarpCommand;
+use TheNote\core\command\ListWarpCommand;
 use TheNote\core\command\NickCommand;
 use TheNote\core\command\NightCommand;
 use TheNote\core\command\FeedCommand;
 use TheNote\core\command\HealCommand;
+use TheNote\core\command\SetWarpCommand;
 use TheNote\core\command\SurvivalCommand;
 use TheNote\core\command\KreativCommand;
 use TheNote\core\command\AbenteuerCommand;
 use TheNote\core\command\ChatClearCommand;
+use TheNote\core\command\WarpCommand;
 use TheNote\core\command\ZuschauerCommand;
 use TheNote\core\command\FlyCommand;
 use TheNote\core\command\VanishCommand;
@@ -113,6 +114,7 @@ use TheNote\core\command\BanIDListCommand;
 use TheNote\core\command\BanListCommand;
 use TheNote\core\command\UnbanCommand;
 use TheNote\core\command\AdminItemsCommand;
+use TheNote\core\command\SudoCommand;
 
 //Server
 use TheNote\core\item\Fireworks;
@@ -168,6 +170,7 @@ use TheNote\core\task\OnlineTask;
 use TheNote\core\task\StatstextTask;
 use TheNote\core\task\CallbackTask;
 use TheNote\core\task\RTask;
+use TheNote\core\task\PingTask;
 
 
 class Main extends PluginBase implements Listener
@@ -196,10 +199,10 @@ class Main extends PluginBase implements Listener
 
 
     //PluginVersion
-    public static $version = "5.0.4ALPHA";
+    public static $version = "5.0.5ALPHA";
     public static $protokoll = "428";
     public static $mcpeversion = "1.16.210";
-    public static $dateversion = "24.03.2021";
+    public static $dateversion = "25.03.2021";
     public static $plname = "CoreV5";
 
     //Configs
@@ -254,7 +257,6 @@ class Main extends PluginBase implements Listener
         return self::$instance;
     }
 
-
     public function onLoad()
     {
         ItemManager::init();
@@ -278,7 +280,6 @@ class Main extends PluginBase implements Listener
 
     public function onEnable()
     {
-
 
         @mkdir($this->getDataFolder() . "Setup");
         @mkdir($this->getDataFolder() . "Cloud");
@@ -418,6 +419,7 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("servermute", new ServermuteCommand($this));
         $this->getServer()->getCommandMap()->register("sign", new SignCommand($this));
         $this->getServer()->getCommandMap()->register("stats", new StatsCommand($this));
+        $this->getServer()->getCommandMap()->register("sudo", new SudoCommand($this));
         $this->getServer()->getCommandMap()->register("supervanish", new SuperVanishCommand($this));
         $this->getServer()->getCommandMap()->register("gms", new SurvivalCommand($this));
         $this->getServer()->getCommandMap()->register("tell", new TellCommand($this));
@@ -430,9 +432,14 @@ class Main extends PluginBase implements Listener
         if ($votes->get("votes") == true) {
             $this->getServer()->getCommandMap()->register("vote", new VoteCommand($this));
         } elseif ($votes->get("votes") == false) {
-            $this->getLogger()->alert("Voten ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstellungen..");
+            $this->getLogger()->alert("Voten ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstelungen..");
         }
         $this->getServer()->getCommandMap()->register("gmspc", new ZuschauerCommand($this));
+        $this->getServer()->getCommandMap()->register("setwarp", new SetWarpCommand($this));
+        $this->getServer()->getCommandMap()->register("delwarp", new DelWarpCommand($this));
+        $this->getServer()->getCommandMap()->register("listwarp", new ListWarpCommand($this));
+        $this->getServer()->getCommandMap()->register("warp", new WarpCommand($this));
+
 
         //Emotes
         $this->getServer()->getCommandMap()->register("burb", new burb($this));
@@ -450,7 +457,7 @@ class Main extends PluginBase implements Listener
         if ($configs->get("AntiXray") == true) {
             $this->getServer()->getPluginManager()->registerEvents(new AntiXrayEvent($this), $this);
         } elseif ($configs->get("AntiXray") == false) {
-            $this->getLogger()->alert("AntiXray ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstellungen.");
+            $this->getLogger()->alert("AntiXray ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstelungen.");
         }
 
         //listener
@@ -479,6 +486,7 @@ class Main extends PluginBase implements Listener
         $this->getScheduler()->scheduleRepeatingTask(new OnlineTask($this), 20);
         $this->getScheduler()->scheduleDelayedTask(new RTask($this), (20 * 60 * 10));
         $this->getScheduler()->scheduleRepeatingTask(new StatstextTask($this), 60);
+        $this->getScheduler()->scheduleRepeatingTask(new PingTask($this), 20);
 
         $this->getLogger()->info($config->get("prefix") . "§6Die Commands wurden Erfolgreich Regestriert");
         $this->getLogger()->info($config->get("prefix") . "§6Die Core ist nun Einsatzbereit!");
@@ -960,6 +968,8 @@ class Main extends PluginBase implements Listener
     public function onDeath(PlayerDeathEvent $event)
     {
         $dcsettings = new Config($this->getDataFolder() . Main::$setup . "discordsettings" . ".yml", Config::YAML);
+        $config = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);
+
         $dcname = $dcsettings->get("chatname");
         if ($dcsettings->get("DC") == true) {
             $playername = $event->getPlayer()->getName();
@@ -969,6 +979,11 @@ class Main extends PluginBase implements Listener
             $msg = str_replace("{time}", $time, str_replace("{player}", $playername, $format));
             $this->sendMessage($playername, $msg);
 
+        }
+        if ($config->get("keepinventory") == true){
+            $event->setKeepInventory(true);
+        } elseif ($config->get("keepinventory") == false){
+            $event->setKeepInventory(false);
         }
     }
 
