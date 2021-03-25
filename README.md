@@ -1,6 +1,6 @@
 # Core-V5 ALPHA Release
 
-Die Core wurde nur für Altay Server entwickelt und stehts erweitert! Es können Bugs etc auftreten!
+Die Core wurde Spieziell für CityBuild Server entwickelt! Beachtet bitte das es eine ALPHA Version ist und wohlmöglich instabiel ist!
 
 # Fehler & Bugs
 Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren kann... Ihr dürft auch Vorschläge machen was ich sonmnst noch reinmachen kann.
