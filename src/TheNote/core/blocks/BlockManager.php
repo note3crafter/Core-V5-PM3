@@ -13,6 +13,7 @@ declare(strict_types = 1);
 
 namespace TheNote\core\blocks;
 
+use pocketmine\block\Block;
 use TheNote\core\Main;
 use pocketmine\block\BlockFactory;
 
@@ -27,6 +28,8 @@ class BlockManager {
         BlockFactory::registerBlock(new EndPortal(), true);
         BlockFactory::registerBlock(new Portal(), true);
         BlockFactory::registerBlock(new Obsidian(), true);
+        BlockFactory::registerBlock(new ShulkerBox(), true);
+        BlockFactory::registerBlock(new UndyedShulkerBox(), true);
         //BlockFactory::registerBlock(new Jukebox(), true); Nicht Funktionsfähig
     }
 }

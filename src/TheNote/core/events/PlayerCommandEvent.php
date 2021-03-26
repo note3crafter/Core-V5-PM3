@@ -7,26 +7,26 @@
 //     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
 //     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
 //   Copyright by TheNote! Not for Resale! Not for others
-//                        2017-2020
+//
 
-declare(strict_types = 1);
+namespace TheNote\core\events;
 
-namespace TheNote\core\tile;
+use pocketmine\command\CommandSender;
+use pocketmine\event\Cancellable;
+use pocketmine\event\player\PlayerEvent;
+use pocketmine\event\plugin\PluginEvent;
+use pocketmine\Player;
 
+abstract class PlayerCommandEvent extends PlayerEvent implements Cancellable{
 
-use pocketmine\tile\Tile as Tile;
+    protected $sender;
 
-abstract class Tiles extends Tile
-{
-    public const
-        /*JUKEBOX = "Jukebox",*/ CAULDRON = "Cauldron";
-    public const SHULKER_BOX = "ShulkerBox";
+    public function __construct(Player $player, CommandSender $sender){
+        $this->player = $player;
+        $this->sender = $sender;
+    }
 
-
-
-    public static function init() {
-        self::registerTile(BrewingStand::class);
-        self::registerTile(Cauldron::class);
-        self::registerTile(ShulkerBox::class, [self::SHULKER_BOX, "minecraft:shulker_box"]);
+    public function getSender() : CommandSender{
+        return $this->sender;
     }
 }

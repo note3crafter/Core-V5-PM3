@@ -1,6 +1,6 @@
 name: Core
 main: TheNote\core\Main
-version: 5.0.5
+version: 5.0.6
 mcpe-protocol:
   - 388 # 1.13.x
   - 389 # 1.14.x
@@ -30,7 +30,7 @@ authors:
   - Crasher508 #Fixxer
   - CortexPE #Braustand und mehr
   - HimmelKreis4865 #AntiXray
-description: Core v5.0.5 Alpha Release
+description: Core v5.0.6 Alpha Release
 
 permissions:
   core.command.adventure:
@@ -47,6 +47,9 @@ permissions:
     default: op
   core.command.banlist:
     description: "Siehe die Banlist"
+    default: op
+  core.command.burn:
+    description: "Zünde einen Spieler an"
     default: op
   core.command.chatclear:
     description: "Lösche den Chat"

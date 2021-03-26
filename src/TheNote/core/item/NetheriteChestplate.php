@@ -7,26 +7,26 @@
 //     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
 //     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
 //   Copyright by TheNote! Not for Resale! Not for others
-//                        2017-2020
+//
 
-declare(strict_types = 1);
+namespace TheNote\core\item;
 
-namespace TheNote\core\tile;
+use pocketmine\item\Armor;
 
-
-use pocketmine\tile\Tile as Tile;
-
-abstract class Tiles extends Tile
+class NetheriteChestplate extends Armor
 {
-    public const
-        /*JUKEBOX = "Jukebox",*/ CAULDRON = "Cauldron";
-    public const SHULKER_BOX = "ShulkerBox";
 
+    const NETHERITE_CHESTPLATE = 749;
 
+    public function __construct(int $meta = 0){
+        parent::__construct(self::NETHERITE_CHESTPLATE, $meta, "Netherite Chestplate");
+    }
 
-    public static function init() {
-        self::registerTile(BrewingStand::class);
-        self::registerTile(Cauldron::class);
-        self::registerTile(ShulkerBox::class, [self::SHULKER_BOX, "minecraft:shulker_box"]);
+    public function getDefensePoints() : int{
+        return 8;
+    }
+
+    public function getMaxDurability() : int{
+        return 593;
     }
 }

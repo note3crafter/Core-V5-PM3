@@ -13,15 +13,19 @@ declare(strict_types = 1);
 
 namespace TheNote\core\item;
 
+use pocketmine\inventory\ShapedRecipe;
+use pocketmine\inventory\ShapelessRecipe;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 
-class ItemManager {
-	public static function init(){
+class ItemManager
+{
+    public static function init()
+    {
 
-		ItemFactory::registerItem(new Trident(), true);
-		ItemFactory::registerItem(new EyeOfEnder(), true);
-		ItemFactory::registerItem(new AcaciaSign(), true);
+        ItemFactory::registerItem(new Trident(), true);
+        ItemFactory::registerItem(new EyeOfEnder(), true);
+        ItemFactory::registerItem(new AcaciaSign(), true);
         ItemFactory::registerItem(new BirchSign(), true);
         ItemFactory::registerItem(new DarkoakSign(), true);
         ItemFactory::registerItem(new JungleSign(), true);
@@ -30,6 +34,13 @@ class ItemManager {
         ItemFactory::registerItem(new Elytra(), true);
         ItemFactory::registerItem(new Lead(), true);
         ItemFactory::registerItem(new Schild(), true);
+        ItemFactory::registerItem(new FireCharge(), true);
+        ItemFactory::registerItem(new ShulkerBox(), true);
+        ItemFactory::registerItem(new NetheriteHelmet(), true);
+        ItemFactory::registerItem(new NetheriteBoots(), true);
+        ItemFactory::registerItem(new NetheriteChestplate(), true);
+        ItemFactory::registerItem(new NetheriteLeggings(), true);
+        //ItemFactory::registerItem(new NetheriteIngot(), true); Comming soon
         //ItemFactory::registerItem(new Fireworks(), true); Defekt... Wer bock hat es zu repaieren nur zu!
         ItemFactory::registerItem(new Record(Item::RECORD_13, 0, "Music Disc 13"), true);
         ItemFactory::registerItem(new Record(Item::RECORD_CAT, 0, "Music Disc cat"), true);
@@ -44,6 +55,7 @@ class ItemManager {
         ItemFactory::registerItem(new Record(Item::RECORD_11, 0, "Music Disc 11"), true);
         ItemFactory::registerItem(new Record(Item::RECORD_WAIT, 0, "Music Disc wait"), true);
 
-		Item::initCreativeItems();
-	}
+        Item::initCreativeItems();
+
+    }
 }

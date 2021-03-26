@@ -7,26 +7,26 @@
 //     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
 //     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
 //   Copyright by TheNote! Not for Resale! Not for others
-//                        2017-2020
+//
 
 declare(strict_types = 1);
 
-namespace TheNote\core\tile;
+namespace TheNote\core\item;
 
+use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
+use pocketmine\item\Item;
 
-use pocketmine\tile\Tile as Tile;
+class ShulkerBox extends Item {
+public function __construct(int $meta = 0){
+parent::__construct(self::SHULKER_BOX, $meta, "Shulker Box");
+}
 
-abstract class Tiles extends Tile
-{
-    public const
-        /*JUKEBOX = "Jukebox",*/ CAULDRON = "Cauldron";
-    public const SHULKER_BOX = "ShulkerBox";
+public function getBlock() : Block{
+return BlockFactory::get(Block::SHULKER_BOX, $this->getDamage());
+}
 
-
-
-    public static function init() {
-        self::registerTile(BrewingStand::class);
-        self::registerTile(Cauldron::class);
-        self::registerTile(ShulkerBox::class, [self::SHULKER_BOX, "minecraft:shulker_box"]);
-    }
+public function getMaxStackSize() : int{
+return 1;
+}
 }

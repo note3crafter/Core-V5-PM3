@@ -55,8 +55,8 @@ class ChunkModificationTask extends AsyncTask {
         for ($yy = 0; $yy < 8; ++$yy) {
             $subchunk = $chunk->getSubChunk($yy);
 
-            for ($x = 0; $x < 16; ++$x) {
-                for ($z = 0; $z < 16; ++$z) {
+            for ($x = 1; $x < 15; ++$x) {
+                for ($z = 1; $z < 15; ++$z) {
                     for ($y = 0; $y < 16; ++$y) {
                         if ((int)$subchunk->getBlockId($x, $y, $z) !== 1 || mt_rand(1, 10) < 8) continue;
 

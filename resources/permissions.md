@@ -6,6 +6,7 @@ core.command.adminitems
 core.command.animation
 core.command.ban
 core.command.banlist
+core.command.burn
 core.command.chatclear
 core.command.clear
 core.command.clearlagg

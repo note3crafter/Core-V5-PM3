@@ -7,26 +7,16 @@
 //     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
 //     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
 //   Copyright by TheNote! Not for Resale! Not for others
-//                        2017-2020
+//
 
-declare(strict_types = 1);
+namespace TheNote\core\blocks;
 
-namespace TheNote\core\tile;
-
-
-use pocketmine\tile\Tile as Tile;
-
-abstract class Tiles extends Tile
+class UndyedShulkerBox extends ShulkerBox
 {
-    public const
-        /*JUKEBOX = "Jukebox",*/ CAULDRON = "Cauldron";
-    public const SHULKER_BOX = "ShulkerBox";
+    protected $id = self::UNDYED_SHULKER_BOX;
 
-
-
-    public static function init() {
-        self::registerTile(BrewingStand::class);
-        self::registerTile(Cauldron::class);
-        self::registerTile(ShulkerBox::class, [self::SHULKER_BOX, "minecraft:shulker_box"]);
+    public function getName(): string
+    {
+        return "Undyed Shulker Box";
     }
 }
