@@ -1,6 +1,6 @@
-name: Core
+name: CoreV5
 main: TheNote\core\Main
-version: 5.0.6
+version: 5.1.0
 mcpe-protocol:
   - 388 # 1.13.x
   - 389 # 1.14.x
@@ -30,7 +30,7 @@ authors:
   - Crasher508 #Fixxer
   - CortexPE #Braustand und mehr
   - HimmelKreis4865 #AntiXray
-description: Core v5.0.6 Alpha Release
+description: Core v5.1.0 Alpha Release
 
 permissions:
   core.command.adventure:
@@ -95,6 +95,9 @@ permissions:
     default: op
   core.command.heal:
     description: "Der lauch ist stark in dir und das heilt dich!"
+    default: op
+  core.command.kick:
+    description: "Kicke einen Spieler vom Server"
     default: op
   core.command.kickall:
     description: "Kick alle weg und sei allein!"
