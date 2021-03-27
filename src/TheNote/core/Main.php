@@ -198,6 +198,8 @@ class Main extends PluginBase implements Listener
     public $config;
     public $economyapi;
     public $pureperms;
+
+
     public $ores = [14, 15, 21, 22, 41, 42, 56, 57, 73, 129, 133, 152];
     /** @var array $cooldown */
     public $cooldown = [];
@@ -245,6 +247,7 @@ class Main extends PluginBase implements Listener
     public $economy;
     private $lastSent;
     private $sessions = [];
+    public $lists = [];
 
     final public static function getPacketsFromBatch(BatchPacket $packet)
     {
@@ -287,7 +290,6 @@ class Main extends PluginBase implements Listener
                     mkdir($this->getDataFolder() . "Setup/");
                 }
                 file_put_contents($this->getDataFolder() . "Setup/minecraftpocket-servers.com.vrc", "{\"website\":\"http://minecraftpocket-servers.com/\",\"check\":\"http://minecraftpocket-servers.com/api-vrc/?object=votes&element=claim&key=" . $c["API-Key"] . "&username={USERNAME}\",\"claim\":\"http://minecraftpocket-servers.com/api-vrc/?action=post&object=votes&element=claim&key=" . $c["API-Key"] . "&username={USERNAME}\"}");
-
             }
         }
     }
@@ -320,6 +322,7 @@ class Main extends PluginBase implements Listener
         $this->saveResource("permissions.md", true);
         $this->craftingrecipe();
         $this->default = "";
+        $this->reload();
         if (strlen($this->default) > 1) {
             $this->getLogger()->warning("The \"default\" property in config.yml has an error - the value is too long! Assuming as \"_\".");
             $this->default = "_";
@@ -359,17 +362,17 @@ class Main extends PluginBase implements Listener
         $this->pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
 
-        if ($this->myplot === null) {
+        if ($this->myplot == null) {
             $this->getLogger()->error("§cMyPlot fehlt bitte installiere dies bevor du die Core benutzt!");
             $this->setEnabled(false);
             return;
         }
-        if ($this->economyapi === null) {
+        if ($this->economyapi == null) {
             $this->getLogger()->error("§cEconomyAPI fehlt bitte installiere dies bevor du die Core benutzt!");
             $this->setEnabled(false);
             return;
         }
-        if ($this->pureperms === null) {
+        if ($this->pureperms == null) {
             $this->getLogger()->error("§cPurePerms fehlt bitte installiere dies bevor du die Core benutzt!");
             $this->setEnabled(false);
             return;
@@ -388,7 +391,7 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("ban", new BanCommand($this));
         $this->getServer()->getCommandMap()->register("banids", new BanIDListCommand($this));
         $this->getServer()->getCommandMap()->register("banlist", new BanListCommand($this));
-        if ($votes->get("BoosterCommand") == true) {
+        if ($votes->get("BoosterCommand") === true) {
             $this->getServer()->getCommandMap()->register("booster", new BoosterCommand($this));
         }
         $this->getServer()->getCommandMap()->register("chatclear", new ChatClearCommand($this));
@@ -410,7 +413,7 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("heiraten", new HeiratenCommand($this));
         $this->getServer()->getCommandMap()->register("home", new HomeCommand($this));
         $this->getServer()->getCommandMap()->register("kickall", new KickallCommand($this));
-        if ($kit->get("KitCommand") == true) {
+        if ($kit->get("KitCommand") === true) {
             $this->getServer()->getCommandMap()->register("kit", new KitCommand($this));
         }
         $this->getServer()->getCommandMap()->register("gmc", new KreativCommand($this));
@@ -443,9 +446,9 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("unnick", new UnnickCommand($this));
         $this->getServer()->getCommandMap()->register("userdata", new UserdataCommand($this));
         $this->getServer()->getCommandMap()->register("vanish", new VanishCommand($this));
-        if ($votes->get("votes") == true) {
+        if ($votes->get("votes") === true) {
             $this->getServer()->getCommandMap()->register("vote", new VoteCommand($this));
-        } elseif ($votes->get("votes") == false) {
+        } elseif ($votes->get("votes") === false) {
             $this->getLogger()->alert("Voten ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstelungen..");
         }
         $this->getServer()->getCommandMap()->register("gmspc", new ZuschauerCommand($this));
@@ -469,7 +472,7 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getPluginManager()->registerEvents(new DeathMessages($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new Particle($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new AdminItemsEvents($this), $this);
-        if ($configs->get("AntiXray") == true) {
+        if ($configs->get("AntiXray") === true) {
             $this->getServer()->getPluginManager()->registerEvents(new AntiXrayEvent($this), $this);
         } elseif ($configs->get("AntiXray") == false) {
             $this->getLogger()->alert("AntiXray ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstelungen.");
@@ -577,7 +580,7 @@ class Main extends PluginBase implements Listener
         }
         $clones = [];
         $player->sendMessage($prefix . "§6Danke das du für uns abgestimmt hast :D " . ($multiplier == 1 ? "" : "s") . "!");
-        $this->getServer()->broadcastMessage($config->get("voten") . $player->getNameTag() . "hat für uns abgestimmt! Danke :D");
+        $this->getServer()->broadcastMessage($config->get("voten") . $player->getNameTag() . " §r§dhat für uns abgestimmt! Danke :D");
         $config = new Config($this->getDataFolder() . Main::$statsfile . $player->getLowerCaseName() . ".json", Config::JSON);
         $config->set("votes", $config->get("votes") + 1);
         $config->save();
@@ -956,15 +959,22 @@ class Main extends PluginBase implements Listener
                 $event->setCancelled(false);
             }
             if ($dcsettings->get("DC") == true) {
+
                 if ($stats->get("votes") >= $voteconfig->get("Mindestvotes")) {
                     $ar = getdate();
                     $time = $ar['hours'] . ":" . $ar['minutes'];
                     $format = "```" . $dcname . ": {time} : {player} : {msg}```";
                     $msg = str_replace("{msg}", $message, str_replace("{time}", $time, str_replace("{player}", $playername, $format)));
                     $this->sendMessage($playername, $msg);
-
                 }
+
             }
+        } elseif ($voteconfig->get("MussVoten") == false) {
+            $ar = getdate();
+            $time = $ar['hours'] . ":" . $ar['minutes'];
+            $format = "```" . $dcname . ": {time} : {player} : {msg}```";
+            $msg = str_replace("{msg}", $message, str_replace("{time}", $time, str_replace("{player}", $playername, $format)));
+            $this->sendMessage($playername, $msg);
         }
         $msg = $event->getMessage();
         $p = $event->getPlayer();
@@ -978,6 +988,7 @@ class Main extends PluginBase implements Listener
                 $event->setCancelled();
             }
         }
+        return true;
     }
 
     public function onDeath(PlayerDeathEvent $event)
