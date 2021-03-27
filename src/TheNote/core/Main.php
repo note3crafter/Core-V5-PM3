@@ -57,6 +57,7 @@ use pocketmine\utils\Random;
 use TheNote\core\command\BurnCommand;
 use TheNote\core\command\DayCommand;
 use TheNote\core\command\DelWarpCommand;
+use TheNote\core\command\KickCommand;
 use TheNote\core\command\ListWarpCommand;
 use TheNote\core\command\NickCommand;
 use TheNote\core\command\NightCommand;
@@ -248,6 +249,11 @@ class Main extends PluginBase implements Listener
     private $lastSent;
     private $sessions = [];
     public $lists = [];
+    public $clearItems;
+    /**
+     * @var bool
+     */
+
 
     final public static function getPacketsFromBatch(BatchPacket $packet)
     {
@@ -356,6 +362,7 @@ class Main extends PluginBase implements Listener
         Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("ban"));
         Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("unban"));
         Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("banlist"));
+        Server::getInstance()->getCommandMap()->unregister(Server::getInstance()->getCommandMap()->getCommand("kick"));
 
         $this->myplot = $this->getServer()->getPluginManager()->getPlugin("MyPlot");
         $this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
@@ -457,6 +464,7 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("listwarp", new ListWarpCommand($this));
         $this->getServer()->getCommandMap()->register("warp", new WarpCommand($this));
         $this->getServer()->getCommandMap()->register("burn", new BurnCommand($this));
+        $this->getServer()->getCommandMap()->register("kick", new KickCommand($this));
 
 
         //Emotes
