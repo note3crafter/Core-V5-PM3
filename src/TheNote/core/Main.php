@@ -362,17 +362,17 @@ class Main extends PluginBase implements Listener
         $this->pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
 
-        if ($this->myplot == null) {
+        if ($this->myplot === null) {
             $this->getLogger()->error("§cMyPlot fehlt bitte installiere dies bevor du die Core benutzt!");
             $this->setEnabled(false);
             return;
         }
-        if ($this->economyapi == null) {
+        if ($this->economyapi === null) {
             $this->getLogger()->error("§cEconomyAPI fehlt bitte installiere dies bevor du die Core benutzt!");
             $this->setEnabled(false);
             return;
         }
-        if ($this->pureperms == null) {
+        if ($this->pureperms === null) {
             $this->getLogger()->error("§cPurePerms fehlt bitte installiere dies bevor du die Core benutzt!");
             $this->setEnabled(false);
             return;
@@ -413,7 +413,7 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("heiraten", new HeiratenCommand($this));
         $this->getServer()->getCommandMap()->register("home", new HomeCommand($this));
         $this->getServer()->getCommandMap()->register("kickall", new KickallCommand($this));
-        if ($kit->get("KitCommand") === true) {
+        if ($kit->get("KitCommand") == true) {
             $this->getServer()->getCommandMap()->register("kit", new KitCommand($this));
         }
         $this->getServer()->getCommandMap()->register("gmc", new KreativCommand($this));
@@ -446,9 +446,9 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("unnick", new UnnickCommand($this));
         $this->getServer()->getCommandMap()->register("userdata", new UserdataCommand($this));
         $this->getServer()->getCommandMap()->register("vanish", new VanishCommand($this));
-        if ($votes->get("votes") === true) {
+        if ($votes->get("votes") == true) {
             $this->getServer()->getCommandMap()->register("vote", new VoteCommand($this));
-        } elseif ($votes->get("votes") === false) {
+        } elseif ($votes->get("votes") == false) {
             $this->getLogger()->alert("Voten ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstelungen..");
         }
         $this->getServer()->getCommandMap()->register("gmspc", new ZuschauerCommand($this));
@@ -472,7 +472,7 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getPluginManager()->registerEvents(new DeathMessages($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new Particle($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new AdminItemsEvents($this), $this);
-        if ($configs->get("AntiXray") === true) {
+        if ($configs->get("AntiXray") == true) {
             $this->getServer()->getPluginManager()->registerEvents(new AntiXrayEvent($this), $this);
         } elseif ($configs->get("AntiXray") == false) {
             $this->getLogger()->alert("AntiXray ist Deaktiviert! Wenn du es Nutzen möchtest Aktiviere es in den Einstelungen.");
