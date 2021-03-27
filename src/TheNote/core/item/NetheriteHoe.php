@@ -9,21 +9,20 @@
 //   Copyright by TheNote! Not for Resale! Not for others
 //
 
-declare(strict_types = 1);
-
 namespace TheNote\core\item;
 
 use pocketmine\entity\Entity;
 use pocketmine\item\Item;
+use pocketmine\item\TieredTool;
 use pocketmine\Player;
 
-class NetheriteIngot extends Item
+class NetheriteHoe extends Item
 {
-    const NETHERITE_INGOT = 742;
+    const NETHERITE_HOE = 747;
 
     public function __construct(int $meta = 0)
     {
-        parent::__construct(self::NETHERITE_INGOT, $meta, "Netherite Ingot");
+        parent::__construct(self::NETHERITE_HOE, $meta, "Netherite Hoe");
     }
 
     public function onUpdate(Player $player): void
@@ -33,6 +32,6 @@ class NetheriteIngot extends Item
 
     public function getMaxStackSize(): int
     {
-        return 64;
+        return 1;
     }
 }

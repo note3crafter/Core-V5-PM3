@@ -40,7 +40,14 @@ class ItemManager
         ItemFactory::registerItem(new NetheriteBoots(), true);
         ItemFactory::registerItem(new NetheriteChestplate(), true);
         ItemFactory::registerItem(new NetheriteLeggings(), true);
-        //ItemFactory::registerItem(new NetheriteIngot(), true); Comming soon
+        ItemFactory::registerItem(new NetheriteIngot(), true);
+        ItemFactory::registerItem(new NetheriteScrap(), true);
+        ItemFactory::registerItem(new NetheriteShovel(), true);
+        ItemFactory::registerItem(new NetheriteSword(), true);
+        ItemFactory::registerItem(new NetheriteAxe(), true);
+        ItemFactory::registerItem(new NetheritePickaxe(), true);
+        ItemFactory::registerItem(new NetheriteHoe(), true);
+
         //ItemFactory::registerItem(new Fireworks(), true); Defekt... Wer bock hat es zu repaieren nur zu!
         ItemFactory::registerItem(new Record(Item::RECORD_13, 0, "Music Disc 13"), true);
         ItemFactory::registerItem(new Record(Item::RECORD_CAT, 0, "Music Disc cat"), true);

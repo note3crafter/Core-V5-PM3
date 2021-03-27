@@ -17,13 +17,13 @@ use pocketmine\entity\Entity;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-class NetheriteIngot extends Item
+class NetheriteScrap extends Item
 {
-    const NETHERITE_INGOT = 742;
+    const NETHERITE_SCRAP = 752;
 
     public function __construct(int $meta = 0)
     {
-        parent::__construct(self::NETHERITE_INGOT, $meta, "Netherite Ingot");
+        parent::__construct(self::NETHERITE_SCRAP, $meta, "Netherite Scrap");
     }
 
     public function onUpdate(Player $player): void

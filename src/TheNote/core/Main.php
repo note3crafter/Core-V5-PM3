@@ -217,7 +217,7 @@ class Main extends PluginBase implements Listener
     public static $version = "5.0.6ALPHA";
     public static $protokoll = "428";
     public static $mcpeversion = "1.16.210";
-    public static $dateversion = "26.03.2021";
+    public static $dateversion = "27.03.2021";
     public static $plname = "CoreV5";
 
     //Configs
@@ -1330,124 +1330,5 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCraftingManager()->registerShapelessRecipe(new ShapelessRecipe([Item::get(Item::DIAMOND_LEGGINGS), Item::get(self::ITEM_NETHERITE_INGOT)], [Item::get(NetheriteLeggings::NETHERITE_LEGGINGS)]));
         $this->getServer()->getCraftingManager()->registerShapelessRecipe(new ShapelessRecipe([Item::get(Item::DIAMOND_BOOTS), Item::get(self::ITEM_NETHERITE_INGOT)], [Item::get(NetheriteBoots::NETHERITE_BOOTS)]));
 
-        /*$this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe(
-                [
-                    'AAA',
-                    'ABB',
-                    'BB '
-                ],
-                ['A' => Item::get(self::ITEM_NETHERITE_SCRAP), 'B' => Item::get(Item::GOLD_INGOT)],
-                [Item::get(self::ITEM_NETHERITE_INGOT)])
-        );
-
-        $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe(
-                [
-                    ' A ',
-                    ' A ',
-                    ' B '
-                ],
-                ['A' => Item::get(self::ITEM_NETHERITE_INGOT), 'B' => Item::get(Item::STICK)],
-                [Item::get(self::ITEM_NETHERITE_SWORD)])
-        );
-        $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe(
-                [
-                    ' A ',
-                    ' B ',
-                    ' B '
-                ],
-                ['A' => Item::get(self::ITEM_NETHERITE_INGOT), 'B' => Item::get(Item::STICK)],
-                [Item::get(self::ITEM_NETHERITE_SHOVEL)])
-        );
-        $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe(
-                [
-                    'AAA',
-                    ' B ',
-                    ' B '
-                ],
-                ['A' => Item::get(self::ITEM_NETHERITE_INGOT), 'B' => Item::get(Item::STICK)],
-                [Item::get(self::ITEM_NETHERITE_PICKAXE)])
-        );
-        $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe(
-                [
-                    ' AA',
-                    ' BA',
-                    ' B '
-                ],
-                ['A' => Item::get(self::ITEM_NETHERITE_INGOT), 'B' => Item::get(Item::STICK)],
-                [Item::get(self::ITEM_NETHERITE_AXE)])
-        );
-        $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe(
-                [
-                    'AA ',
-                    'AB ',
-                    ' B '
-                ],
-                ['A' => Item::get(self::ITEM_NETHERITE_INGOT), 'B' => Item::get(Item::STICK)],
-                [Item::get(self::ITEM_NETHERITE_AXE)])
-        );
-        $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe(
-                [
-                    'AA ',
-                    ' B ',
-                    ' B '
-                ],
-                ['A' => Item::get(self::ITEM_NETHERITE_INGOT), 'B' => Item::get(Item::STICK)],
-                [Item::get(self::ITEM_NETHERITE_HOE)])
-        );
-        $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe(
-                [
-                    ' AA',
-                    ' B ',
-                    ' B '
-                ],
-                ['A' => Item::get(self::ITEM_NETHERITE_INGOT), 'B' => Item::get(Item::STICK)],
-                [Item::get(self::ITEM_NETHERITE_HOE)])
-        );
-
-        $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe(
-                [
-                    'AAA',
-                    'A A',
-                    '   '
-                ],
-                ['A' => Item::get(self::ITEM_NETHERITE_INGOT)],
-                [Item::get(NetheriteHelmet::NETHERITE_HELMET)])
-        );
-        $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe(
-                [
-                    'A A',
-                    'AAA',
-                    'AAA'
-                ],
-                ['A' => Item::get(self::ITEM_NETHERITE_INGOT)],
-                [Item::get(NetheriteChestplate::NETHERITE_CHESTPLATE)])
-        );
-        $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe(
-                [
-                    'AAA',
-                    'A A',
-                    'A A'
-                ],
-                ['A' => Item::get(self::ITEM_NETHERITE_INGOT)],
-                [Item::get(NetheriteLeggings::NETHERITE_LEGGINGS)])
-        );
-        $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe(
-                [
-                    '   ',
-                    'A A',
-                    'A A'
-                ],
-                ['A' => Item::get(self::ITEM_NETHERITE_INGOT)],
-                [Item::get(NetheriteBoots::NETHERITE_BOOTS)])
-        );
-        $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe(
-                [
-                    'A A',
-                    'A A',
-                    '   '
-                ],
-                ['A' => Item::get(self::ITEM_NETHERITE_INGOT)],
-                [Item::get(NetheriteBoots::NETHERITE_BOOTS)])
-        );*/
     }
 }
