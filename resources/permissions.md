@@ -22,6 +22,7 @@ core.command.fly
 core.command.givecoins
 core.command.group
 core.command.heal
+core.command.kick
 core.command.kickall
 core.command.nick
 core.command.night
