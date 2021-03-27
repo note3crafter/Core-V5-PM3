@@ -31,11 +31,12 @@ class VanishCommand extends Command
         $this->setPermission("core.command.vanish");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
@@ -46,21 +47,19 @@ class VanishCommand extends Command
             $Spieler->set("Vanish");
             return false;
         }
-        if ($sender instanceof Player) {
-            if ($sender->hasPermission("core.command.vanish") || $sender->isOp()) {
-                if(!isset($this->vanish[$sender->getName()])){
-                    $this->vanish[$sender->getName()] = true;
-                    $sender->setNameTagVisible(false);
-                    $sender->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, true);
-                    $sender->sendMessage($config->get("info") . "Dein §eVanish §6wurde §aAktiviert§6.");
-                }else{
-                    unset($this->vanish[$sender->getName()]);
-                    $sender->setNameTagVisible(true);
-                    $sender->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, false);
-                    $sender->sendMessage($config->get("info") . "Dein §eVanish §6wurde §cDeaktiviert§6.");
-                }
+        if ($sender->hasPermission("core.command.vanish") || $sender->isOp()) {
+            if(!isset($this->vanish[$sender->getName()])){
+                $this->vanish[$sender->getName()] = true;
+                $sender->setNameTagVisible(false);
+                $sender->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, true);
+                $sender->sendMessage($config->get("info") . "Dein §eVanish §6wurde §aAktiviert§6.");
+            }else{
+                unset($this->vanish[$sender->getName()]);
+                $sender->setNameTagVisible(true);
+                $sender->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, false);
+                $sender->sendMessage($config->get("info") . "Dein §eVanish §6wurde §cDeaktiviert§6.");
             }
-            return false;
         }
+        return false;
     }
 }

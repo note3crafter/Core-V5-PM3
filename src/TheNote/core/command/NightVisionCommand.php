@@ -19,7 +19,8 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
 
-class NightVisionCommand extends Command {
+class NightVisionCommand extends Command
+{
 
     public function __construct(Main $plugin)
     {
@@ -28,21 +29,20 @@ class NightVisionCommand extends Command {
         parent::__construct("nightvision", $config->get("prefix") . "Gibt dir Nachtsicht für 10 Minuten", "/nightvision", ["nachtsicht", "ns", "nv"]);
         $this->setPermission("core.command.nightvision");
     }
-    public function execute(CommandSender $sender, string $commandLabel, array $args){
+
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
+    {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
-        if ($sender instanceof Player){
-            if ($sender->hasPermission("core.command.nightvision") || $sender->isOp()) {
-                $sender->sendMessage($config->get("info") . "Du hast nun Nachtsicht für §c10 §6Minuten!");
-                $sender->addEffect(new EffectInstance(Effect::getEffect(16), (12000), (1), (false)));
-            }
-        }
+        $sender->sendMessage($config->get("info") . "Du hast nun Nachtsicht für §c10 §6Minuten!");
+        $sender->addEffect(new EffectInstance(Effect::getEffect(16), (12000), (1), (false)));
         return false;
     }
 }

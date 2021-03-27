@@ -15,7 +15,6 @@ use TheNote\core\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
-use pocketmine\Server;
 use pocketmine\utils\Config;
 
 class ZuschauerCommand extends Command
@@ -28,20 +27,19 @@ class ZuschauerCommand extends Command
         $this->setPermission("core.command.spectator");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
-        if ($sender instanceof Player) {
-            $sender->setGamemode(3);
-            $sender->sendMessage($config->get("info") . "Du bist nun im §eZuschauer §6modus.");
-        }
+        $sender->setGamemode(3);
+        $sender->sendMessage($config->get("info") . "Du bist nun im §eZuschauer §6modus.");
         return false;
     }
 }

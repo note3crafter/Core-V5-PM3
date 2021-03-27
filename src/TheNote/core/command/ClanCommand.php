@@ -17,9 +17,10 @@ use pocketmine\Player;
 use pocketmine\utils\Config;
 use TheNote\core\Main;
 
-
 class ClanCommand extends Command
 {
+
+    private $plugin;
 
     public function __construct(Main $plugin)
     {
@@ -28,11 +29,12 @@ class ClanCommand extends Command
         parent::__construct("clan", $config->get("prefix") . "Erstelle ein Clan", "/clan");
     }
 
-    public function execute(CommandSender $sender, string $label, array $args): bool
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (isset($args[0])) {
             if (strtolower($args[0]) === "make") {

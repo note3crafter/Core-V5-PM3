@@ -19,6 +19,8 @@ use pocketmine\utils\Config;
 
 class KickallCommand extends Command
 {
+    private $plugin;
+
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -26,23 +28,29 @@ class KickallCommand extends Command
         parent::__construct("kickall", $config->get("prefix") . "Kickt alle Spieler vom Server!", "/kickall");
         $this->setPermission("core.command.kickall");
     }
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
         }
+
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
         if ($sender instanceof Player) {
             if (isset($args[0])) {
+                $onlinePlayers = $this->plugin->getServer()->getOnlinePlayers();
                 if ($sender->hasPermission("core.command.kickall") || $sender->isOp()) {
-                    foreach ($this->getServer()->getOnlinePlayers() as $player) {
+                    foreach ($this->plugin->getServer()->getOnlinePlayers() as $players) {
                         $name = $sender->getDisplayName();
-                        if ($player !== $sender) {
-                            $player->kick($config->get("info") . "Jeder wurde vom Server gekickt!\n§cGrund : $args[0]", false);
+                        if (count($onlinePlayers) === 0 || (count($onlinePlayers) === 1)) {
+                            $sender->sendMessage($config->get("error") . "§cEs sind keine Spieler Online zum kicken");
+                        } elseif ($players !== $sender) {
+                            $players->kick($config->get("info") . "Jeder wurde vom Server gekickt!\n§cGrund : $args[0]", false);
                             $this->plugin->getServer()->broadcastMessage($config->get("info") . "§c$name §6hat alle Spieler vom Server gekickt!");
                         }
                     }

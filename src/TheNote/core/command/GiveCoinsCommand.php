@@ -26,18 +26,19 @@ class GiveCoinsCommand extends Command
         parent::__construct("givecoins", $config->get("prefix") . "§6Gebe einem Spieler Coins", "/givecoins <player> <coins>");
         $this->setPermission("core.command.givecoins");
     }
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
         if(count($args) < 2){
-            $sender->sendMessage($config->get("prefix") . "§r§cNutze: /givecoins <player> <coins>");
+            $sender->sendMessage($config->get("prefix") . "§r§cNutze: /givecoins {player} [coins]");
             return false;
         }
         if($this->plugin->getServer()->getPlayer($args[0])){

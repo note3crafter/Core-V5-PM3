@@ -11,8 +11,10 @@
 
 namespace TheNote\core\command;
 
+use DateInterval;
+use DateTime;
+use Exception;
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\utils\Config;
 use TheNote\core\Main;
@@ -34,6 +36,8 @@ class BanCommand extends Command
         99 => ['Reason' => 'Ban von einem Admin', 'Duration' => '0:12:M']
     );
 
+    private $plugin;
+
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -42,7 +46,7 @@ class BanCommand extends Command
         $this->setPermission("core.command.ban");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$this->testPermission($sender)) {
@@ -56,11 +60,21 @@ class BanCommand extends Command
                     $sender2 = $this->plugin->getServer()->getPlayer(strtolower($args[0]));
                     $idList = $this->bansGerman[$args[1]];
                     $duration = explode(':', $idList['Duration']);
-                    $date = new \DateTime('now');
+                    $date = new DateTime('now');
                     if ($duration[0] == 'T') {
-                        $date->add(new \DateInterval('PT' . $duration[1] * "1" . $duration[2]));
+
+                        try {
+                            $date->add(new DateInterval('PT' . $duration[1] * "1" . $duration[2]));
+                        } catch (Exception $e) {
+                        }
+
                     } else {
-                        $date->add(new \DateInterval('P' . $duration[1] * "1" . $duration[2]));
+
+                        try {
+                            $date->add(new DateInterval('P' . $duration[1] * "1" . $duration[2]));
+                        } catch (Exception $e) {
+                        }
+
                     }
                     $target = Server::getInstance()->getPlayer(strtolower($args[0]));
                     $format = $date->format('Y-m-d H:i:s');
@@ -71,20 +85,16 @@ class BanCommand extends Command
                         $sender->sendMessage($config->get("error") . "Der Spieler " . strtolower($args[0]) . " konnte nicht gefunden werden oder ist bereits gebannt!.");
                     } else {
                         $banlist->set(strtolower($sender2->getName()), $id . ", " . $by . ", " . $format);
-
-                            $msg = "Der Spieler §2 {banned-player} §awurde erfolgreich für§2 {reason} §agebannt.";
-                            $msg = str_replace("{reason}", $idList['Reason'], $msg);
-                            $msg = str_replace("{banned-player}", strtolower($sender2->getName()), $msg);
-                            $sender->sendMessage($config->get("ban") . $msg);
-                            $target->kick("§cDu wurdest vom Netzwerk verbannt!\n§cRejoine um mehr Infos zu bekommen.", false);
-
-
-
+                        $msg = "Der Spieler §2 {banned-player} §awurde erfolgreich für§2 {reason} §agebannt.";
+                        $msg = str_replace("{reason}", $idList['Reason'], $msg);
+                        $msg = str_replace("{banned-player}", strtolower($sender2->getName()), $msg);
+                        $sender->sendMessage($config->get("ban") . $msg);
+                        $target->kick("§cDu wurdest vom Netzwerk verbannt!\n§cRejoine um mehr Infos zu bekommen.", false);
                     }
                     $banlist->save();
                     $banlist->reload();
                 } else {
-                    $sender->sendMessage("3333");
+                    $sender->sendMessage($config->get("ban") . "Nutze : /ban <player|id> Hilfe : /banids");
                 }
             } else {
                 $sender->sendMessage($config->get("ban") . "Nutze : /ban <player|id> Hilfe : /banids");
@@ -95,4 +105,3 @@ class BanCommand extends Command
         return false;
     }
 }
-//last edit by Rudolf2000 : 15.03.2021 17:44

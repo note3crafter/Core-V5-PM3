@@ -14,7 +14,6 @@ namespace TheNote\core\command;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
-use pocketmine\Server;
 use pocketmine\utils\Config;
 use TheNote\core\Main;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
@@ -29,11 +28,12 @@ class TellCommand extends Command
         $this->plugin = $plugin;
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (count($args) < 2) {
             throw new InvalidCommandSyntaxException();
@@ -62,13 +62,9 @@ class TellCommand extends Command
             $sender->sendMessage($config->get("error") . "Du kannst dir nicht selbst eine Nachricht senden!");
             return true;
         }
-        if ($player == null) {
-            $sender->sendMessage($config->get("error") . "Der Spieler ist nicht Online!");
-            return true;
-        }
         if ($player instanceof Player) {
             $sender->sendMessage(Main::$msg . "{$sender->getNameTag()} §f-> {$player->getNameTag()} §f| §b" . implode(" ", $args));
-            $name = $sender instanceof Player ? $config->get("msg") . $sender->getNameTag() : $sender->getNameTag() . "§f";
+            $name = $config->get("msg") . $sender->getNameTag();
             $player->sendMessage($config->get("msg") . "$name §f-> zu dir | §b" . implode(" ", $args));
             $this->plugin->onMessage($sender, $player);
         }

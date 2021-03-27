@@ -11,9 +11,7 @@
 
 namespace TheNote\core\command;
 
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
 use pocketmine\utils\Config;
 use pocketmine\command\Command;
@@ -33,11 +31,12 @@ class HeiratenCommand extends Command implements Listener
 
     }
 
-    public function execute(CommandSender $sender, string $label, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (isset($args[0])) {
             if ($this->plugin->getServer()->getPlayer($args[0]) instanceof Player) {
@@ -81,7 +80,6 @@ class HeiratenCommand extends Command implements Listener
                             $this->addPCFG($sender->getLowerCaseName(), "antrag-angenommen", ($x + 1));
                             $hei->set("Heiraten", $hei->get("Heiraten") + 1);
                             $this->addPCFG($sender->getLowerCaseName(), "antrag", NULL);
-                            $hei = new Config($this->plugin->getDataFolder() . Main::$userfile . $sender->getLowerCaseName() . ".json", Config::JSON);
                             $heiv = new Config($this->plugin->getDataFolder() . Main::$userfile . $victim->getLowerCaseName() . ".json", Config::JSON);
                             $user->set("heistatus", true);
                             $user->save();
@@ -172,14 +170,13 @@ class HeiratenCommand extends Command implements Listener
         return true;
     }
 
-    public function getPCFG($player, $a)
+    public function getPCFG($player, $a): bool
     {
         $pcfg = new Config($this->plugin->getDataFolder() . Main::$heifile . strtolower($player) . ".json", Config::JSON);
-        $x = $pcfg->get($a);
-        return $x;
+        return $pcfg->get($a);
     }
 
-    public function addPCFG($player, $a, $b)
+    public function addPCFG($player, $a, $b): bool
     {
         $pcfg = new Config($this->plugin->getDataFolder() . Main::$heifile . strtolower($player) . ".json", Config::JSON);
         $pcfg->set($a, $b);
@@ -187,7 +184,7 @@ class HeiratenCommand extends Command implements Listener
         return true;
     }
 
-    public function setScheidung($a)
+    public function setScheidung($a): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         $player = $a->getLowerCaseName();

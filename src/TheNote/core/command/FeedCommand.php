@@ -34,7 +34,8 @@ class FeedCommand extends Command
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+             $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+             return false;
         }
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
@@ -53,4 +54,3 @@ class FeedCommand extends Command
         return false;
     }
 }
-//last edit by Rudolf2000 : 15.03.2021 20:02

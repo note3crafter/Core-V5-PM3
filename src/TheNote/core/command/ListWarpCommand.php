@@ -13,7 +13,6 @@ namespace TheNote\core\command;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\level\Position;
 use pocketmine\Player;
 use pocketmine\utils\Config;
 use TheNote\core\Main;
@@ -27,11 +26,12 @@ class ListWarpCommand extends Command
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         parent::__construct("listwarp", $config->get("prefix") . "Liste alle Warps auf", "/listwarp", ["warps"]);
     }
-    public function execute(CommandSender $sender, string $label, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         $warp = new Config($this->plugin->getDataFolder() . Main::$cloud . "warps.json", Config::JSON);
         $warps = $warp->getAll(true);

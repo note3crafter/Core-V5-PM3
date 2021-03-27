@@ -12,7 +12,6 @@
 namespace TheNote\core\command;
 
 use pocketmine\block\Sapling;
-use pocketmine\entity\Entity;
 use pocketmine\event\Cancellable;
 use pocketmine\event\player\PlayerEvent;
 use pocketmine\level\ChunkManager;
@@ -23,7 +22,6 @@ use pocketmine\level\generator\object\SpruceTree;
 use pocketmine\level\Position;
 use pocketmine\utils\Config;
 use pocketmine\utils\Random;
-use pocketmine\utils\TextFormat;
 use TheNote\core\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -31,7 +29,6 @@ use pocketmine\Player;
 
 class TreeCommand extends Command
 {
-    public $growTree;
 
     public function __construct(Main $plugin)
     {
@@ -41,11 +38,12 @@ class TreeCommand extends Command
         $this->setPermission("core.command.tree");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
@@ -59,68 +57,60 @@ class TreeCommand extends Command
         if (isset($args[0])) {
 
             if ($args[0] == "oak") {
-                if ($sender instanceof Player) {
+                $type = Sapling::OAK;
 
-                    $type = Sapling::OAK;
-
-                    $ev = new BaumEvent($sender, $sender->getTargetBlock(100));
-                    $ev->call();
-                    if ($ev->isCancelled()) {
-                        return true;
-                    }
-                    $this->plugin->Baum($ev->getPosition()->getLevel(), $ev->getPosition()->getFloorX(), $ev->getPosition()->getFloorY() + 1, $ev->getPosition()->getFloorZ(), new Random(), $type);
-                    $sender->sendMessage($config->get("info") . "Der Eichenbaum wurde gesetzt!");
+                $ev = new BaumEvent($sender, $sender->getTargetBlock(100));
+                $ev->call();
+                if ($ev->isCancelled()) {
+                    return true;
                 }
+                $this->plugin->Baum($ev->getPosition()->getLevel(), $ev->getPosition()->getFloorX(), $ev->getPosition()->getFloorY() + 1, $ev->getPosition()->getFloorZ(), new Random(), $type);
+                $sender->sendMessage($config->get("info") . "Der Eichenbaum wurde gesetzt!");
             }
             if ($args[0] == "spruce") {
-                if ($sender instanceof Player) {
-                    $type = Sapling::SPRUCE;
-                    $ev = new BaumEvent($sender, $sender->getTargetBlock(100));
-                    $ev->call();
-                    if ($ev->isCancelled()) {
-                        return true;
-                    }
-                    $this->plugin->Baum($ev->getPosition()->getLevel(), $ev->getPosition()->getFloorX(), $ev->getPosition()->getFloorY() + 1, $ev->getPosition()->getFloorZ(), new Random(), $type);
-                    $sender->sendMessage($config->get("info")  . "Der Tannenbaum wurde gesetzt!");
+                $type = Sapling::SPRUCE;
+                $ev = new BaumEvent($sender, $sender->getTargetBlock(100));
+                $ev->call();
+                if ($ev->isCancelled()) {
+                    return true;
                 }
+                $this->plugin->Baum($ev->getPosition()->getLevel(), $ev->getPosition()->getFloorX(), $ev->getPosition()->getFloorY() + 1, $ev->getPosition()->getFloorZ(), new Random(), $type);
+                $sender->sendMessage($config->get("info") . "Der Tannenbaum wurde gesetzt!");
             }
             if ($args[0] == "birch") {
-                if ($sender instanceof Player) {
-                    $type = Sapling::BIRCH;
-                    $ev = new BaumEvent($sender, $sender->getTargetBlock(100));
-                    $ev->call();
-                    if ($ev->isCancelled()) {
-                        return true;
-                    }
-                    $this->plugin->Baum($ev->getPosition()->getLevel(), $ev->getPosition()->getFloorX(), $ev->getPosition()->getFloorY() + 1, $ev->getPosition()->getFloorZ(), new Random(), $type);
-                    $sender->sendMessage($config->get("info")  . "Der Birkenbaum wurde gesetzt!");
+                $type = Sapling::BIRCH;
+                $ev = new BaumEvent($sender, $sender->getTargetBlock(100));
+                $ev->call();
+                if ($ev->isCancelled()) {
+                    return true;
                 }
+                $this->plugin->Baum($ev->getPosition()->getLevel(), $ev->getPosition()->getFloorX(), $ev->getPosition()->getFloorY() + 1, $ev->getPosition()->getFloorZ(), new Random(), $type);
+                $sender->sendMessage($config->get("info") . "Der Birkenbaum wurde gesetzt!");
             }
             if ($args[0] == "jungle") {
-                if ($sender instanceof Player) {
-                    $type = Sapling::JUNGLE;
-                    $ev = new BaumEvent($sender, $sender->getTargetBlock(100));
-                    $ev->call();
-                    if ($ev->isCancelled()) {
-                        return true;
-                    }
-                    $this->plugin->Baum($ev->getPosition()->getLevel(), $ev->getPosition()->getFloorX(), $ev->getPosition()->getFloorY() + 1, $ev->getPosition()->getFloorZ(), new Random(), $type);
-                    $sender->sendMessage($config->get("info")  . "Der Tropenbaum wurde gesetzt!");
+                $type = Sapling::JUNGLE;
+                $ev = new BaumEvent($sender, $sender->getTargetBlock(100));
+                $ev->call();
+                if ($ev->isCancelled()) {
+                    return true;
                 }
+                $this->plugin->Baum($ev->getPosition()->getLevel(), $ev->getPosition()->getFloorX(), $ev->getPosition()->getFloorY() + 1, $ev->getPosition()->getFloorZ(), new Random(), $type);
+                $sender->sendMessage($config->get("info") . "Der Tropenbaum wurde gesetzt!");
             }
         }
         return true;
     }
 
-    public function Baum(ChunkManager $level, int $x, int $y, int $z, Random $random, int $type = 0){
-        switch($type){
+    public function Baum(ChunkManager $level, int $x, int $y, int $z, Random $random, int $type = 0)
+    {
+        switch ($type) {
             case Sapling::SPRUCE:
                 $tree = new SpruceTree();
                 break;
             case Sapling::BIRCH:
-                if($random->nextBoundedInt(39) === 0){
+                if ($random->nextBoundedInt(39) === 0) {
                     $tree = new BirchTree(true);
-                }else{
+                } else {
                     $tree = new BirchTree();
                 }
                 break;

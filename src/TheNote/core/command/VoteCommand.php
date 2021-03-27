@@ -29,11 +29,12 @@ class VoteCommand extends Command
         parent::__construct("vote", $config->get("prefix") . "Stimme für den Server ab und erhalte Belohnungen", "/vote");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         $this->plugin->queue[] = strtolower($sender->getName());
         $requests = [];

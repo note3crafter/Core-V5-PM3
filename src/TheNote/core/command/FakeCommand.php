@@ -27,10 +27,12 @@ class FakeCommand extends Command {
         $this->setPermission("core.command.fake");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args) {
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
+    {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+             $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+             return false;
         }
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
@@ -42,23 +44,18 @@ class FakeCommand extends Command {
         }
         if (isset($args[0])) {
             if ($args[0] == "join") {
-                if ($sender instanceof Player) {
-                    if ($sender->hasPermission("core.command.fake") || $sender->isOp()) {
-                        $all = $this->plugin->getServer()->getOnlinePlayers();
-                        $this->plugin->getServer()->broadcastMessage("§f[§a+§f] " . $sender->getNameTag() . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a100§f]");
-                    }
+                if ($sender->hasPermission("core.command.fake") || $sender->isOp()) {
+                    $all = $this->plugin->getServer()->getOnlinePlayers();
+                    $this->plugin->getServer()->broadcastMessage("§f[§a+§f] " . $sender->getNameTag() . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
                 }
             }
             if ($args[0] == "leave") {
-                if ($sender instanceof Player) {
-                    if ($sender->hasPermission("core.command.fake") || $sender->isOp()) {
-                        $all = $this->plugin->getServer()->getOnlinePlayers();
-                        $this->plugin->getServer()->broadcastMessage("§f[§c-§f] " . $sender->getNameTag() . " §chat den Server verlassen! §f[§a" . count($all) . "§f/§a100§f]");
-                    }
+                if ($sender->hasPermission("core.command.fake") || $sender->isOp()) {
+                    $all = $this->plugin->getServer()->getOnlinePlayers();
+                    $this->plugin->getServer()->broadcastMessage("§f[§c-§f] " . $sender->getNameTag() . " §chat den Server verlassen! §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
                 }
             }
         }
         return true;
     }
 }
-//last edit by Rudolf2000 : 15.03.2021 19:49

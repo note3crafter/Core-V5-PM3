@@ -13,7 +13,6 @@ namespace TheNote\core\command;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\level\Position;
 use pocketmine\Player;
 use pocketmine\utils\Config;
 use TheNote\core\Main;
@@ -27,11 +26,12 @@ class DelWarpCommand extends Command
         parent::__construct("delwarp", $config->get("prefix") . "Lösche ein Warppunkt", "/delwarp <warpname>");
         $this->setPermission("core.command.delwarp");
     }
-    public function execute(CommandSender $sender, string $label, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return true;
         }
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");

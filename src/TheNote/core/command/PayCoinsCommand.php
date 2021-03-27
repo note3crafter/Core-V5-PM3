@@ -28,12 +28,17 @@ class PayCoinsCommand extends Command
         $this->setPermission("core.command.paycoins");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $coins = new Config($this->plugin->getDataFolder() . Main::$userfile . $sender->getLowerCaseName() . ".json", Config::JSON);
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
+        }
+        if (empty($args[0])) {
+            $sender->sendMessage($config->get("info") . "/notell <on|off>");
+            return true;
         }
         $coins->set("coins", $coins->get("coins") + 1000);
         $coins->save();

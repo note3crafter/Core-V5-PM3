@@ -27,11 +27,12 @@ class NoDMCommand extends Command
         parent::__construct("notell", $config->get("prefix") . "§aAktiviere§f/§cDeaktiviere§6 Privatnachrrichten", "/notell <on|off>", ["dm", "pn", "nodm"]);
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (empty($args[0])) {
             $sender->sendMessage($config->get("info") . "/notell <on|off>");
@@ -40,18 +41,14 @@ class NoDMCommand extends Command
         $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $sender->getLowerCaseName() . ".json", Config::JSON);
         if (isset($args[0])) {
             if ($args[0] == "on") {
-                if ($sender instanceof Player) {
-                    $cfg->set("nodm", true);
-                    $cfg->save();
-                    $sender->sendMessage($config->get("info") . "Du hast deine §ePrivatnachrrichten §aAktiviert");
-                }
+                $cfg->set("nodm", true);
+                $cfg->save();
+                $sender->sendMessage($config->get("info") . "Du hast deine §ePrivatnachrrichten §aAktiviert");
             }
             if ($args[0] == "off") {
-                if ($sender instanceof Player) {
-                    $cfg->set("nodm", false);
-                    $cfg->save();
-                    $sender->sendMessage($config->get("info") . "Du hast deine §ePrivatnachrrichten §cDeaktiviert");
-                }
+                $cfg->set("nodm", false);
+                $cfg->save();
+                $sender->sendMessage($config->get("info") . "Du hast deine §ePrivatnachrrichten §cDeaktiviert");
             }
         }
         return true;

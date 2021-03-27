@@ -13,7 +13,6 @@ namespace TheNote\core\command;
 
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
-use pocketmine\Player;
 use pocketmine\utils\Config;
 use TheNote\core\Main;
 use pocketmine\command\Command;
@@ -22,6 +21,8 @@ use onebone\economyapi\EconomyAPI;
 
 class BoosterCommand extends Command
 {
+
+    private $plugin;
 
     public function __construct(Main $plugin)
     {
@@ -90,7 +91,6 @@ class BoosterCommand extends Command
         return true;
     }
 }
-//last edit by Rudolf2000 : 15.03.2021 : 18:11
 /*
     foreach ($players as $pl) {
                     $pl->addEffect(new EffectInstance(Effect::getEffect(8), (12000), (2), (false)));

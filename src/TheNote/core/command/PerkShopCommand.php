@@ -30,14 +30,14 @@ class PerkShopCommand extends Command
         parent::__construct("perkshop", $config->get("prefix") . "Kaufe deine Perks", "/perkshop", ["ps"]);
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args) :bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         $name = $sender->getLowerCaseName();
-        $particle = new Config($this->plugin->getDataFolder() . Main::$userfile . $name . ".json", Config::JSON);
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("info") . "Du kannst dir diesen Perk im Perkshop kaufen");
             return true;
@@ -232,6 +232,6 @@ class PerkShopCommand extends Command
         $form->addButton("§0SporenPerk", 0);
         $form->addButton("§0WasserPerk", 0);
         $form->sendToPlayer($sender);
-        return $form;
+        return true;
     }
 }

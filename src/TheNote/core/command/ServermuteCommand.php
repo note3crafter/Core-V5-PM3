@@ -15,8 +15,6 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
-use pocketmine\level\Position;
-use pocketmine\Player;
 use pocketmine\utils\Config;
 use TheNote\core\Main;
 
@@ -31,7 +29,8 @@ class ServermuteCommand extends Command implements Listener
         $this->setPermission("core.command.servermute");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args){
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
+    {
         self::$config = $this->plugin->getConfig()->getAll();
 
         $configs = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
@@ -49,7 +48,7 @@ class ServermuteCommand extends Command implements Listener
             if($this->plugin->isMuted()){
                 $this->plugin->setMuted(false);
                 $player->sendMessage($configs->get("info") . "ServerMute wurde Deaktiviert");
-                return;
+                return false;
             }
             $this->plugin->setMuted();
             $message = str_replace("{reason}", $reason, $configs->get("info") ."Der Chat wurde Gemutet für ALLE!");

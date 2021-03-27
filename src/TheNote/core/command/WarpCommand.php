@@ -28,12 +28,13 @@ class WarpCommand extends Command
         parent::__construct("warp", $config->get("prefix") . "§aTeleportiere dich zu einem Warp", "/warp", ["world"]);
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
 
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (empty($args[0])) {
             $sender->sendMessage($config->get("info") . "§cBenutze : /warp [warpname]");

@@ -24,7 +24,6 @@ class SuperVanishCommand extends Command
 {
     public static $vanished = [];
     private static $instance;
-    public $vanish = [];
 
     public function __construct(Main $plugin)
     {
@@ -36,11 +35,12 @@ class SuperVanishCommand extends Command
     public static function getInstance() : self {
         return self::$instance;
     }
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
@@ -51,7 +51,6 @@ class SuperVanishCommand extends Command
             $Spieler->set("SuperVanish");
             return false;
         }
-        $level = $sender->getLevel()->getFolderName();
         if (empty($args[0])) {
             $sender->sendMessage($config->get("info") . "Nutze : /sv <on|off>");
             return true;
@@ -60,37 +59,34 @@ class SuperVanishCommand extends Command
         if (isset($args[0])) {
 
             if ($args[0] == "on") {
-                if ($sender instanceof Player) {
-                    $sender->sendMessage($config->get("info") . "Dein §eSuperVanish §6wurde §aAktiviert§6.");
-                    self::$vanished[$sender->getName()] = $sender;
+                $sender->sendMessage($config->get("info") . "Dein §eSuperVanish §6wurde §aAktiviert§6.");
+                self::$vanished[$sender->getName()] = $sender;
 
 
-                    $all = $this->plugin->getServer()->getOnlinePlayers();
-                    $this->plugin->getServer()->broadcastMessage("§f[§c-§f] " . $sender->getNameTag() . " §chat den Server verlassen! §f[§a" . count($all) . "§f/§a100§f]");
-                    $sender->getServer()->removePlayerListData($sender->getUniqueId());
-                    $sender->getServer()->removeOnlinePlayer($sender);
+                $all = $this->plugin->getServer()->getOnlinePlayers();
+                $this->plugin->getServer()->broadcastMessage("§f[§c-§f] " . $sender->getNameTag() . " §chat den Server verlassen! §f[§a" . count($all) . "§f/§a100§f]");
+                $sender->getServer()->removePlayerListData($sender->getUniqueId());
+                $sender->getServer()->removeOnlinePlayer($sender);
 
-                    foreach (Server::getInstance()->getOnlinePlayers() as $player) {
-                        assert($sender instanceof Player);
+                foreach (Server::getInstance()->getOnlinePlayers() as $player) {
+                    assert(true);
 
-                        if (!$player->hasPermission("core.command.supervanish.see")  or $sender->isOp()) {
-                            $player->hidePlayer($sender);
-                        }
+                    if (!$player->hasPermission("core.command.supervanish.see")  or $sender->isOp()) {
+                        $player->hidePlayer($sender);
                     }
-
                 }
             }
             if ($args[0] == "off") {
                 $sender->sendMessage($config->get("info") . "Dein §eSuperVanish §6wurde §cDeaktiviert§6.");
                 unset(self::$vanished[$sender->getName()]);
 
-                assert($sender instanceof Player);
+                assert(true);
                 $all = $this->plugin->getServer()->getOnlinePlayers();
                 $this->plugin->getServer()->broadcastMessage("§f[§a+§f] " . $sender->getNameTag() . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a100§f]");
                 $sender->getServer()->updatePlayerListData($sender->getUniqueId(), $sender->getId(), $sender->getDisplayName(), $sender->getSkin(), $sender->getXuid());
 
                 foreach (Server::getInstance()->getOnlinePlayers() as $player) {
-                    assert($sender instanceof Player);
+                    assert(true);
                     $player->showPlayer($sender);
                 }
 
@@ -106,6 +102,7 @@ class SuperVanishCommand extends Command
             $event->setJoinMessage(null);
         }
     }
+
     public function onQuit(PlayerQuitEvent $event) {
         $player = $event->getPlayer();
         $name = $player->getName();

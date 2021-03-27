@@ -15,9 +15,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;
 use pocketmine\utils\Config;
-use pocketmine\Player;
 use TheNote\core\Main;
-
 
 class GruppeCommand extends Command
 {
@@ -30,7 +28,7 @@ class GruppeCommand extends Command
         $this->setPermission("core.command.group");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$this->testPermission($sender)) {
@@ -38,13 +36,13 @@ class GruppeCommand extends Command
             return false;
         }
         if (empty($args[0])) {
-            $sender->sendMessage($config->get("info") . "/group <Spielername> <default|owner|admin|developer|builder|moderator|supporter|hero|youtuber|suppremium|premium>");
+            $sender->sendMessage($config->get("info") . "/group {Spielername} <default|owner|admin|developer|builder|moderator|supporter|hero|youtuber|suppremium|premium>");
             return true;
         }
         if (isset($args[0])) {
             if (file_exists($this->plugin->getDataFolder() . Main::$gruppefile . $args[0] . ".json")) {
                 if (empty($args[1])) {
-                    $sender->sendMessage($config->get("info") . "/group <Spielername> <default|owner|admin|developer|builder|moderator|supporter|hero|youtuber|suppremium|premium>");
+                    $sender->sendMessage($config->get("info") . "/group {Spielername} <default|owner|admin|developer|builder|moderator|supporter|hero|youtuber|suppremium|premium>");
                     return true;
                 }
                 $playerfile = new Config($this->plugin->getDataFolder() . Main::$gruppefile . $args[0] . ".json", Config::JSON);

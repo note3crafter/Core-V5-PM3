@@ -12,7 +12,6 @@
 namespace TheNote\core\command;
 
 use pocketmine\Player;
-use pocketmine\utils\TextFormat;
 use TheNote\core\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -23,6 +22,8 @@ use TheNote\core\events\PlayerBurnEvent;
 class BurnCommand extends Command
 {
 
+    private $plugin;
+
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -31,18 +32,19 @@ class BurnCommand extends Command
         $this->setPermission("core.command.burn");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+             $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+             return false;
         }
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Dazu bist du nicht berechtigt");
             return true;
         }
         if (empty($args[0])) {
-            $sender->sendMessage($config->get("info") . "Nutze : /burn <spielername> <sekunden>");
+            $sender->sendMessage($config->get("info") . "Nutze : /burn {spielername} [sekunden]");
             return true;
         }
 

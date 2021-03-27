@@ -15,11 +15,10 @@ use TheNote\core\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
-use pocketmine\Server;
 use pocketmine\utils\Config;
-
 class AbenteuerCommand extends Command
 {
+    private $plugin;
 
     public function __construct(Main $plugin)
     {
@@ -28,21 +27,21 @@ class AbenteuerCommand extends Command
         parent::__construct("gma", $config->get("prefix") . "Setzt den Spielmodus auf §aAbenteuer", "/gma", ["abenteuer", "gm2"]);
         $this->setPermission("core.command.adventure");
     }
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args) :bool
     {
-        $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+        $configs = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+        if (!Player instanceof $sender) {
+            $sender->sendMessage($configs->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (!$this->testPermission($sender)) {
-            $sender->sendMessage($config->get("error") . "Dazu bist du nicht berechtigt");
+            $sender->sendMessage($configs->get("error") . "Dazu bist du nicht berechtigt");
             return true;
         }
         if ($sender instanceof Player) {
             $sender->setGamemode(2);
-            $sender->sendMessage($config->get("prefix") . "Du bist nun im §aAbenteuer §6modus.");
+            $sender->sendMessage($configs->get("prefix") . "Du bist nun im §aAbenteuer §6modus.");
         }
-        return false;
+        return true;
     }
 }
-//Last Edit by Rudolf2000 : 15.03.2021 17:26

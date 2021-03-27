@@ -2,8 +2,8 @@
 
 //   ╔═════╗╔═╗ ╔═╗╔═════╗╔═╗    ╔═╗╔═════╗╔═════╗╔═════╗
 //   ╚═╗ ╔═╝║ ║ ║ ║║ ╔═══╝║ ╚═╗  ║ ║║ ╔═╗ ║╚═╗ ╔═╝║ ╔═══╝
-//     ║ ║  ║ ╚═╝ ║║ ╚══╗ ║   ╚══╣ ║║ ║ ║ ║  ║ ║  ║ ╚══╗ 
-//     ║ ║  ║ ╔═╗ ║║ ╔══╝ ║ ╠══╗   ║║ ║ ║ ║  ║ ║  ║ ╔══╝ 
+//     ║ ║  ║ ╚═╝ ║║ ╚══╗ ║   ╚══╣ ║║ ║ ║ ║  ║ ║  ║ ╚══╗
+//     ║ ║  ║ ╔═╗ ║║ ╔══╝ ║ ╠══╗   ║║ ║ ║ ║  ║ ║  ║ ╔══╝
 //     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
 //     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
 //   Copyright by TheNote! Not for Resale! Not for others
@@ -12,40 +12,45 @@
 namespace TheNote\core\command;
 
 use pocketmine\command\CommandSender;
-use pocketmine\entity\object\ItemEntity;
+use pocketmine\Player;
 use pocketmine\utils\Config;
 use TheNote\core\Main;
 use pocketmine\command\Command;
 
-class ClearlaggCommand extends Command
+class KickCommand extends Command
 {
-
     private $plugin;
 
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        parent::__construct("clearlagg", $config->get("prefix") . "Löscht alle Items die auf dem Boden Liegen", "/clearlagg", ["cl", "clagg"]);
-        $this->setPermission("core.command.clearlagg");
+        parent::__construct("kick", $config->get("prefix") . "Kicke einen Spieler", "/kick <spieler> <grund>");
+        $this->setPermission("core.command.kick");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args):bool
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
-        $this->plugin->clearItems = (bool)(true);
-        foreach ($this->plugin->getServer()->getLevels() as $level) {
-            foreach ($level->getEntities() as $entity) {
-                if ($this->plugin->clearItems && $entity instanceof ItemEntity) {
-                    $entity->flagForDespawn();
+        if(empty($args[0])) {
+            $sender->sendMessage($config->get("info") . "Benutze: /kick {Spieler} [Nachrricht]");
+        }
+        if(isset($args[0])) {
+            if(empty($args[1])) {
+                if ($this->plugin->getServer()->getPlayer($args[0]) instanceof Player) {
+                    $victim = $this->plugin->getServer()->getPlayer($args[0]);
+                    $victim->kick("§cDu wurdest gekickt von " . $sender->getName(), false);
                 }
+            } elseif ($this->plugin->getServer()->getPlayer($args[0]) instanceof Player) {
+                $victim = $this->plugin->getServer()->getPlayer($args[0]);
+                $victim->kick("§cDu wurdest gekickt von " . $sender->getName() . "§c wegen" . $args[1], false);
             }
         }
-        $sender->sendMessage($config->get("prefix") . "Du hast soeben alle Items die auf dem Boden gelegen haben Gelöscht!");
+        return true;
     }
 }
+

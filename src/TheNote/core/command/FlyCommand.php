@@ -29,30 +29,29 @@ class FlyCommand extends Command implements Listener
         $this->setPermission("core.command.fly");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args) :bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
-        if ($sender instanceof Player) {
-            if ($sender->hasPermission("core.command.fly") || $sender->isOp()) {
-                if ($sender->getAllowFlight() === true){
-                    $sender->setAllowFlight(false);
-                    $sender->setFlying(false);
-                    $sender->sendMessage($config->get("prefix") . "Dein §eFlugmodus §6wurde §cDeaktiviert§6.");
-                } else {
-                    $sender->setAllowFlight(true);
-                    $sender->setFlying(true);
-                    $sender->sendMessage($config->get("prefix") . "Dein §eFlugmodus §6wurde §aAktiviert§6.");
-                }
+        if ($sender->hasPermission("core.command.fly") || $sender->isOp()) {
+            if ($sender->getAllowFlight() === true){
+                $sender->setAllowFlight(false);
+                $sender->setFlying(false);
+                $sender->sendMessage($config->get("prefix") . "Dein §eFlugmodus §6wurde §cDeaktiviert§6.");
+            } else {
+                $sender->setAllowFlight(true);
+                $sender->setFlying(true);
+                $sender->sendMessage($config->get("prefix") . "Dein §eFlugmodus §6wurde §aAktiviert§6.");
             }
-            return true;
         }
+        return true;
     }
 }
 //last edit by Rudolf2000 : 15.03.2021 20.11
