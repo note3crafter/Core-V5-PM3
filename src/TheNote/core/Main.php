@@ -217,7 +217,7 @@ class Main extends PluginBase implements Listener
 
 
     //PluginVersion
-    public static $version = "5.0.6ALPHA";
+    public static $version = "5.1.0ALPHA";
     public static $protokoll = "428";
     public static $mcpeversion = "1.16.210";
     public static $dateversion = "27.03.2021";
