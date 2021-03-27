@@ -31,7 +31,7 @@ class WarpCommand extends Command
     public function execute(CommandSender $sender, string $commandLabel, array $args)
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+
         if (!$sender instanceof Player) {
             return $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
         }
@@ -52,8 +52,10 @@ class WarpCommand extends Command
                 if ($world == null) {
                     $sender->sendMessage($config->get("error") . "§6Der angegebene Warp §c$args[0] §6existiert nicht.");
                     return false;
+                } else {
+                    $this->plugin->getServer()->loadLevel($world);
+                    $sender->teleport(new Position($x, $y, $z, $this->plugin->getServer()->getLevelByName($world)));
                 }
-                $sender->teleport(new Position($x, $y, $z, $this->plugin->getServer()->getLevelByName($world)));
                 return false;
             }
         }

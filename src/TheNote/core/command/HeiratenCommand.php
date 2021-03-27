@@ -56,7 +56,7 @@ class HeiratenCommand extends Command implements Listener
                             $sender->sendMessage($config->get("heirat") . "§c" . $victim->getName() . "§6 ist bereits mit §c" . $hochzeit->getName() . "§a verheiratet.");
                         } else {
                             $this->addPCFG($victim->getLowerCaseName(), "antrag", $sender->getName());
-                            $this->plugin->getServer()->broadcastMessage(Main::$hr . "§c" . $sender->getName() . "§6 macht gerade §c" . $victim->getName() . "§6 einen §aHeiratsantrag! ");
+                            $this->plugin->getServer()->broadcastMessage($config->get("heirat") . "§c" . $sender->getName() . "§6 macht gerade §c" . $victim->getName() . "§6 einen §aHeiratsantrag! ");
                             $victim->sendMessage($config->get("heirat") . $sender->getName() . " §6hat dir gerade einen §aHeiratsantrag §6gemacht! Nimm diesen mit §e/heiraten annehmen §6an oder lehne ihn mit §e/heiraten ablehnen §6ab.");
                         }
                     }

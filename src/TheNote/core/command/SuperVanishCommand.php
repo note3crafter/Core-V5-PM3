@@ -87,7 +87,7 @@ class SuperVanishCommand extends Command
                 assert($sender instanceof Player);
                 $all = $this->plugin->getServer()->getOnlinePlayers();
                 $this->plugin->getServer()->broadcastMessage("§f[§a+§f] " . $sender->getNameTag() . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a100§f]");
-                $sender->getServer()->u($sender->getUniqueId(), $sender->getId(), $sender->getDisplayName(), $sender->getSkin(), $sender->getXuid());
+                $sender->getServer()->updatePlayerListData($sender->getUniqueId(), $sender->getId(), $sender->getDisplayName(), $sender->getSkin(), $sender->getXuid());
 
                 foreach (Server::getInstance()->getOnlinePlayers() as $player) {
                     assert($sender instanceof Player);
