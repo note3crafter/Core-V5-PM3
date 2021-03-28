@@ -43,6 +43,10 @@ class UserdataCommand extends Command
             $sender->sendMessage($config->get("error") . "§cBitte gebe einen Spielernamen ein!");
             return false;
         }
+        if (!file_exists($this->plugin->getDataFolder() . Main::$logdatafile . "$args[0].json")) {
+            $sender->sendMessage($config->get("error") . "Dieser Spieler ist nicht regestriert. Überprüfe deine eingabe und achte drauf das alles kleingeschrieben wird!");
+            return false;
+        }
         if (isset($args[0])) {
             $ud = new Config($this->plugin->getDataFolder() . Main::$logdatafile . "$args[0].json", Config::JSON);
             if ($args[0]) {

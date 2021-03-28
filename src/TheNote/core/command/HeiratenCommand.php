@@ -63,7 +63,7 @@ class HeiratenCommand extends Command implements Listener
             } else {
                 switch (strtolower($args[0])) {
                     case "annehmen":
-                        $antrag = $this->getPCFG($sender->getLowerCaseName(), "antrag");
+                        $antrag = new Config($this->plugin->getDataFolder() . Main::$heifile . strtolower($player) . ".json", Config::JSON);
                         $victim = $this->plugin->getServer()->getPlayer($antrag);
                         $hei = new Config($this->plugin->getDataFolder() . Main::$heifile . $sender->getLowerCaseName() . ".json", Config::JSON);
                         $user = new Config($this->plugin->getDataFolder() . Main::$userfile . $sender->getLowerCaseName() . ".json", Config::JSON);

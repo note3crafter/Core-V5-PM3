@@ -14,6 +14,8 @@ namespace TheNote\core\command;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;
+use pocketmine\item\Book;
+use pocketmine\Server;
 use pocketmine\utils\Config;
 use TheNote\core\Main;
 
@@ -31,26 +33,35 @@ class GruppeCommand extends Command
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+        $cfg = new Config($this->plugin->getDataFolder() . Main::$setup . "groupcommands.yml");
+
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
         if (empty($args[0])) {
             $sender->sendMessage($config->get("info") . "/group {Spielername} <default|owner|admin|developer|builder|moderator|supporter|hero|youtuber|suppremium|premium>");
-            return true;
+            return false;
         }
         if (isset($args[0])) {
             if (file_exists($this->plugin->getDataFolder() . Main::$gruppefile . $args[0] . ".json")) {
                 if (empty($args[1])) {
                     $sender->sendMessage($config->get("info") . "/group {Spielername} <default|owner|admin|developer|builder|moderator|supporter|hero|youtuber|suppremium|premium>");
-                    return true;
+                    return false;
                 }
                 $playerfile = new Config($this->plugin->getDataFolder() . Main::$gruppefile . $args[0] . ".json", Config::JSON);
-                if ($sender->isOp()) {
 
+                if ($sender->isOp()) {
                     if (isset($args[1])) {
+                        $victim = $this->plugin->getServer()->getPlayer($args[0]);
+                        $target = Server::getInstance()->getPlayer(strtolower($args[0]));
                         if ($args[1] === null) {
                             $sender->sendMessage($config->get("info") . "Bitte gebe einen Spielernamen ein!");
+                            return false;
+                        }
+                        if ($target == null) {
+                            $sender->sendMessage($config->get("error") . "Der Spieler ist nicht Online!");
+                            return false;
                         }
                         if (strtolower($args[1]) === "default") {
 
@@ -68,9 +79,16 @@ class GruppeCommand extends Command
                             $playerfile->set("NickP", true);
                             $playerfile->set("Nickname", $args[0]);
                             $playerfile->save();
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), "setgroup $args[0] Spieler");
-                            $sender->sendMessage($config->get("info") . "Die Gruppe vom Spieler $args[0] wurde nun zu Spieler gewechselt!");
-                            //$args[0]->sendMessage(Main::$prefix ."Deine Gruppe wurde zu §f[§eSpieler§f] §6Gewechselt!");
+
+                            if ($cfg->get("extern") == true) {
+                                $sender2 = $this->plugin->getServer()->getPlayer(strtolower($args[0]));
+                                $command = $cfg->get("default");
+                                $command = str_replace("{player}", strtolower($sender2->getName()), $command);
+                                $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $command);
+                            }
+
+                            $sender->sendMessage($config->get("info") . "§eDie Gruppe vom Spieler $args[0] wurde nun zu Spieler gewechselt!");
+                            $victim->sendMessage($config->get("info") . "§eDeine Gruppe wurde zu §f[§eSpieler§f] §eGewechselt!");
 
                         } else if (strtolower($args[1]) === "owner") {
 
@@ -88,9 +106,16 @@ class GruppeCommand extends Command
                             $playerfile->set("NickP", true);
                             $playerfile->set("Nickname", $args[0]);
                             $playerfile->save();
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), "setgroup $args[0] Owner");
-                            $sender->sendMessage($config->get("info") . "Die Gruppe vom Spieler $args[0] wurde nun zu Owner gewechselt!");
-                            //$args[0]->sendMessage(Main::$prefix ."Deine Gruppe wurde zu §f[§4Owner§f] §6Gewechselt!");
+
+                            if ($cfg->get("extern") == true) {
+                                $sender2 = $this->plugin->getServer()->getPlayer(strtolower($args[0]));
+                                $command = $cfg->get("owner");
+                                $command = str_replace("{player}", strtolower($sender2->getName()), $command);
+                                $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $command);
+                            }
+
+                            $sender->sendMessage($config->get("info") . "§eDie Gruppe vom Spieler $args[0] wurde nun zu Owner gewechselt!");
+                            $victim->sendMessage($config->get("info") . "§eDeine Gruppe wurde zu §f[§4Owner§f] §6Gewechselt!");
 
                         } else if (strtolower($args[1]) === "admin") {
 
@@ -108,9 +133,17 @@ class GruppeCommand extends Command
                             $playerfile->set("NickP", true);
                             $playerfile->set("Nickname", $args[0]);
                             $playerfile->save();
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), "setgroup $args[0] Administrator");
+
+                            if ($cfg->get("extern") == true) {
+
+                                $sender2 = $this->plugin->getServer()->getPlayer(strtolower($args[0]));
+                                $command = $cfg->get("admin");
+                                $command = str_replace("{player}", strtolower($sender2->getName()), $command);
+                                $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $command);
+                            }
+
                             $sender->sendMessage($config->get("info") . "Die Gruppe vom Spieler $args[0] wurde nun zu Admin gewechselt!");
-                            //$args[0]->sendMessage(Main::$prefix ."Deine Gruppe wurde zum §f[§cAdmin§f] §6Gewechselt!");
+                            $victim->sendMessage($config->get("info") . "Deine Gruppe wurde zum §f[§cAdmin§f] §6Gewechselt!");
 
                         } else if (strtolower($args[1]) === "developer") {
 
@@ -128,9 +161,17 @@ class GruppeCommand extends Command
                             $playerfile->set("NickP", true);
                             $playerfile->set("Nickname", $args[0]);
                             $playerfile->save();
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), "setgroup $args[0] Developer");
+
+                            if ($cfg->get("extern") == true) {
+
+                                $sender2 = $this->plugin->getServer()->getPlayer(strtolower($args[0]));
+                                $command = $cfg->get("developer");
+                                $command = str_replace("{player}", strtolower($sender2->getName()), $command);
+                                $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $command);
+                            }
+
                             $sender->sendMessage($config->get("info") . "Die Gruppe vom Spieler $args[0] wurde nun zu Developer gewechselt!");
-                            //$args[0]->sendMessage(Main::$prefix ."Deine Gruppe wurde zu §f[§5Developer§f] §6Gewechselt!");
+                            $victim->sendMessage($config->get("info") . "Deine Gruppe wurde zu §f[§5Developer§f] §6Gewechselt!");
 
                         } else if (strtolower($args[1]) === "moderator") {
 
@@ -148,9 +189,17 @@ class GruppeCommand extends Command
                             $playerfile->set("NickP", true);
                             $playerfile->set("Nickname", $args[0]);
                             $playerfile->save();
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), "setgroup $args[0] Moderator");
+
+                            if ($cfg->get("extern") == true) {
+
+                                $sender2 = $this->plugin->getServer()->getPlayer(strtolower($args[0]));
+                                $command = $cfg->get("moderator");
+                                $command = str_replace("{player}", strtolower($sender2->getName()), $command);
+                                $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $command);
+                            }
+
                             $sender->sendMessage($config->get("info") . "Die Gruppe vom Spieler $args[0] wurde nun zu Moderator gewechselt!");
-                            //$args[0]->sendMessage(Main::$prefix ."Deine Gruppe wurde zu §f[§1Moderator§f] §6Gewechselt!");
+                            $victim->sendMessage($config->get("info") . "Deine Gruppe wurde zu §f[§1Moderator§f] §6Gewechselt!");
 
                         } else if (strtolower($args[1]) === "builder") {
 
@@ -168,9 +217,17 @@ class GruppeCommand extends Command
                             $playerfile->set("NickP", true);
                             $playerfile->set("Nickname", $args[0]);
                             $playerfile->save();
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), "setgroup $args[0] Builder");
+
+                            if ($cfg->get("extern") == true) {
+
+                                $sender2 = $this->plugin->getServer()->getPlayer(strtolower($args[0]));
+                                $command = $cfg->get("builder");
+                                $command = str_replace("{player}", strtolower($sender2->getName()), $command);
+                                $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $command);
+                            }
+
                             $sender->sendMessage($config->get("info") . "Die Gruppe vom Spieler $args[0] wurde nun zu Builder gewechselt!");
-                            //$args[0]->sendMessage(Main::$prefix ."Deine Gruppe wurde zu §f[§aBuilder§f] §6Gewechselt!");
+                            $victim->sendMessage($config->get("info") . "Deine Gruppe wurde zu §f[§aBuilder§f] §6Gewechselt!");
 
                         } else if (strtolower($args[1]) === "supporter") {
 
@@ -188,9 +245,17 @@ class GruppeCommand extends Command
                             $playerfile->set("NickP", true);
                             $playerfile->set("Nickname", $args[0]);
                             $playerfile->save();
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), "setgroup $args[0] Supporter");
+
+                            if ($cfg->get("extern") == true) {
+
+                                $sender2 = $this->plugin->getServer()->getPlayer(strtolower($args[0]));
+                                $command = $cfg->get("supporter");
+                                $command = str_replace("{player}", strtolower($sender2->getName()), $command);
+                                $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $command);
+                            }
+
                             $sender->sendMessage($config->get("info") . "Die Gruppe vom Spieler $args[0] wurde nun zu Supporter gewechselt!");
-                            //$args[0]->sendMessage(Main::$prefix ."Deine Gruppe wurde zu §f[§bSupporter§f] §6Gewechselt!");
+                            $victim->sendMessage($config->get("info") . "Deine Gruppe wurde zu §f[§bSupporter§f] §6Gewechselt!");
 
                         } else if (strtolower($args[1]) === "youtuber") {
 
@@ -208,9 +273,17 @@ class GruppeCommand extends Command
                             $playerfile->set("NickP", true);
                             $playerfile->set("Nickname", $args[0]);
                             $playerfile->save();
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), "setgroup $args[0] YouTuber");
+
+                            if ($cfg->get("extern") == true) {
+
+                                $sender2 = $this->plugin->getServer()->getPlayer(strtolower($args[0]));
+                                $command = $cfg->get("youtuber");
+                                $command = str_replace("{player}", strtolower($sender2->getName()), $command);
+                                $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $command);
+                            }
+
                             $sender->sendMessage($config->get("info") . "Die Gruppe vom Spieler $args[0] wurde nun zu YouTuber gewechselt!");
-                            //$args[0]->sendMessage(Main::$prefix ."Deine Gruppe wurde zu §f[§cYou§fTuber] §6Gewechselt!");
+                            $victim->sendMessage($config->get("info") . "Deine Gruppe wurde zu §f[§cYou§fTuber] §6Gewechselt!");
 
                         } else if (strtolower($args[1]) === "hero") {
 
@@ -228,9 +301,17 @@ class GruppeCommand extends Command
                             $playerfile->set("NickP", true);
                             $playerfile->set("Nickname", $args[0]);
                             $playerfile->save();
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), "setgroup $args[0] Hero");
+
+                            if ($cfg->get("extern") == true) {
+
+                                $sender2 = $this->plugin->getServer()->getPlayer(strtolower($args[0]));
+                                $command = $cfg->get("hero");
+                                $command = str_replace("{player}", strtolower($sender2->getName()), $command);
+                                $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $command);
+                            }
+
                             $sender->sendMessage($config->get("info") . "Die Gruppe vom Spieler $args[0] wurde nun zu Hero gewechselt!");
-                            //$args[0]->sendMessage(Main::$prefix ."Deine Gruppe wurde zu §f[§dHero§f] §6Gewechselt!");
+                            $victim->sendMessage($config->get("info") . "Deine Gruppe wurde zu §f[§dHero§f] §6Gewechselt!");
 
                         } else if (strtolower($args[1]) === "suppremium") {
 
@@ -248,9 +329,17 @@ class GruppeCommand extends Command
                             $playerfile->set("NickP", true);
                             $playerfile->set("Nickname", $args[0]);
                             $playerfile->save();
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), "setgroup $args[0] Suppremium");
+
+                            if ($cfg->get("extern") == true) {
+
+                                $sender2 = $this->plugin->getServer()->getPlayer(strtolower($args[0]));
+                                $command = $cfg->get("suppremium");
+                                $command = str_replace("{player}", strtolower($sender2->getName()), $command);
+                                $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $command);
+                            }
+
                             $sender->sendMessage($config->get("info") . "Die Gruppe vom Spieler $args[0] wurde nun zu Suppremium gewechselt!");
-                            //$args[0]->sendMessage(Main::$prefix ."Deine Gruppe wurde zu §f[§3Suppremium§f] §6Gewechselt!");
+                            $victim->sendMessage($config->get("info") . "Deine Gruppe wurde zu §f[§3Suppremium§f] §6Gewechselt!");
 
                         } else if (strtolower($args[1]) === "premium") {
 
@@ -268,9 +357,17 @@ class GruppeCommand extends Command
                             $playerfile->set("NickP", true);
                             $playerfile->set("Nickname", $args[0]);
                             $playerfile->save();
-                            $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), "setgroup $args[0] Premium");
+
+                            if ($cfg->get("extern") == true) {
+
+                                $sender2 = $this->plugin->getServer()->getPlayer(strtolower($args[0]));
+                                $command = $cfg->get("premium");
+                                $command = str_replace("{player}", strtolower($sender2->getName()), $command);
+                                $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), $command);
+                            }
+
                             $sender->sendMessage($config->get("info") . "Die Gruppe vom Spieler $args[0] wurde nun zu Premium gewechselt!");
-                            //$args[0]->sendMessage(Main::$prefix ."Deine Gruppe wurde zu §f[§6Premium§f] §6Gewechselt!");
+                            $victim->sendMessage($config->get("info") . "Deine Gruppe wurde zu §f[§6Premium§f] §6Gewechselt!");
                         }
                     }
                 }
