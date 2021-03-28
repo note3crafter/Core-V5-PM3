@@ -54,6 +54,7 @@ use pocketmine\command\ConsoleCommandSender;
 use pocketmine\utils\Random;
 
 //Command
+use TheNote\core\command\AFKCommand;
 use TheNote\core\command\BurnCommand;
 use TheNote\core\command\DayCommand;
 use TheNote\core\command\DelWarpCommand;
@@ -217,10 +218,10 @@ class Main extends PluginBase implements Listener
 
 
     //PluginVersion
-    public static $version = "5.1.0ALPHA";
+    public static $version = "5.1.1ALPHA";
     public static $protokoll = "428";
     public static $mcpeversion = "1.16.210";
-    public static $dateversion = "27.03.2021";
+    public static $dateversion = "28.03.2021";
     public static $plname = "CoreV5";
 
     //Configs
@@ -250,10 +251,6 @@ class Main extends PluginBase implements Listener
     private $sessions = [];
     public $lists = [];
     public $clearItems;
-    /**
-     * @var bool
-     */
-
 
     final public static function getPacketsFromBatch(BatchPacket $packet)
     {
@@ -315,7 +312,6 @@ class Main extends PluginBase implements Listener
         @mkdir($this->getDataFolder() . "Cloud/players/Homes");
         @mkdir($this->getDataFolder() . "Cloud/players/Inventare");
         @mkdir($this->getDataFolder() . "Cloud/players/Stats");
-        @mkdir($this->getDataFolder() . "Cloud/players/CustomScoreboard");
         $this->saveResource("liesmich.txt", true);
         $this->saveResource("Setup/settings.json", false);
         $this->saveResource("Setup/powerblock.yml", false);
@@ -366,7 +362,6 @@ class Main extends PluginBase implements Listener
 
         $this->myplot = $this->getServer()->getPluginManager()->getPlugin("MyPlot");
         $this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-        $this->pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
 
         if ($this->myplot === null) {
@@ -376,11 +371,6 @@ class Main extends PluginBase implements Listener
         }
         if ($this->economyapi === null) {
             $this->getLogger()->error("§cEconomyAPI fehlt bitte installiere dies bevor du die Core benutzt!");
-            $this->setEnabled(false);
-            return;
-        }
-        if ($this->pureperms === null) {
-            $this->getLogger()->error("§cPurePerms fehlt bitte installiere dies bevor du die Core benutzt!");
             $this->setEnabled(false);
             return;
         }
@@ -465,6 +455,7 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("warp", new WarpCommand($this));
         $this->getServer()->getCommandMap()->register("burn", new BurnCommand($this));
         $this->getServer()->getCommandMap()->register("kick", new KickCommand($this));
+        //$this->getServer()->getCommandMap()->register("afk", new AFKCommand($this)); comming soon
 
 
         //Emotes
@@ -826,6 +817,16 @@ class Main extends PluginBase implements Listener
             $user->set("portal", false);
             $user->set("spore", false);
             $user->set("splash", false);
+            $user->set("explodeperkpermission", false);
+            $user->set("angryperkpermission", false);
+            $user->set("redstoneperkpermission", false);
+            $user->set("smokeperkpermission", false);
+            $user->set("lavaperkpermission", false);
+            $user->set("heartperkpermission", false);
+            $user->set("flameperkpermission", false);
+            $user->set("portalperkpermission", false);
+            $user->set("sporeperkpermission", false);
+            $user->set("splashperkpermission", false);
             $user->save();
             $stats->set("joins", 0);
             $stats->set("break", 0);
@@ -848,6 +849,8 @@ class Main extends PluginBase implements Listener
             $stats->set("joinerfolg", false); //10000
             $stats->set("kickerfolg", false); //1000
             $stats->save();
+
+
             $player->setDisplayName("§eS§f:§f" . $player->getName());
             $player->setNameTag("§f[§eSpieler§f] §f" . $player->getName());
 
