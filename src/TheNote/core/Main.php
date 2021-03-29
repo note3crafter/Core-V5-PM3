@@ -44,6 +44,7 @@ use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
@@ -199,7 +200,6 @@ class Main extends PluginBase implements Listener
     public $myplot;
     public $config;
     public $economyapi;
-    public $pureperms;
 
 
     public $ores = [14, 15, 21, 22, 41, 42, 56, 57, 73, 129, 133, 152];
@@ -218,10 +218,10 @@ class Main extends PluginBase implements Listener
 
 
     //PluginVersion
-    public static $version = "5.1.1ALPHA";
+    public static $version = "5.1.2ALPHA";
     public static $protokoll = "428";
     public static $mcpeversion = "1.16.210";
-    public static $dateversion = "28.03.2021";
+    public static $dateversion = "29.03.2021";
     public static $plname = "CoreV5";
 
     //Configs
@@ -239,7 +239,6 @@ class Main extends PluginBase implements Listener
     public static $setup = "Setup/";
 
     //Anderes
-    public static $delay;
     public static $instance;
     public static $restart;
     public $players = [];
@@ -323,6 +322,7 @@ class Main extends PluginBase implements Listener
         $this->saveResource("Setup/kitsettings.yml", false);
         $this->saveResource("permissions.md", true);
         $this->craftingrecipe();
+        $this->groupsgenerate();
         $this->default = "";
         $this->reload();
         if (strlen($this->default) > 1) {
@@ -928,6 +928,15 @@ class Main extends PluginBase implements Listener
             $light->yaw = $player->getYaw();
             $light->pitch = $player->getPitch();
             $player->getServer()->broadcastPacket($level->getPlayers(), $light);
+            if ($config->get("sound") == true) {
+                $sound = new PlaySoundPacket();
+                $sound->soundName = "ambient.weather.thunder";
+                $sound->x = $player->getX();
+                $sound->y = $player->getY();
+                $sound->z = $player->getZ();
+                $sound->volume = 1;
+                $sound->pitch = 1;
+            }
         }
     }
 
@@ -969,8 +978,7 @@ class Main extends PluginBase implements Listener
             } else {
                 $event->setCancelled(false);
             }
-            if ($dcsettings->get("DC") == true) {
-
+            if ($dcsettings->get("DC") == true) { #Gruppe sichtbar im chat -> muss noch gemacht werden...
                 if ($stats->get("votes") >= $voteconfig->get("Mindestvotes")) {
                     $ar = getdate();
                     $time = $ar['hours'] . ":" . $ar['minutes'];
@@ -1352,5 +1360,23 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCraftingManager()->registerShapelessRecipe(new ShapelessRecipe([Item::get(Item::DIAMOND_LEGGINGS), Item::get(self::ITEM_NETHERITE_INGOT)], [Item::get(NetheriteLeggings::NETHERITE_LEGGINGS)]));
         $this->getServer()->getCraftingManager()->registerShapelessRecipe(new ShapelessRecipe([Item::get(Item::DIAMOND_BOOTS), Item::get(self::ITEM_NETHERITE_INGOT)], [Item::get(NetheriteBoots::NETHERITE_BOOTS)]));
 
+    }
+    public function groupsgenerate()
+    {
+        if (!file_exists($this->getDataFolder() . Main::$cloud . "groups.yml")) {
+            $groups = new Config($this->getDataFolder() . Main::$cloud . "groups.yml", Config::YAML);
+            $groups->setNested("Groups." . "Default" . ".permissions", ["CoreV5"]);
+            $groups->setNested("Groups." . "Owner" . ".permissions", ["core.ownerberechtigung"]);
+            $groups->setNested("Groups." . "Admin" . ".permissions", ["core.adminberechtigung"]);
+            $groups->setNested("Groups." . "Developer" . ".permissions", ["core.developerberechtigung"]);
+            $groups->setNested("Groups." . "Builder" . ".permissions", ["core.builderberechtigung"]);
+            $groups->setNested("Groups." . "Moderator" . ".permissions", ["core.moderatorberechtigung"]);
+            $groups->setNested("Groups." . "Supporter" . ".permissions", ["core.supporterberechtigung"]);
+            $groups->setNested("Groups." . "Hero" . ".permissions", ["core.heroberechtigung"]);
+            $groups->setNested("Groups." . "YouTuber" . ".permissions", ["core.youtuberberechtigung"]);
+            $groups->setNested("Groups." . "Suppremium" . ".permissions", ["core.suppremiumberechtigung"]);
+            $groups->setNested("Groups." . "Premium" . ".permissions", ["core.premiumberechtigung"]);
+            $groups->save();
+        }
     }
 }

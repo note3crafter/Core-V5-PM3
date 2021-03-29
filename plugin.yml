@@ -1,6 +1,6 @@
 name: CoreV5
 main: TheNote\core\Main
-version: 5.1.1
+version: 5.1.2
 mcpe-protocol:
   - 388 # 1.13.x
   - 389 # 1.14.x
@@ -30,7 +30,7 @@ authors:
   - Crasher508 #Fixxer
   - CortexPE #Braustand und mehr
   - HimmelKreis4865 #AntiXray
-description: Core v5.1.1 Alpha Release
+description: Core v5.1.2 Alpha Release
 
 permissions:
   core.command.adventure:

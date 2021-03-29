@@ -11,6 +11,7 @@
 
 namespace TheNote\core\command;
 
+use pocketmine\Server;
 use TheNote\core\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -27,7 +28,8 @@ class AbenteuerCommand extends Command
         parent::__construct("gma", $config->get("prefix") . "Setzt den Spielmodus auf §aAbenteuer", "/gma", ["abenteuer", "gm2"]);
         $this->setPermission("core.command.adventure");
     }
-    public function execute(CommandSender $sender, string $commandLabel, array $args) :bool
+
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $configs = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!Player instanceof $sender) {
@@ -35,13 +37,30 @@ class AbenteuerCommand extends Command
             return false;
         }
         if (!$this->testPermission($sender)) {
-            $sender->sendMessage($configs->get("error") . "Dazu bist du nicht berechtigt");
-            return true;
+            $sender->sendMessage($configs->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
+            return false;
         }
-        if ($sender instanceof Player) {
-            $sender->setGamemode(2);
-            $sender->sendMessage($configs->get("prefix") . "Du bist nun im §aAbenteuer §6modus.");
+        if (isset($args[0])) {
+            if ($sender->hasPermission("core.command.adventure.use")) {
+                $victim = $this->plugin->getServer()->getPlayer($args[0]);
+                $target = Server::getInstance()->getPlayer(strtolower($args[0]));
+                if ($target == null) {
+                    $sender->sendMessage($configs->get("error") . "Der Spieler ist nicht Online!");
+                    return false;
+                } else {
+                    $victim->setGamemode(2);
+                    $victim->sendMessage($configs->get("prefix") . "§6Du bist nun im §aAbenteuer §6modus.");
+                    $sender->sendMessage($configs->get("prefix") . "§6Der Spielmodus von $victim wurde auf Abenteuer gesetzt.");
+                    return false;
+                }
+            } else {
+                $sender->sendMessage($configs->get("error") . "Du hast keine Berechtigung um anderen Spielern den Abenteuermodus zu geben!");
+                return false;
+            }
         }
+        $sender->setGamemode(2);
+        $sender->sendMessage($configs->get("prefix") . "§6Du bist nun im §aAbenteuer §6modus.");
         return true;
     }
+
 }
