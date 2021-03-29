@@ -13,6 +13,8 @@ namespace TheNote\core\command;
 
 
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
+use pocketmine\Server;
 use TheNote\core\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -30,27 +32,43 @@ class FeedCommand extends Command
         $this->setPermission("core.command.feed");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args) :bool
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-             $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
-             return false;
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
-        $nickname = $sender->getNameTag();
-        if (!$this->testPermission($sender)) {
-            return false;
+        if (isset($args[0])) {
+            if ($sender->hasPermission("core.command.feed.use")) {
+                $victim = $this->plugin->getServer()->getPlayer($args[0]);
+                $target = Server::getInstance()->getPlayer(strtolower($args[0]));
+                if ($target == null) {
+                    $sender->sendMessage($config->get("error") . "Der Spieler ist nicht Online!");
+                    return false;
+                } else {
+                    $sender->setAllowFlight(true);
+                    $sender->setFood(20);
+                    $volume = mt_rand();
+                    $sender->getLevel()->broadcastLevelSoundEvent($sender, LevelSoundEventPacket::SOUND_EAT, (int)$volume);
+                    $sender->sendMessage($config->get("prefix") . "§6Dein §eHunger §6wurde gestillt von " . $sender->getNameTag());
+                    $sender->sendMessage($config->get("prefix") . "§6Du hast den §eHunger von " . $victim . " gestillt.");
+                    return false;
+                }
+            } else {
+                $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um andere Spieler zu Füttern!");
+                return false;
+            }
         }
         $sender->setAllowFlight(true);
         $sender->setFood(20);
         $volume = mt_rand();
-        $sender->getLevel()->broadcastLevelSoundEvent($sender, LevelSoundEventPacket::SOUND_EAT, (int) $volume);
-        $sender->sendMessage($config->get("prefix") . "Dein §eHunger §6wurde gestillt.");
-        $this->plugin->getServer()->broadcastMessage($config->get("prefix") . "§c$nickname §6hat sich vollgefressen und ist nun Satt!");
+        $sender->getLevel()->broadcastLevelSoundEvent($sender, LevelSoundEventPacket::SOUND_EAT, (int)$volume);
+        $sender->sendMessage($config->get("prefix") . "§6Dein §eHunger §6wurde gestillt.");
         return false;
     }
 }

@@ -11,6 +11,7 @@
 
 namespace TheNote\core\command;
 
+use pocketmine\Server;
 use TheNote\core\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -37,6 +38,24 @@ class ZuschauerCommand extends Command
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
+        }
+        if (isset($args[0])) {
+            if ($sender->hasPermission("core.command.spectator.use")) {
+                $victim = $this->plugin->getServer()->getPlayer($args[0]);
+                $target = Server::getInstance()->getPlayer(strtolower($args[0]));
+                if ($target == null) {
+                    $sender->sendMessage($config->get("error") . "Der Spieler ist nicht Online!");
+                    return false;
+                } else {
+                    $victim->setGamemode(3);
+                    $victim->sendMessage($config->get("prefix") . "§6Du bist nun im §eZuschauer §6modus.");
+                    $sender->sendMessage($config->get("prefix") . "§6Der Spielmodus von $victim wurde auf §eZuschauer gesetzt.");
+                    return false;
+                }
+            } else {
+                $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um anderen Spielern den Zuschauermodus zu geben!");
+                return false;
+            }
         }
         $sender->setGamemode(3);
         $sender->sendMessage($config->get("info") . "Du bist nun im §eZuschauer §6modus.");

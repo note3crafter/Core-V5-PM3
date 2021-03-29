@@ -24,6 +24,8 @@ use TheNote\Proxy\Proxy;
 
 class GroupListener implements Listener
 {
+    private $defaultGroup;
+
 
     public function __construct(Main $plugin)
     {
@@ -258,6 +260,24 @@ class GroupListener implements Listener
     public function onJoin(PlayerJoinEvent $event)
     {
 
+        $player = $event->getPlayer();
+        $name = $player->getName();
+        $playerdata = new Config($this->plugin->getDataFolder().Main::$cloud . "players.yml", Config::YAML);
+        $playergroup = $playerdata->getNested($name.".group");
+        $groups = new Config($this->plugin->getDataFolder() . Main::$cloud ."groups.yml", Config::YAML);
+        $permissionlist = (array)$groups->getNested("Groups.".$playergroup.".permissions", []);
+
+        foreach($permissionlist as $name => $data) {
+            var_dump($name);
+            $player->addAttachment($this->plugin)->setPermission($data, true);
+        }
+        $perms = (array)$playerdata->getNested("{$name}.permissions",[]);
+        foreach($perms as $name => $data) {
+            var_dump($name);
+            $player->addAttachment($this->plugin)->setPermission($data, true);
+        }
+
+        //GruppenSystem Chat
         $player = $event->getPlayer();
         $hei = new Config($this->plugin->getDataFolder() . Main::$userfile . $player->getLowerCaseName() . ".json", Config::JSON);
         $pf = new Config($this->plugin->getDataFolder() . Main::$gruppefile . $player->getName() . ".json", Config::JSON);

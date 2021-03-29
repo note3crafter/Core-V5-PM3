@@ -11,12 +11,10 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 
 # Ohne dies Funktioniert die Core nicht 
 - MyPlot -> Sollte drinnen sein wegen dem LiftSystem aber kein Muss
-- PurePerms -> Ohne dies wird die CoreV5 NICHT Funktionieren 
 - EconomyAPI -> Ohne dies kann man nicht Joinen
 
 # Für die Zukunft Geplant :
 - HeadSystem
-- PermissionsManager  
 - /nuke, /milk, /nofire, /invsee, /ecinvsee
 
 # Features
@@ -31,10 +29,13 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - Funktionierender Braustand & Kessel
 - NetheriteRüstung, Barren, Schrott sowie Werkzeuge
 - Viele Weitere Kleinigkeiten
+- Gruppensystem (Nutzbar mit PurePerms & co! Es wird kein PureChat etc Untertzützt)
+- Farbiges Schreiben mit &
 
 # Commands
-- /abenteuer (Setze deinen Spielermodus zu Abenteuer)
+- /abenteuer (Setze deinen/anderen Spielermodus zu Abenteuer)
 - /adminitem (Nutze verschiedene CustomItems)
+- /afk (Stelle dich AFK)
 - /animation (Spiele mit Animationen Rum)
 - /ban <Spieler> <ID> (Banne einen Spieler)
 - /banids (Siehe die BanIDS)
@@ -43,7 +44,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - /burn (Zünde einen Spieler an)
 - /chatclear (Cleare den Chat)
 - /clan (Voll Funktionsfähiges Clansystem)
-- /clear (Cleare dein Inventar)
+- /clear (Cleare dein/anderen Inventar)
 - /clearlagg (Entferne alle Items die auf dem Boden Liegen)
 - /craft (Öffne die Werkbank via UI)
 - /day (Setze die Zeit auf Tag)
@@ -52,17 +53,17 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - /enderchest (Öffne deine Enderchest via UI)
 - /erfolg (Siehe deine Erfolge ein)
 - /fake (Mache einen Fake Join/Leave)
-- /feed (Stille deinne Hunger)
-- /fly (Fliege dursch die Gegend)
+- /feed (Stille deinen/anderen Hunger)
+- /fly (Gebe dir/anderen Fly)
 - /friend (Voll Funktionsfähiges Freundesystem)
 - /givecoins <Menge>(Gebe einen Spieler Coins)
 - /gruppe <Gruppenname> (Gebe einen Spieler eine Gruppe) NOTICE: Braucht PurePerms
-- /heal (Heile dich)
+- /heal (Heile dich/anderen)
 - /heiraten >scheidung|annehmen|ablehnen|surprise> (Heirate einen anderen Spieler)
 - /home <Homename> (Teleportiere dich zu deinem Home)
 - /kickall (Kicke alle Spieler)
 - /kick <Spieler|Grund> (Kicke einen Spieler mit oder ohne Grund)
-- /kreativ (Setze deinen Spielmodus zu Kreativ)
+- /kreativ (Setze deinen/anderen Spielmodus zu Kreativ)
 - /listhome (Liste deine Homes auf)
 - /listwarp (Liste alle Warps auf)
 - /mycoins (Sehe deine Coins)
@@ -95,7 +96,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - /vanish (Gehe in den Vanish)
 - /vote (Vote für deinen Server)
 - /warp (Teleporte dich zu deinem Warp)
-- /zuschauer (Setze deinen Spielmodus zu Zuschauer)
+- /zuschauer (Setze deinen/anderen Spielmodus zu Zuschauer)
 
 
 # Hilfe & Support
@@ -113,6 +114,7 @@ Und an unseren Forker! Gebt das Plugin nicht als Euers aus! Ich habe eine menge 
 - Crasher508 aka KommandToasti (Fürs repaieren mancher dinge! und er ist der Beste!)
 - CortexPE (Für ein Teil das ich von Teaspoon mit Intregiert habe) 
 - HimmelKreis4865 (Für AntiXray)
+- MDevPmmP (Für das GroupSystem)
 - LookitsAku & und vielen vielen weiteren Helfern!
 
 2017-2021 ©NoteLand & TheNote/Rudolf2000 

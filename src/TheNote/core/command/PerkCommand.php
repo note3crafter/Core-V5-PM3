@@ -660,12 +660,12 @@ class PerkCommand extends Command
         if ($daten->get("explodeperkpermission") == true) {
             $form->addButton("§0ExplodePerk\n§aGekauft", 0);
         } else {
-            $form->addButton("§0ExplodePerk\n§§cKostet : " . $perk->get("explode"),0);
+            $form->addButton("§0ExplodePerk\n§cKostet : " . $perk->get("explode"),0);
         }
         if ($daten->get("angryperkpermission") == true) {
             $form->addButton("§0VillagerAngryPerk\n§aGekauft", 0);
         } else {
-            $form->addButton("§0VillagerAngryPerk\n§§cKostet : " . $perk->get("angry"),0);
+            $form->addButton("§0VillagerAngryPerk\n§cKostet : " . $perk->get("angry"),0);
         }
         if ($daten->get("redstoneperkpermission") == true) {
             $form->addButton("§0RedstonePerk\n§aGekauft", 0);

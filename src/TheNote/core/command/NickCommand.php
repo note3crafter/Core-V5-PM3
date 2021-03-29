@@ -11,7 +11,9 @@
 
 namespace TheNote\core\command;
 
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
+use pocketmine\Server;
 use pocketmine\utils\Config;
 use TheNote\core\Main;
 use pocketmine\command\Command;
