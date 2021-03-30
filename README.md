@@ -1,3 +1,6 @@
+<h1>CoreV5<img src="https://github.com/note3crafter/Core-V5/blob/main/resources/icon.png" height="64" width="64" align="left"></img></h1>
+<br />
+
 # Core-V5 ALPHA Release [![Poggit](https://poggit.pmmp.io/ci/note3crafter/Core-V5~)](https://poggit.pmmp.io/ci/note3crafter/Core-V5~)
 
   Die Core wurde Spieziell für CityBuild Server entwickelt! Beachtet bitte das es eine ALPHA Version ist und wohlmöglich instabiel ist!
