@@ -66,6 +66,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - /home <Homename> (Teleportiere dich zu deinem Home)
 - /kickall (Kicke alle Spieler)
 - /kick <Spieler|Grund> (Kicke einen Spieler mit oder ohne Grund)
+- /kiz (Nutze 3 Verschiedene Kits)
 - /kreativ (Setze deinen/anderen Spielmodus zu Kreativ)
 - /listhome (Liste deine Homes auf)
 - /listwarp (Liste alle Warps auf)
