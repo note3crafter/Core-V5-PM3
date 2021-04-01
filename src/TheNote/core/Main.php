@@ -14,6 +14,7 @@ namespace TheNote\core;
 
 use pocketmine\block\Block;
 use pocketmine\block\Sapling;
+use pocketmine\block\BlockFactory;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\ItemSpawnEvent;
@@ -43,6 +44,7 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
@@ -65,7 +67,9 @@ use TheNote\core\command\NickCommand;
 use TheNote\core\command\NightCommand;
 use TheNote\core\command\FeedCommand;
 use TheNote\core\command\HealCommand;
+use TheNote\core\command\NukeCommand;
 use TheNote\core\command\SetWarpCommand;
+use TheNote\core\command\SizeCommand;
 use TheNote\core\command\SurvivalCommand;
 use TheNote\core\command\KreativCommand;
 use TheNote\core\command\AbenteuerCommand;
@@ -182,6 +186,11 @@ use TheNote\core\task\CallbackTask;
 use TheNote\core\task\RTask;
 use TheNote\core\task\PingTask;
 
+use TheNote\core\tile\JBTile;
+use TheNote\core\item\Record;
+use TheNote\core\blocks\JukeBox;
+
+
 
 class Main extends PluginBase implements Listener
 {
@@ -216,12 +225,11 @@ class Main extends PluginBase implements Listener
     const ITEM_NETHERITE_AXE = 746;
     const ITEM_NETHERITE_HOE = 747;
 
-
     //PluginVersion
-    public static $version = "5.1.2ALPHA";
+    public static $version = "5.1.3ALPHA";
     public static $protokoll = "428";
     public static $mcpeversion = "1.16.210";
-    public static $dateversion = "29.03.2021";
+    public static $dateversion = "01.04.2021";
     public static $plname = "CoreV5";
 
     //Configs
@@ -230,7 +238,6 @@ class Main extends PluginBase implements Listener
     public static $gruppefile = "Cloud/players/Gruppe/";
     public static $heifile = "Cloud/players/Heiraten/";
     public static $homefile = "Cloud/players/Homes/";
-    public static $inventarfile = "Cloud/players/Inventare/";
     public static $logdatafile = "Cloud/players/Logdata/";
     public static $statsfile = "Cloud/players/Stats/";
     public static $userfile = "Cloud/players/User/";
@@ -251,6 +258,31 @@ class Main extends PluginBase implements Listener
     public $lists = [];
     public $clearItems;
 
+    private function registerItems(){
+        BlockFactory::registerBlock(new JukeBox(84, "JukeBox", $this), false); //set to false as i do not support 'reloads'
+
+
+        //Records here:
+
+        ItemFactory::registerItem(new Record(500, "13", LevelSoundEventPacket::SOUND_RECORD_13), true);
+        ItemFactory::registerItem(new Record(501, "Cat", LevelSoundEventPacket::SOUND_RECORD_CAT), true);
+        ItemFactory::registerItem(new Record(502, "Blocks", LevelSoundEventPacket::SOUND_RECORD_BLOCKS), true);
+        ItemFactory::registerItem(new Record(503, "Chirp", LevelSoundEventPacket::SOUND_RECORD_CHIRP), true);
+        ItemFactory::registerItem(new Record(504, "Far", LevelSoundEventPacket::SOUND_RECORD_FAR), true);
+        ItemFactory::registerItem(new Record(505, "Mall", LevelSoundEventPacket::SOUND_RECORD_MALL), true);
+        ItemFactory::registerItem(new Record(506, "Mellohi", LevelSoundEventPacket::SOUND_RECORD_MELLOHI), true);
+        ItemFactory::registerItem(new Record(507, "Stal", LevelSoundEventPacket::SOUND_RECORD_STAL), true);
+        ItemFactory::registerItem(new Record(508, "Strad", LevelSoundEventPacket::SOUND_RECORD_STRAD), true);
+        ItemFactory::registerItem(new Record(509, "Ward", LevelSoundEventPacket::SOUND_RECORD_WARD), true);
+        ItemFactory::registerItem(new Record(510, "11", LevelSoundEventPacket::SOUND_RECORD_11), true);
+        ItemFactory::registerItem(new Record(511, "Wait", LevelSoundEventPacket::SOUND_RECORD_WAIT), true);
+
+        JBTile::registerTile(JBTile::class, ["Jukebox"]);
+
+        //Add to creative menu:
+        Item::initCreativeItems();
+    }
+
     final public static function getPacketsFromBatch(BatchPacket $packet)
     {
         $stream = new NetworkBinaryStream($packet->payload);
@@ -266,7 +298,7 @@ class Main extends PluginBase implements Listener
         $this->economyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
     }
 
-    public static function getInstance(): Main
+    public static function getInstance()
     {
         return self::$instance;
     }
@@ -276,16 +308,17 @@ class Main extends PluginBase implements Listener
         return self::$instance;
     }
 
+
     public function onLoad()
     {
         ItemManager::init();
         EntityManager::init();
         BlockManager::init();
         Tiles::init();
+        $this->registerItems();
         $this->brewingManager = new BrauManager();
         $this->brewingManager->init();
         self::$instance = $this;
-
         if (isset($c["API-Key"])) {
             if (trim($c["API-Key"]) != "") {
                 if (!is_dir($this->getDataFolder() . "Setup/")) {
@@ -309,7 +342,6 @@ class Main extends PluginBase implements Listener
         @mkdir($this->getDataFolder() . "Cloud/players/Freunde/");
         @mkdir($this->getDataFolder() . "Cloud/players/Clans");
         @mkdir($this->getDataFolder() . "Cloud/players/Homes");
-        @mkdir($this->getDataFolder() . "Cloud/players/Inventare");
         @mkdir($this->getDataFolder() . "Cloud/players/Stats");
         $this->saveResource("liesmich.txt", true);
         $this->saveResource("Setup/settings.json", false);
@@ -420,6 +452,7 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("night", new NightCommand($this));
         $this->getServer()->getCommandMap()->register("nightvision", new NightVisionCommand($this));
         $this->getServer()->getCommandMap()->register("notell", new NoDMCommand($this));
+        $this->getServer()->getCommandMap()->register("nuke", new NukeCommand($this));
         $this->getServer()->getCommandMap()->register("payall", new PayallCommand($this));
         $this->getServer()->getCommandMap()->register("paycoins", new PayCoinsCommand($this));
         $this->getServer()->getCommandMap()->register("perk", new PerkCommand($this));
@@ -432,6 +465,7 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("sethome", new SetHomeCommand($this));
         $this->getServer()->getCommandMap()->register("servermute", new ServermuteCommand($this));
         $this->getServer()->getCommandMap()->register("sign", new SignCommand($this));
+        $this->getServer()->getCommandMap()->register("size", new SizeCommand($this));
         $this->getServer()->getCommandMap()->register("stats", new StatsCommand($this));
         $this->getServer()->getCommandMap()->register("sudo", new SudoCommand($this));
         $this->getServer()->getCommandMap()->register("supervanish", new SuperVanishCommand($this));
@@ -455,7 +489,7 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("warp", new WarpCommand($this));
         $this->getServer()->getCommandMap()->register("burn", new BurnCommand($this));
         $this->getServer()->getCommandMap()->register("kick", new KickCommand($this));
-        //$this->getServer()->getCommandMap()->register("afk", new AFKCommand($this)); comming soon
+        $this->getServer()->getCommandMap()->register("afk", new AFKCommand($this));
 
 
         //Emotes
@@ -651,6 +685,7 @@ class Main extends PluginBase implements Listener
 
     public function onPlayerJoin(PlayerJoinEvent $event)
     {
+
         //Discord
         $dcsettings = new Config($this->getDataFolder() . Main::$setup . "discordsettings" . ".yml", Config::YAML);
         $dcname = $dcsettings->get("chatname");
@@ -665,14 +700,19 @@ class Main extends PluginBase implements Listener
 
         //Weiteres
         $player = $event->getPlayer();
-        $this->isAdd[$player->getName()] = false;
+        $name = $player->getName();
         $ainv = $player->getArmorInventory();
         $all = $this->getServer()->getOnlinePlayers();
         $event->setJoinMessage("");
         $nicks = new Config($this->getDataFolder() . Main::$gruppefile . $player->getName() . ".json", Config::JSON);
         $config = new Config($this->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+        $groups = new Config($this->getDataFolder() . Main::$cloud . "groups.yml", Config::YAML);
+        $playerdata = new Config($this->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
+        $playergroup = $playerdata->getNested($name . ".group");
+        $nametag = str_replace("{name}", $player->getName(), $groups->getNested("Groups.{$playergroup}.nametag"));
+        $this->getServer()->broadcastMessage("§f[§a+§f] " . $nametag . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
         $names = $nicks->get("Nickname");
-        if ($nicks->get("Default") === true) {
+        /*if ($nicks->get("Default") === true) {
             $this->getServer()->broadcastMessage("§f[§a+§f] " . $config->get("spieler") . " §f" . $names . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
         } else if ($nicks->get("Owner") === true) {
             $this->getServer()->broadcastMessage("§f[§a+§f] " . $config->get("owner") . " §c" . $names . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
@@ -696,7 +736,7 @@ class Main extends PluginBase implements Listener
             $this->getServer()->broadcastMessage("§f[§a+§f] " . $config->get("premium") . " §6" . $names . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
         } else {
             $this->getServer()->broadcastMessage("§f[§a+§f] " . $config->get("spieler") . " §f" . $player->getName() . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
-        }
+        }*/
         $this->addStrike($player);
         $fj = date('d.m.Y H:I') . date_default_timezone_set("Europe/Berlin");
         $gruppe = new Config($this->getDataFolder() . Main::$gruppefile . $player->getName() . ".json", Config::JSON);
@@ -708,6 +748,7 @@ class Main extends PluginBase implements Listener
         $config = new Config($this->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         $configs = new Config($this->getDataFolder() . Main::$setup . "Config" . ".yml", Config::YAML);
         $cfg = new Config($this->getDataFolder() . Main::$setup . "starterkit.yml", Config::YAML, array());
+
 
         $log->set("Name", $player->getName());
         $log->set("last-IP", $player->getAddress());
@@ -762,6 +803,31 @@ class Main extends PluginBase implements Listener
                     $ainv->setBoots($item);
                 }
             }
+            //Groupsystem
+
+            $defaultgroup = $groups->get("DefaultGroup");
+            $player = $event->getPlayer();
+            $name = $player->getName();
+
+            if (!$playerdata->exists($name)) {
+                $playerdata->setNested($name . ".group", $defaultgroup);
+                $perms = $playerdata->getNested("{$name}.permissions", []);
+                $perms[] = "CoreV5";
+                $playerdata->setNested("{$name}.permissions", $perms);
+                $playerdata->save();
+            }
+
+            $playergroup = $playerdata->getNested($name . ".group");
+            $nametag = str_replace("{name}", $player->getName(), $groups->getNested("Groups.{$playergroup}.nametag"));
+            $displayname = str_replace("{name}", $player->getName(), $groups->getNested("Groups.{$playerdata->getNested($name.".group")}.displayname"));
+            $player->setNameTag($nametag);
+            $player->setDisplayName($displayname);
+
+            //Group Perms
+            $permissionlist = (array)$groups->getNested("Groups." . $playergroup . ".permissions", []);
+            foreach ($permissionlist as $name => $data) {
+                $player->addAttachment($this)->setPermission($data, true);
+            }
 
             //Resgister
             $sstats->set("Users", $sstats->get("Users") + 1);
@@ -774,26 +840,15 @@ class Main extends PluginBase implements Listener
                 $log->set("first-ID", $player->getPlayer()->getDeviceId());
             }
             $log->save();
-            $gruppe->set("Default", true);
-            $gruppe->set("Owner", false);
-            $gruppe->set("Admin", false);
-            $gruppe->set("Developer", false);
-            $gruppe->set("Moderator", false);
-            $gruppe->set("Builder", false);
-            $gruppe->set("Supporter", false);
-            $gruppe->set("YouTuber", false);
-            $gruppe->set("Hero", false);
-            $gruppe->set("Suppremium", false);
-            $gruppe->set("Premium", false);
             $gruppe->set("Nick", false);
             $gruppe->set("NickP", false);
             $gruppe->set("NickPlayer", false);
             $gruppe->set("Nickname", $player->getName());
             $gruppe->set("ClanStatus", false);
+            $gruppe->save();
             $user->set("Clananfrage", false);
             $user->set("Clan", "");
             $user->set("register", true);
-            $gruppe->save();
             $hei->set("antrag", null);
             $hei->set("antrag-abgelehnt", 0);
             $hei->set("heiraten", null);
@@ -827,6 +882,8 @@ class Main extends PluginBase implements Listener
             $user->set("portalperkpermission", false);
             $user->set("sporeperkpermission", false);
             $user->set("splashperkpermission", false);
+            $user->set("afkmove", false);
+            $user->set("afkchat", false);
             $user->save();
             $stats->set("joins", 0);
             $stats->set("break", 0);
@@ -849,10 +906,8 @@ class Main extends PluginBase implements Listener
             $stats->set("joinerfolg", false); //10000
             $stats->set("kickerfolg", false); //1000
             $stats->save();
-
-
-            $player->setDisplayName("§eS§f:§f" . $player->getName());
-            $player->setNameTag("§f[§eSpieler§f] §f" . $player->getName());
+            //$player->setDisplayName("§eS§f:§f" . $player->getName());
+            //$player->setNameTag("§f[§eSpieler§f] §f" . $player->getName());
 
             //DiscordMessgae
             if ($dcsettings->get("DC") == true) {
@@ -870,6 +925,7 @@ class Main extends PluginBase implements Listener
     {
 
         $player = $event->getPlayer();
+        $name = $player->getName();
         $all = $this->getServer()->getOnlinePlayers();
         //Discord
         $dcsettings = new Config($this->getDataFolder() . Main::$setup . "discordsettings" . ".yml", Config::YAML);
@@ -886,8 +942,13 @@ class Main extends PluginBase implements Listener
         $event->setQuitMessage("");
         $nicks = new Config($this->getDataFolder() . Main::$gruppefile . $player->getName() . ".json", Config::JSON);
         $config = new Config($this->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+        $groups = new Config($this->getDataFolder() . Main::$cloud . "groups.yml", Config::YAML);
+        $playerdata = new Config($this->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
+        $playergroup = $playerdata->getNested($name . ".group");
+        $nametag = str_replace("{name}", $player->getName(), $groups->getNested("Groups.{$playergroup}.nametag"));
+        $this->getServer()->broadcastMessage("§f[§c-§f] " . $nametag . " §chat den Server verlassen §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
 
-        $names = $nicks->get("Nickname");
+        /*$names = $nicks->get("Nickname");
         if ($nicks->get("Default") === true) {
             $this->getServer()->broadcastMessage("§f[§c-§f] " . $config->get("spieler") . " §f" . $names . " §chat den Server verlassen §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
         } else if ($nicks->get("Owner") === true) {
@@ -912,7 +973,7 @@ class Main extends PluginBase implements Listener
             $this->getServer()->broadcastMessage("§f[§c-§f] " . $config->get("premium") . " §6" . $names . " §chat den Server verlassen §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
         } else {
             $this->getServer()->broadcastMessage("§f[§c-§f] " . $config->get("spieler") . " §f" . $player->getName() . " §chat den Server verlassen §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
-        }
+        }*/
     }
 
     public function addStrike(Player $player)
@@ -1221,7 +1282,6 @@ class Main extends PluginBase implements Listener
         $block2 = $elevator->getLevel()->getBlock(new Vector3($elevator->getX(), $elevator->getY() + 2, $elevator->getZ()));
         if ($block1->getId() !== 0 || $block2->getId() !== 0) return $block;
 
-
         $blocksToCheck = [];
 
         $blocksToCheck[] = $block1->getLevel()->getBlock(new Vector3($block1->getX() + 1, $block1->getY(), $block1->getZ()));
@@ -1359,23 +1419,16 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCraftingManager()->registerShapelessRecipe(new ShapelessRecipe([Item::get(Item::DIAMOND_CHESTPLATE), Item::get(self::ITEM_NETHERITE_INGOT)], [Item::get(NetheriteChestplate::NETHERITE_CHESTPLATE)]));
         $this->getServer()->getCraftingManager()->registerShapelessRecipe(new ShapelessRecipe([Item::get(Item::DIAMOND_LEGGINGS), Item::get(self::ITEM_NETHERITE_INGOT)], [Item::get(NetheriteLeggings::NETHERITE_LEGGINGS)]));
         $this->getServer()->getCraftingManager()->registerShapelessRecipe(new ShapelessRecipe([Item::get(Item::DIAMOND_BOOTS), Item::get(self::ITEM_NETHERITE_INGOT)], [Item::get(NetheriteBoots::NETHERITE_BOOTS)]));
-
     }
     public function groupsgenerate()
     {
         if (!file_exists($this->getDataFolder() . Main::$cloud . "groups.yml")) {
             $groups = new Config($this->getDataFolder() . Main::$cloud . "groups.yml", Config::YAML);
-            $groups->setNested("Groups." . "Default" . ".permissions", ["CoreV5"]);
-            $groups->setNested("Groups." . "Owner" . ".permissions", ["core.ownerberechtigung"]);
-            $groups->setNested("Groups." . "Admin" . ".permissions", ["core.adminberechtigung"]);
-            $groups->setNested("Groups." . "Developer" . ".permissions", ["core.developerberechtigung"]);
-            $groups->setNested("Groups." . "Builder" . ".permissions", ["core.builderberechtigung"]);
-            $groups->setNested("Groups." . "Moderator" . ".permissions", ["core.moderatorberechtigung"]);
-            $groups->setNested("Groups." . "Supporter" . ".permissions", ["core.supporterberechtigung"]);
-            $groups->setNested("Groups." . "Hero" . ".permissions", ["core.heroberechtigung"]);
-            $groups->setNested("Groups." . "YouTuber" . ".permissions", ["core.youtuberberechtigung"]);
-            $groups->setNested("Groups." . "Suppremium" . ".permissions", ["core.suppremiumberechtigung"]);
-            $groups->setNested("Groups." . "Premium" . ".permissions", ["core.premiumberechtigung"]);
+            $groups->setNested("Groups." . "default" . ".format", "§f[§eSpieler§f] §7{name} §f| §7{msg}");
+            $groups->setNested("Groups." . "default" . ".nametag", "§f[§eSpieler§f] §7{name}");
+            $groups->setNested("Groups." . "default" . ".displayname", "§eS§f:§7{name}");
+            $groups->setNested("Groups." . "default" . ".permissions", ["CoreV5"]);
+            $groups->set("DefaultGroup", "default");
             $groups->save();
         }
     }

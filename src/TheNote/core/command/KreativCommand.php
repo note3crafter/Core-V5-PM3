@@ -40,7 +40,7 @@ class KreativCommand extends Command
             return false;
         }
         if (isset($args[0])) {
-            if ($sender->hasPermission("core.command.creativ.use")) {
+            if ($sender->hasPermission("core.command.creativ.other")) {
                 $victim = $this->plugin->getServer()->getPlayer($args[0]);
                 $target = Server::getInstance()->getPlayer(strtolower($args[0]));
                 if ($target == null) {
@@ -49,7 +49,7 @@ class KreativCommand extends Command
                 } else {
                     $victim->setGamemode(1);
                     $victim->sendMessage($config->get("prefix") . "§6Du bist nun im §aKreativ §6modus.");
-                    $sender->sendMessage($config->get("prefix") . "§6Der Spielmodus von $victim wurde auf §aKreativ gesetzt.");
+                    $sender->sendMessage($config->get("prefix") . "§6Der Spielmodus von " . $victim->getName() . " wurde auf §aKreativ gesetzt.");
                     return false;
                 }
             } else {

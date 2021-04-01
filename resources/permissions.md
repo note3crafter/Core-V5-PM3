@@ -32,6 +32,7 @@ core.command.kickall
 core.command.nick
 core.command.night
 core.command.nightvision
+core.command.nuke
 core.command.paycoins
 core.command.position
 core.command.rename
@@ -40,6 +41,7 @@ core.command.restart
 core.command.servermute
 core.command.setwarp
 core.command.sign
+core.command.size
 core.command.spectator
 core.command.spectator.use
 core.command.sudo

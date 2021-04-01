@@ -32,7 +32,7 @@ class AbenteuerCommand extends Command
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $configs = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        if (!Player instanceof $sender) {
+        if (!$sender instanceof Player) {
             $sender->sendMessage($configs->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
             return false;
         }
@@ -41,7 +41,7 @@ class AbenteuerCommand extends Command
             return false;
         }
         if (isset($args[0])) {
-            if ($sender->hasPermission("core.command.adventure.use")) {
+            if ($sender->hasPermission("core.command.adventure.other")) {
                 $victim = $this->plugin->getServer()->getPlayer($args[0]);
                 $target = Server::getInstance()->getPlayer(strtolower($args[0]));
                 if ($target == null) {
@@ -50,7 +50,7 @@ class AbenteuerCommand extends Command
                 } else {
                     $victim->setGamemode(2);
                     $victim->sendMessage($configs->get("prefix") . "§6Du bist nun im §aAbenteuer §6modus.");
-                    $sender->sendMessage($configs->get("prefix") . "§6Der Spielmodus von $victim wurde auf Abenteuer gesetzt.");
+                    $sender->sendMessage($configs->get("prefix") . "§6Der Spielmodus von " . $victim->getName() . " wurde auf Abenteuer gesetzt.");
                     return false;
                 }
             } else {

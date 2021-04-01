@@ -67,14 +67,12 @@ class BanCommand extends Command
                             $date->add(new DateInterval('PT' . $duration[1] * "1" . $duration[2]));
                         } catch (Exception $e) {
                         }
-
                     } else {
 
                         try {
                             $date->add(new DateInterval('P' . $duration[1] * "1" . $duration[2]));
                         } catch (Exception $e) {
                         }
-
                     }
                     $target = Server::getInstance()->getPlayer(strtolower($args[0]));
                     $format = $date->format('Y-m-d H:i:s');

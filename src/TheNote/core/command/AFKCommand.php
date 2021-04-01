@@ -12,9 +12,12 @@
 namespace TheNote\core\command;
 
 use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
+use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerMoveEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 use TheNote\core\Main;
@@ -25,14 +28,8 @@ use pocketmine\utils\Config;
 class AFKCommand extends Command implements Listener
 {
     private $plugin;
-    private $playerSession = [];
-    private $doPublicMessage = true;
-    private $publicMessage = "Publicmessage";
-    private $doAfkNametag = true;
-    private $nametagFormat = "AFK";
-    private $doRemoveOnMove = true;
-    private $doRemoveOnChat = true;
-    private $doRemoveOnAttack = true;
+    private $afk;
+
 
 
     public function __construct(Main $plugin)
@@ -40,8 +37,8 @@ class AFKCommand extends Command implements Listener
         $this->plugin = $plugin;
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         parent::__construct("afk", $config->get("prefix") . "Setze dich afk", "/afk");
+        $this->afk = array();
     }
-
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
@@ -49,133 +46,62 @@ class AFKCommand extends Command implements Listener
             $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
             return false;
         }
-
-            if (isset($args[0])) {
-                switch (strtolower($args[0])) {
-                    case "on":
-                        if ($this->isInSession($sender)) {
-                            $sender->sendMessage("You are already AFK");
-                        } else {
-                            $this->addToSession($sender);
-                            $sender->sendMessage("You are now AFK");
-                            if ($this->doAfkNametag()) {
-                                $sender->setNameTag(TextFormat::colorize($this->getAfkNametagFormat()) . $sender->getName());
-                            }
-                            if ($this->doPublicMessage()) {
-                                foreach ($this->plugin->getServer()->getOnlinePlayers() as $sender) {
-                                    $sender->sendMessage("der spieler $sender ist afk");
-                                }
-                            }
-                        }
-                        break;
-                    case "off":
-                        if (!$this->isInSession($sender)) {
-                            $sender->sendMessage("You are already not AFK");
-                        } else {
-                            $this->removeFromSession($sender);
-                            $sender->sendMessage("You are no longer AFK.");
-                            if ($this->doAfkNametag()) {
-                                $sender->setNameTag(str_replace($this->getAfkNametagFormat(), "", $sender->getName()));
-                            }
-                        }
-                        break;
-                    default:
-                        $sender->sendMessage("afk usage");
-                }
-
-
-        } else {
-            $sender->sendMessage("afk usage");
+        if ($sender instanceof Player) {
+            if (isset($this->afk[strtolower($sender->getName())])) {
+                $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $player->getLowerCaseName(), Config::JSON);
+                unset($this->afk[strtolower($sender->getName())]);
+                $sender->sendMessage($config->get("afk") . "Du bist nun nicht mehr AFK!");
+                $sender->setImmobile(false);
+                $cfg->set($cfg->get("afkmove") == false);
+                $cfg->set($cfg->get("afkchat") == false);
+                $cfg->save();
+            } else {
+                $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $player->getLowerCaseName(), Config::JSON);
+                $this->afk[strtolower($sender->getName())] = strtolower($sender->getName());
+                $sender->sendMessage($config->get("afk") . "Du bist nun AFK!");
+                $sender->setImmobile(true);
+                $sender->setDisplayName("§f[§eAFK§f]");
+                $cfg->set($cfg->get("afkmove") == true);
+                $cfg->set($cfg->get("afkchat") == true);
+                $cfg->save();
+            }
+            return true;
         }
-        return false;
     }
-    public function onChat(PlayerChatEvent $event): void{
-        if($this->isInSession($event->getPlayer())){
-            if($this->doRemoveOnChat()){
-                $this->removeFromSession($event->getPlayer());
-                $event->getPlayer()->sendMessage("Kein AFK Chatevent");
+    public function onQuit(PlayerQuitEvent $event){
+        $player = $event->getPlayer();
+        $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $player->getLowerCaseName(), Config::JSON);
+        $cfg->set($cfg->get("afkmove") == false);
+        $cfg->set($cfg->get("afkchat") == false);
+        $cfg->save();
+    }
+
+
+    public function onMove(PlayerMoveEvent $event) {
+        $player = $event->getPlayer();
+        $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $player->getLowerCaseName(), Config::JSON);
+        if($cfg->get("afk") == true) {
+                $player->sendMessage("You can't move while AFK!");
+                $player->sendMessage("Type /afk to start moving!");
+                $event->setCancelled(true);
+        }
+    }
+
+    public function onChat(PlayerChatEvent $event) {
+        $player = $event->getPlayer();
+        $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $player->getLowerCaseName(), Config::JSON);
+        if($cfg->get("afk") == true) {
+                $player->sendMessage("You can't chat while AFK!");
+                $player->sendMessage("Type /afk to start chatting!");
+                $event->setCancelled(true);
+        }
+    }
+    public function onDamage(EntityDamageEvent $event) {
+        if($event->getEntity() instanceof Player) {
+            $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $sender->getLowerCaseName(), Config::JSON);
+            if($cfg->get("afk") == true){
+                $event->setCancelled(true);
             }
         }
     }
-
-    public function onMove(PlayerMoveEvent $event): void{
-        if($this->isInSession($event->getPlayer())){
-            if($this->doRemoveOnMove()){
-                $this->removeFromSession($event->getPlayer());
-                $event->getPlayer()->sendMessage("Kein AFk Moveevent");
-            }
-        }
-    }
-
-    public function onAttack(EntityDamageByEntityEvent $event): void{
-        if($event->getDamager() instanceof Player) {
-            if ($this->isInSession($event->getDamager())) {
-                if ($this->doRemoveOnAttack()) {
-                    $this->removeFromSession($event->getDamager());
-                    $event->getDamager()->sendMessage("Kein AFK Entity Attack");
-                }
-            }
-        }
-    }
-    public function isInSession($sender): bool{
-        if($sender instanceof Player){
-            $sender = $sender->getName();
-        }
-        $sender = strtolower($sender);
-        return in_array($sender, $this->playerSession);
-    }
-
-    public function removeFromSession($sender): void
-    {
-        if ($sender->isInSession($sender)) {
-            if ($sender instanceof Player) {
-                $sender = $sender->getName();
-            }
-            $sender = strtolower($sender);
-            unset($this->playerSession[array_search($sender, $this->playerSession)]);
-        }
-    }
-    public function addToSession($sender): void{
-        if(!$this->isInSession($sender)) {
-            if ($sender instanceof Player) {
-                $sender = $sender->getName();
-            }
-            $sender = strtolower($sender);
-            $this->playerSession[] = $sender;
-        }
-    }
-
-    public function doAfkNametag(): bool
-    {
-        return $this->doAfkNametag;
-    }
-    public function getAfkNametagFormat(): string
-    {
-        return $this->nametagFormat;
-    }
-    public function doRemoveOnMove(): bool
-    {
-        return $this->doRemoveOnMove;
-    }
-
-    public function doRemoveOnChat(): bool
-    {
-        return $this->doRemoveOnChat;
-    }
-
-    public function doRemoveOnAttack(): bool
-    {
-        return $this->doRemoveOnAttack;
-    }
-    public function getPublicMessage(): string
-    {
-        return $this->publicMessage;
-
-    }
-    public function doPublicMessage(): bool
-    {
-        return $this->doPublicMessage;
-
-    }
-
 }

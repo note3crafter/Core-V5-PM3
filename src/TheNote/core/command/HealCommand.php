@@ -42,7 +42,7 @@ class HealCommand extends Command
             return false;
         }
         if (isset($args[0])) {
-            if ($sender->hasPermission("core.command.heal.use")) {
+            if ($sender->hasPermission("core.command.heal.other")) {
                 $victim = $this->plugin->getServer()->getPlayer($args[0]);
                 $target = Server::getInstance()->getPlayer(strtolower($args[0]));
                 if ($target == null) {
@@ -54,7 +54,7 @@ class HealCommand extends Command
                     $volume = mt_rand();
                     $sender->getLevel()->broadcastLevelSoundEvent($sender, LevelSoundEventPacket::SOUND_EAT, (int) $volume);
                     $sender->sendMessage($config->get("prefix") . "§6Du wurdest §eGeheilt§6 von " . $sender->getNameTag());
-                    $sender->sendMessage($config->get("prefix") . "§6Du hast " .  $victim  . " §eGeheilt§6.");
+                    $sender->sendMessage($config->get("prefix") . "§6Du hast " .  $victim->getName() . " §eGeheilt§6.");
                     return false;
                 }
             } else {

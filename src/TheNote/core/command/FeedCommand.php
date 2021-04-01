@@ -44,7 +44,7 @@ class FeedCommand extends Command
             return false;
         }
         if (isset($args[0])) {
-            if ($sender->hasPermission("core.command.feed.use")) {
+            if ($sender->hasPermission("core.command.feed.other")) {
                 $victim = $this->plugin->getServer()->getPlayer($args[0]);
                 $target = Server::getInstance()->getPlayer(strtolower($args[0]));
                 if ($target == null) {
@@ -56,7 +56,7 @@ class FeedCommand extends Command
                     $volume = mt_rand();
                     $sender->getLevel()->broadcastLevelSoundEvent($sender, LevelSoundEventPacket::SOUND_EAT, (int)$volume);
                     $sender->sendMessage($config->get("prefix") . "§6Dein §eHunger §6wurde gestillt von " . $sender->getNameTag());
-                    $sender->sendMessage($config->get("prefix") . "§6Du hast den §eHunger von " . $victim . " gestillt.");
+                    $sender->sendMessage($config->get("prefix") . "§6Du hast den §eHunger von " . $victim->getName() . " gestillt.");
                     return false;
                 }
             } else {

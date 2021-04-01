@@ -1,7 +1,7 @@
-<h1>CoreV5<img src="https://github.com/note3crafter/Core-V5/blob/main/resources/icon.png" height="64" width="64" align="left"></img></h1>
+<h1>CoreV5 ALPHA<img src="https://github.com/note3crafter/Core-V5/blob/main/resources/icon.png" height="64" width="64" align="left"></img></h1>
 <br />
 
-# Core-V5 ALPHA Release [![Poggit](https://poggit.pmmp.io/ci/note3crafter/Core-V5~)](https://poggit.pmmp.io/ci/note3crafter/Core-V5~)
+# Download und Wichtig [![Poggit](https://poggit.pmmp.io/ci/note3crafter/Core-V5~)](https://poggit.pmmp.io/ci/note3crafter/Core-V5~)
 
   Die Core wurde Spieziell für CityBuild Server entwickelt! Beachtet bitte das es eine ALPHA Version ist und wohlmöglich instabiel ist!
 
@@ -18,7 +18,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 
 # Für die Zukunft Geplant :
 - HeadSystem
-- /nuke, /milk, /nofire, /invsee, /ecinvsee
+- /milk, /nofire, /invsee, /ecinvsee
 
 # Features
 - AntiXray (by HimmelKreis4865)
@@ -66,7 +66,6 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - /home <Homename> (Teleportiere dich zu deinem Home)
 - /kickall (Kicke alle Spieler)
 - /kick <Spieler|Grund> (Kicke einen Spieler mit oder ohne Grund)
-- /kiz (Nutze 3 Verschiedene Kits)
 - /kreativ (Setze deinen/anderen Spielmodus zu Kreativ)
 - /listhome (Liste deine Homes auf)
 - /listwarp (Liste alle Warps auf)
@@ -74,6 +73,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - /nick (Nicke dich selbst)
 - /night (Stelle die Zeit auf Nacht)
 - /nightvision (Gebe dir 10 Minuten Nachtsicht)
+- /nuke (Sprenge ein dickes loch in den Bodem)
 - /nodm (Aktiviere/Deaktiviere deine Privatnachrrichten)
 - /payall (Schenke jedem Spieler Geld)
 - /paycoins (Gebe dir selbst 1000 Coins)
@@ -88,6 +88,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - /sethome (Setze einen Home)
 - /setwarp (Setze einen Warp)
 - /sign (Signiere ein Item)
+- /size (Verändere deine Größe)
 - /stats (Siehe deine Stats ein)
 - /sudo (Führe ein Befehl oder sene eine Nachrricht über ein anderen Spieler)
 - /supervanish (Gehe in den SuperVansih)

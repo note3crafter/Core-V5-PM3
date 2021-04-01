@@ -40,7 +40,7 @@ class ZuschauerCommand extends Command
             return false;
         }
         if (isset($args[0])) {
-            if ($sender->hasPermission("core.command.spectator.use")) {
+            if ($sender->hasPermission("core.command.spectator.other")) {
                 $victim = $this->plugin->getServer()->getPlayer($args[0]);
                 $target = Server::getInstance()->getPlayer(strtolower($args[0]));
                 if ($target == null) {
@@ -49,7 +49,7 @@ class ZuschauerCommand extends Command
                 } else {
                     $victim->setGamemode(3);
                     $victim->sendMessage($config->get("prefix") . "§6Du bist nun im §eZuschauer §6modus.");
-                    $sender->sendMessage($config->get("prefix") . "§6Der Spielmodus von $victim wurde auf §eZuschauer gesetzt.");
+                    $sender->sendMessage($config->get("prefix") . "§6Der Spielmodus von " . $victim->getName() . " wurde auf §eZuschauer gesetzt.");
                     return false;
                 }
             } else {
