@@ -10,12 +10,17 @@ inames: false #aktiviere/deaktiviere die ItemNamen
 
 #Blitze beim Join
 blitze: false #aktiviere/deaktiviere Blitze beim Joinen des Servers
+sound: true #aktiviere/deaktiviere den Donner
 
 #NetzwerkName
 networkname: "CoreV5" #schreibe hier dein servername oder was frag mich rein...
 
+#EconomySystem
+DefaultMoney: 1000
+
 #Weitere Einstellungen
 defaultspawn: true
+rejoinallowed: true #möchtest du das die Spieler automatich rejoinen?
 rejoinserverip: 127.0.0.1
 rejoinserverport: 19132
 maxhomes: 10 #Setze ein Limit für Homes

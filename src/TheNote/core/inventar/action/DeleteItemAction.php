@@ -7,29 +7,21 @@
 //     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
 //     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
 //   Copyright by TheNote! Not for Resale! Not for others
-//                        2017-2020
+//
 
-declare(strict_types = 1);
+namespace TheNote\core\inventar\action;
 
-namespace TheNote\core\tile;
+use pocketmine\inventory\transaction\action\CreativeInventoryAction;
+use pocketmine\item\Item;
+use pocketmine\Player;
 
+class DeleteItemAction extends CreativeInventoryAction {
 
-use pocketmine\tile\Tile as Tile;
-use TheNote\core\tile\JBTile;
+    public function __construct(Item $sourceItem, Item $targetItem){
+        parent::__construct($sourceItem, $targetItem, CreativeInventoryAction::TYPE_DELETE_ITEM);
+    }
 
-abstract class Tiles extends Tile
-{
-    public const
-        JUKEBOX = "Jukebox", CAULDRON = "Cauldron";
-    public const SHULKER_BOX = "ShulkerBox";
-
-
-
-    public static function init() {
-        self::registerTile(BrewingStand::class);
-        self::registerTile(Cauldron::class);
-        self::registerTile(ShulkerBox::class, [self::SHULKER_BOX, "minecraft:shulker_box"]);
-        JBTile::registerTile(JBTile::class, ["Jukebox"]);
-        Tile::registerTile(Beacon::class, [Beacon::BEACON, "minecraft:beacon"]);
+    public function isValid(Player $source) : bool {
+        return true;
     }
 }

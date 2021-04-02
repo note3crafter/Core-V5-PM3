@@ -7,29 +7,24 @@
 //     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
 //     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
 //   Copyright by TheNote! Not for Resale! Not for others
-//                        2017-2020
+//
 
 declare(strict_types = 1);
 
-namespace TheNote\core\tile;
+namespace TheNote\core\item;
 
+use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
+use pocketmine\item\Item;
 
-use pocketmine\tile\Tile as Tile;
-use TheNote\core\tile\JBTile;
-
-abstract class Tiles extends Tile
-{
-    public const
-        JUKEBOX = "Jukebox", CAULDRON = "Cauldron";
-    public const SHULKER_BOX = "ShulkerBox";
-
-
-
-    public static function init() {
-        self::registerTile(BrewingStand::class);
-        self::registerTile(Cauldron::class);
-        self::registerTile(ShulkerBox::class, [self::SHULKER_BOX, "minecraft:shulker_box"]);
-        JBTile::registerTile(JBTile::class, ["Jukebox"]);
-        Tile::registerTile(Beacon::class, [Beacon::BEACON, "minecraft:beacon"]);
+class Beacon extends Item {
+    public function __construct($meta = 0){
+        parent::__construct(self::BEACON, $meta, "Beacon");
+    }
+    public function getBlock() : Block{
+        return BlockFactory::get(Block::BEACON);
+    }
+    public function getMaxStackSize() : int{
+        return 64;
     }
 }

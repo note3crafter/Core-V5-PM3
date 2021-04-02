@@ -9,26 +9,34 @@
 //   Copyright by TheNote! Not for Resale! Not for others
 //
 
-declare(strict_types = 1);
+namespace TheNote\core\inventar;
 
-namespace TheNote\core\item;
+use pocketmine\inventory\ContainerInventory;
+use pocketmine\level\Position;
+use pocketmine\network\mcpe\protocol\types\WindowTypes;
+use pocketmine\Player;
 
-use pocketmine\item\Item;
+class BeaconInventory extends ContainerInventory {
 
-class Elytra extends Item
-{
-    public function __construct($meta = 0){
-        parent::__construct(Item::ELYTRA, $meta, "Elytra Wings");
+    protected $holder;
+
+    public function __construct(Position $pos) {
+        parent::__construct($pos->asPosition());
     }
-
-    public function getMaxDurability(): int{
-        return 433;
+    public function getNetworkType() : int {
+        return WindowTypes::BEACON;
     }
-    public function getArmorSlot() : int{
+    public function getName() : string {
+        return "Beacon";
+    }
+    public function getDefaultSize() : int {
         return 1;
     }
-
-    public function getMaxStackSize() : int{
-        return 1;
+    public function getHolder() {
+        return $this->holder;
+    }
+    public function onClose(Player $who) : void {
+        parent::onClose($who);
+        $this->dropContents($this->holder->getLevel(), $this->holder->add(0.5, 0.5, 0.5));
     }
 }

@@ -9,37 +9,35 @@
 //   Copyright by TheNote! Not for Resale! Not for others
 //
 
-namespace TheNote\core\server;
+namespace TheNote\core\command;
 
+use pocketmine\event\Listener;
+use pocketmine\Player;
 use TheNote\core\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\Server;
 use pocketmine\utils\Config;
 
-class Version extends Command {
-
+class MyMoneyCommand extends Command implements Listener
+{
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        parent::__construct("version", $config->get("prefix") . "§6Zeigt die Version des Servers an", "/version" ,["ver"]);
-        $this->plugin = $plugin;
+        parent::__construct("mymoney", $config->get("prefix") . "Siehe deinen Geldstand", "/mymoney");
     }
 
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-
-        if (!$this->testPermission($sender)){
+        if (!$sender instanceof Player) {
+            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
             return false;
         }
-        $v = Main::$version;
-        $p = Main::$protokoll;
-        $mcpe = Main::$mcpeversion;
-        $date = Main::$dateversion;
-        $sender->sendMessage($config->get("info"). "Dieser Server läuft mir Core Version $v für Minecraft: Bedrock Edition v$mcpe (Protokollversion $p) Stand : $date ");
-
-        return false;
+        $money = new Config($this->plugin->getDataFolder() . Main::$cloud . "Money.yml", Config::YAML);
+        $name = $sender->getName();
+        $mymoney = $money->getNested("money.$name");
+        $sender->sendMessage($config->get("money") . "Dein Geldstand ist §f: §e" . $mymoney . "$");
+        return true;
     }
 }

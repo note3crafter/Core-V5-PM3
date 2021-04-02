@@ -13,16 +13,17 @@ declare(strict_types = 1);
 
 namespace TheNote\core\blocks;
 
-use pocketmine\block\Block;
-use TheNote\core\Main;
 use pocketmine\block\BlockFactory;
+use TheNote\core\Main;
 
 class BlockManager {
-	public static function init(): void{
-		BlockFactory::registerBlock(new SlimeBlock(), true);
-		BlockFactory::registerBlock(new EndPortalFrame(), true);
-		BlockFactory::registerBlock(new FrostedIce(), true);
-		BlockFactory::registerBlock(new Cauldron(), true);
+
+	public static function init(): void
+    {
+        BlockFactory::registerBlock(new SlimeBlock(), true);
+        BlockFactory::registerBlock(new EndPortalFrame(), true);
+        BlockFactory::registerBlock(new FrostedIce(), true);
+        BlockFactory::registerBlock(new Cauldron(), true);
         BlockFactory::registerBlock(new Sponge(), true);
         BlockFactory::registerBlock(new BrewingStand, true);
         BlockFactory::registerBlock(new EndPortal(), true);
@@ -30,6 +31,7 @@ class BlockManager {
         BlockFactory::registerBlock(new Obsidian(), true);
         BlockFactory::registerBlock(new ShulkerBox(), true);
         BlockFactory::registerBlock(new UndyedShulkerBox(), true);
-        //BlockFactory::registerBlock(new Jukebox(), true); Nicht Funktionsfähig
+        BlockFactory::registerBlock(new Jukebox(), true);
+        BlockFactory::registerBlock(new Beacon(), true);
     }
 }

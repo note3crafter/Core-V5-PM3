@@ -9,14 +9,13 @@
 //   Copyright by TheNote! Not for Resale! Not for others
 //
 
-declare(strict_types = 1);
-
 namespace TheNote\core\item;
 
-use pocketmine\inventory\ShapedRecipe;
-use pocketmine\inventory\ShapelessRecipe;
+use pocketmine\block\Block;
 use pocketmine\item\Item;
+use pocketmine\item\ItemBlock;
 use pocketmine\item\ItemFactory;
+use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 
 class ItemManager
 {
@@ -47,20 +46,23 @@ class ItemManager
         ItemFactory::registerItem(new NetheriteAxe(), true);
         ItemFactory::registerItem(new NetheritePickaxe(), true);
         ItemFactory::registerItem(new NetheriteHoe(), true);
+        ItemFactory::registerItem(new Campfire(), true);
+        ItemFactory::registerItem(new Camera(), true);
+        ItemFactory::registerItem(new Beacon(), true);
 
         //ItemFactory::registerItem(new Fireworks(), true); Defekt... Wer bock hat es zu repaieren nur zu!
-        ItemFactory::registerItem(new Record(Item::RECORD_13, 0, "Music Disc 13"), true);
-        ItemFactory::registerItem(new Record(Item::RECORD_CAT, 0, "Music Disc cat"), true);
-        ItemFactory::registerItem(new Record(Item::RECORD_BLOCKS, 0, "Music Disc blocks"), true);
-        ItemFactory::registerItem(new Record(Item::RECORD_CHIRP, 0, "Music Disc chirp"), true);
-        ItemFactory::registerItem(new Record(Item::RECORD_FAR, 0, "Music Disc far"), true);
-        ItemFactory::registerItem(new Record(Item::RECORD_MALL, 0, "Music Disc mall"), true);
-        ItemFactory::registerItem(new Record(Item::RECORD_MELLOHI, 0, "Music Disc mellohi"), true);
-        ItemFactory::registerItem(new Record(Item::RECORD_STAL, 0, "Music Disc stal"), true);
-        ItemFactory::registerItem(new Record(Item::RECORD_STRAD, 0, "Music Disc strad"), true);
-        ItemFactory::registerItem(new Record(Item::RECORD_WARD, 0, "Music Disc ward"), true);
-        ItemFactory::registerItem(new Record(Item::RECORD_11, 0, "Music Disc 11"), true);
-        ItemFactory::registerItem(new Record(Item::RECORD_WAIT, 0, "Music Disc wait"), true);
+        ItemFactory::registerItem(new Record(500, "13", LevelSoundEventPacket::SOUND_RECORD_13), true);
+        ItemFactory::registerItem(new Record(501, "Cat", LevelSoundEventPacket::SOUND_RECORD_CAT), true);
+        ItemFactory::registerItem(new Record(502, "Blocks", LevelSoundEventPacket::SOUND_RECORD_BLOCKS), true);
+        ItemFactory::registerItem(new Record(503, "Chirp", LevelSoundEventPacket::SOUND_RECORD_CHIRP), true);
+        ItemFactory::registerItem(new Record(504, "Far", LevelSoundEventPacket::SOUND_RECORD_FAR), true);
+        ItemFactory::registerItem(new Record(505, "Mall", LevelSoundEventPacket::SOUND_RECORD_MALL), true);
+        ItemFactory::registerItem(new Record(506, "Mellohi", LevelSoundEventPacket::SOUND_RECORD_MELLOHI), true);
+        ItemFactory::registerItem(new Record(507, "Stal", LevelSoundEventPacket::SOUND_RECORD_STAL), true);
+        ItemFactory::registerItem(new Record(508, "Strad", LevelSoundEventPacket::SOUND_RECORD_STRAD), true);
+        ItemFactory::registerItem(new Record(509, "Ward", LevelSoundEventPacket::SOUND_RECORD_WARD), true);
+        ItemFactory::registerItem(new Record(510, "11", LevelSoundEventPacket::SOUND_RECORD_11), true);
+        ItemFactory::registerItem(new Record(511, "Wait", LevelSoundEventPacket::SOUND_RECORD_WAIT), true);
 
         Item::initCreativeItems();
 

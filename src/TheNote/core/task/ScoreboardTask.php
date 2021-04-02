@@ -58,7 +58,10 @@ class ScoreboardTask extends Task
         $stats = new Config($this->plugin->getDataFolder() . Main::$statsfile . $this->player->getLowerCaseName() . ".json", Config::JSON);
         $hei = new Config($this->plugin->getDataFolder() . Main::$heifile . $this->player->getLowerCaseName() . ".json", Config::JSON);
         $settings = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+        $playerdata = new Config($this->plugin->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
+        $money = new Config($this->plugin->getDataFolder() . Main::$cloud . "Money.yml", Config::YAML);
 
+        $mymoney = $money->getNested("money." .$this->player->getName());
         $votes = $stats->get("votes");
         $joins = $stats->get("joins");
         $break = $stats->get("break");
@@ -73,31 +76,13 @@ class ScoreboardTask extends Task
         $pk->sortOrder = 0;
         $this->player->sendDataPacket($pk);
         $this->numberPacket($this->player, 1, "§eDein Rang");
-        if ($gruppe->get("Default") === true) {
-            $this->numberPacket($this->player, 2, "§f➥ " . $settings->get("spieler"));
-        } elseif ($gruppe->get("Owner") === true) {
-            $this->numberPacket($this->player, 2, "§f➥ " . $settings->get("owner"));
-        } elseif ($gruppe->get("Admin") === true) {
-            $this->numberPacket($this->player, 2, "§f➥ " . $settings->get("admin"));
-        } elseif ($gruppe->get("Developer") === true) {
-            $this->numberPacket($this->player, 2, "§f➥ " . $settings->get("developer"));
-        } elseif ($gruppe->get("Moderator") === true) {
-            $this->numberPacket($this->player, 2, "§f➥ " . $settings->get("moderator"));
-        } elseif ($gruppe->get("Supporter") === true) {
-            $this->numberPacket($this->player, 2, "§f➥ " . $settings->get("supporter"));
-        } elseif ($gruppe->get("Builder") === true) {
-            $this->numberPacket($this->player, 2, "§f➥ " . $settings->get("builder"));
-        } elseif ($gruppe->get("Hero") === true) {
-            $this->numberPacket($this->player, 2, "§f➥ " . $settings->get("hero"));
-        } elseif ($gruppe->get("YouTuber") === true) {
-            $this->numberPacket($this->player, 2, "§f➥: " . $settings->get("youtuber"));
-        } elseif ($gruppe->get("Suppremium") === true) {
-            $this->numberPacket($this->player, 2, "§f➥ " . $settings->get("suppremium"));
-        } elseif ($gruppe->get("Premium") === true) {
-            $this->numberPacket($this->player, 2, "§f➥ " . $settings->get("premium"));
-        }
+        $this->numberPacket($this->player, 2, "§f➥ " .   $playerdata->getNested($this->player->getName() . ".groupprefix"));
         $this->numberPacket($this->player, 3, "§eDein Geldstand");
-        $this->numberPacket($this->player, 4, "§f➥ §e" . $this->plugin->economyAPI->myMoney($this->player) . "§e$");
+        if ($this->plugin->economyapi === null) {
+            $this->numberPacket($this->player, 4, "§f➥ §e" . $mymoney . "§e$");
+        } else {
+            $this->numberPacket($this->player, 4, "§f➥ §e" . $this->plugin->economyAPI->myMoney($this->player) . "§e$");
+        }
         $this->numberPacket($this->player, 5, "§eDeine Coins");
         $this->numberPacket($this->player, 6, "§f➥ §e" . $user->get("coins"));
         $this->numberPacket($this->player, 7, "§aDein Partner§f/§ain");

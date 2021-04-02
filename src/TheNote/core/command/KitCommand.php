@@ -54,6 +54,7 @@ class KitCommand extends Command
                 case 0: #+7 day
                     $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
                     $kit = new Config($this->plugin->getDataFolder() . Main::$setup . "kitsettings.yml", Config::YAML);
+                    $money = new Config($this->plugin->getDataFolder() . Main::$cloud . "Money.yml", Config::YAML);
                     $bannedtime = $user->get("weekcrate");
                     $time = new DateTime("$bannedtime", new DateTimeZone("Europe/Berlin"));
                     $now = new DateTime("now", new DateTimeZone("Europe/Berlin"));
@@ -72,7 +73,13 @@ class KitCommand extends Command
                         $newtime->modify("+7 day");
                         $user->set("weekcrate", $newtime->format("d.m.Y H:i"));
                         $user->save();
-                        $mymoney->addMoney($sender, $kit->get("moneyweekly"));
+                        if ($this->plugin->economyapi === null) {
+                            $old = $money->getNested("money." . $sender->getName());
+                            $money->setNested("money." . $sender->getName(), $old + $kit->get("moneyweekly"));
+                            $money->save();
+                        } else {
+                            $mymoney->addMoney($sender, $kit->get("moneyweekly"));
+                        }
                         $user->set("coins", $user->get("coins") + 200);
                         $user->save();
                         $item->getInventory()->addItem(Item::get($kit->get("item1w")));
@@ -92,6 +99,7 @@ class KitCommand extends Command
                 case 1: #+1 day
                     $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
                     $kit = new Config($this->plugin->getDataFolder() . Main::$setup . "kitsettings.yml", Config::YAML);
+                    $money = new Config($this->plugin->getDataFolder() . Main::$cloud . "Money.yml", Config::YAML);
                     $name = $sender->getName();
                     $inv = $sender->getInventory();
                     $emptySlots = $inv->getSize() - count($inv->getContents());
@@ -110,7 +118,13 @@ class KitCommand extends Command
                         $user->set("dailycrate", $newtime->format("d.m.Y H:i"));
                         $user->save();
                         $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), 'key Daily ' . $name . ' 1');
-                        $mymoney->addMoney($sender, $kit->get("moneydaily"));
+                        if ($this->plugin->economyapi === null) {
+                            $old = $money->getNested("money." . $sender->getName());
+                            $money->setNested("money." . $sender->getName(), $old + $kit->get("moneydaily"));
+                            $money->save();
+                        } else {
+                            $mymoney->addMoney($sender, $kit->get("moneydaily"));
+                        }
                         $user->set("coins", $user->get("coins") + $kit->get("coinsdaily"));
                         $user->save();
                         $item->getInventory()->addItem(Item::get($kit->get("item1d")));
@@ -130,6 +144,7 @@ class KitCommand extends Command
                 case 2: #+ 1 hour
                     $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
                     $kit = new Config($this->plugin->getDataFolder() . Main::$setup . "kitsettings.yml", Config::YAML);
+                    $money = new Config($this->plugin->getDataFolder() . Main::$cloud . "Money.yml", Config::YAML);
                     $name = $sender->getName();
                     $inv = $sender->getInventory();
                     $emptySlots = $inv->getSize() - count($inv->getContents());
@@ -148,7 +163,13 @@ class KitCommand extends Command
                         $user->set("hourcrate", $newtime->format("d.m.Y H:i"));
                         $user->save();
                         $this->plugin->getServer()->dispatchCommand(new ConsoleCommandSender(), 'key Stundlicher ' . $name . ' 1');
-                        $mymoney->addMoney($sender, $kit->get("moneyhour"));
+                        if ($this->plugin->economyapi === null) {
+                            $old = $money->getNested("money." . $sender->getName());
+                            $money->setNested("money." . $sender->getName(), $old + $kit->get("moneyhour"));
+                            $money->save();
+                        } else {
+                            $mymoney->addMoney($sender, $kit->get("moneyhour"));
+                        }
                         $item->getInventory()->addItem(Item::get($kit->get("item1h")));
                         $item->getInventory()->addItem(Item::get($kit->get("item2h")));
                         $item->getInventory()->addItem(Item::get($kit->get("item3h")));

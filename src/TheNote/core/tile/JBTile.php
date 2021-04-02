@@ -101,8 +101,6 @@ class JBTile extends Spawnable{
     public function onUpdate() : bool{
         $plug = Main::getInstance();
                 $this->level->addParticle(new GenericParticle($this->add($this->randomFloat(0.3,0.7), $this->randomFloat(1.2,1.6), $this->randomFloat(0.3,0.7)), 36));
-
-
         return true;
     }
     public function readSaveData(CompoundTag $nbt) : void{

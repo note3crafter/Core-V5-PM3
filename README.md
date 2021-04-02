@@ -8,17 +8,25 @@
 # Fehler & Bugs
 Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren kann... Ihr dürft auch Vorschläge machen was ich sonmnst noch reinmachen kann.
 # Mindestanforderungen 
-- 2 Kern CPU (Besten Falls hohe Singelcore Performance
-- 2GB Ram 
+- 2 Kern CPU (Besten Falls hohe Singelcore Performance)
+- 1GB Ram 
 - 1GB Festplatte
 
 # Ohne dies Funktioniert die Core nicht 
 - MyPlot -> Sollte drinnen sein wegen dem LiftSystem aber kein Muss
-- EconomyAPI -> Ohne dies kann man nicht Joinen
+
+# Neues!
+-> GroupSystem vollständig überarbeitet!
+-> Neues EconomySystem!
+-> Neue Blöcke wie Jukebox & Beacon
 
 # Für die Zukunft Geplant :
 - HeadSystem
 - /milk, /nofire, /invsee, /ecinvsee
+- rewrite BoosterCommand
+- EconomyShop (Schildersystem etc)
+- API fürs EconomySystem
+- /top command
 
 # Features
 - AntiXray (by HimmelKreis4865)
@@ -34,6 +42,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - Viele Weitere Kleinigkeiten
 - Gruppensystem (Nutzbar mit PurePerms & co! Es wird kein PureChat etc Untertzützt)
 - Farbiges Schreiben mit &
+- Economy System (Kompatible mit EconomyAPI) (Money.yml kann weitergenutzt werden)
 
 # Commands
 - /abenteuer (Setze deinen/anderen Spielermodus zu Abenteuer)
@@ -102,7 +111,14 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - /vote (Vote für deinen Server)
 - /warp (Teleporte dich zu deinem Warp)
 - /zuschauer (Setze deinen/anderen Spielmodus zu Zuschauer)
-
+-> Neues EconomySystem!
+- /topmoney 
+- /seemoney
+- /takemoney
+- /givemoney
+- /setmoney
+- /mymoney
+- /pay 
 
 # Hilfe & Support
 Ich werde die Core solange wie Möglich Aktuell halten und Updaten sofern es meine Zeit zulässt

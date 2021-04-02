@@ -48,7 +48,7 @@ class AFKCommand extends Command implements Listener
         }
         if ($sender instanceof Player) {
             if (isset($this->afk[strtolower($sender->getName())])) {
-                $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $player->getLowerCaseName(), Config::JSON);
+                $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $sender->getLowerCaseName(), Config::JSON);
                 unset($this->afk[strtolower($sender->getName())]);
                 $sender->sendMessage($config->get("afk") . "Du bist nun nicht mehr AFK!");
                 $sender->setImmobile(false);
@@ -56,7 +56,7 @@ class AFKCommand extends Command implements Listener
                 $cfg->set($cfg->get("afkchat") == false);
                 $cfg->save();
             } else {
-                $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $player->getLowerCaseName(), Config::JSON);
+                $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $sender->getLowerCaseName(), Config::JSON);
                 $this->afk[strtolower($sender->getName())] = strtolower($sender->getName());
                 $sender->sendMessage($config->get("afk") . "Du bist nun AFK!");
                 $sender->setImmobile(true);
@@ -81,9 +81,9 @@ class AFKCommand extends Command implements Listener
         $player = $event->getPlayer();
         $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $player->getLowerCaseName(), Config::JSON);
         if($cfg->get("afk") == true) {
-                $player->sendMessage("You can't move while AFK!");
-                $player->sendMessage("Type /afk to start moving!");
-                $event->setCancelled(true);
+            $player->sendMessage("You can't move while AFK!");
+            $player->sendMessage("Type /afk to start moving!");
+            $event->setCancelled(true);
         }
     }
 
@@ -91,17 +91,9 @@ class AFKCommand extends Command implements Listener
         $player = $event->getPlayer();
         $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $player->getLowerCaseName(), Config::JSON);
         if($cfg->get("afk") == true) {
-                $player->sendMessage("You can't chat while AFK!");
-                $player->sendMessage("Type /afk to start chatting!");
-                $event->setCancelled(true);
-        }
-    }
-    public function onDamage(EntityDamageEvent $event) {
-        if($event->getEntity() instanceof Player) {
-            $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $sender->getLowerCaseName(), Config::JSON);
-            if($cfg->get("afk") == true){
-                $event->setCancelled(true);
-            }
+            $player->sendMessage("You can't chat while AFK!");
+            $player->sendMessage("Type /afk to start chatting!");
+            $event->setCancelled(true);
         }
     }
 }

@@ -22,18 +22,22 @@ use pocketmine\math\Vector3;
 use pocketmine\block\BlockToolType;
 
 use TheNote\core\tile\JBTile;
-use TheNote\core\item\Record;
 use TheNote\core\Main;
 
-class JukeBox extends Solid{
+class Jukebox extends Solid{
 
     private $plugin;
 
-    public function __construct(int $id,string $name = null, Main $plugin)
+    /*public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
-        parent::__construct($id, 0, $name, null);
+        parent::__construct(84, 0, "Jukebox", 84);
+    }*/
+    public function __construct(){
+        parent::__construct(84, 0, "Jukebox", 84);
+
     }
+
     public function getFlammability() : int{
         return 2;
     }

@@ -53,3 +53,6 @@ core.command.tree
 core.command.unban
 core.command.userdata
 core.command.vanish
+core.command.givemoney
+core.command.takemoney
+core.command.setmoney

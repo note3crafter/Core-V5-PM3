@@ -36,6 +36,8 @@ class HeiratsListener implements Listener {
         $v = new Config($this->plugin->getDataFolder() . Main::$heifile . strtolower($victim) . ".json", Config::JSON);
         $hei = new Config($this->plugin->getDataFolder() . Main::$userfile . $player . ".json", Config::JSON);
         $heiv = new Config($this->plugin->getDataFolder() . Main::$userfile . $victim . ".json", Config::JSON);
+        $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+
 
         $v->set("heiraten", NULL);
         $v->set("heiraten-hit", 0);
@@ -54,7 +56,7 @@ class HeiratsListener implements Listener {
         $heiv->set("heistatus", false);
         $heiv->save();
 
-        $this->plugin->getServer()->broadcastMessage(Main::$hr . "§a " . $player . "§6 und §a" . $victim . "§6 haben sich grade geschiden!");
+        $this->plugin->getServer()->broadcastMessage($config->get("heirat") . "§a " . $player . "§6 und §a" . $victim . "§6 haben sich grade geschiden!");
 
         return true;
     }

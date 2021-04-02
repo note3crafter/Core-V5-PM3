@@ -71,12 +71,16 @@ class GruppeCommand extends Command
                     $sender->sendMessage($config->get("error") . "Die Gruppe gibt es Bereits!");
                     return false;
                 }
-                $groups->setNested("Groups." . $groupName . ".format", "$groupName : {heirat} {clan} {nickname} : {msg}");
+                $groups->setNested("Groups." . $groupName . ".groupprefix", $groupName);
+                $groups->setNested("Groups." . $groupName . ".format1", "[$groupName] {name} | {msg}");
+                $groups->setNested("Groups." . $groupName . ".format2", "[$groupName] {clan} {name} | {msg}");
+                $groups->setNested("Groups." . $groupName . ".format3", "[$groupName] {heirat} {name} | {msg}");
+                $groups->setNested("Groups." . $groupName . ".format4", "[$groupName] {heirat} {clan} {name} | {msg}");
                 $groups->setNested("Groups." . $groupName . ".nametag", "$groupName §7: §8{name}");
                 $groups->setNested("Groups." . $groupName . ".displayname", "$groupName §7: §8{name}");
                 $groups->setNested("Groups." . $groupName . ".permissions", ["CoreV5"]);
                 $groups->save();
-                $sender->sendMessage("gruppe $groupName hinzugefügt");
+                $sender->sendMessage($config->get("gruppe") . "§6Die Gruppe §f:§e $groupName §6wurde hinzugefügt.");
             }
             if ($args[0] == "list") {
                 if (empty($args[0])) {
@@ -126,7 +130,7 @@ class GruppeCommand extends Command
                 $perms[] = $permission;
                 $groups->setNested("Groups.{$groupName}.permissions", $perms);
                 $groups->save();
-                $sender->sendMessage($config->get("gruppe") . "die permissions" . $args[2] . "von gruppe" . $args[1] . "wurde hinzugefügt");
+                $sender->sendMessage($config->get("gruppe") . "§6Die permissions §e" . $args[2] . " §6wurde für die Gruppe§e " . $args[1] . " §6hinzugefügt");
             }
             if ($args[0] == "removeperm") {
                 if (empty($args[0])) {
@@ -152,7 +156,7 @@ class GruppeCommand extends Command
                 unset($perms[array_search($permission, $perms)]);
                 $groups->setNested("Groups.{$groupName}.permissions", $perms);
                 $groups->save();
-                $sender->sendMessage($config->get("group") . "Die Permission " . $args[2] . " wurde von der Gruppe " . $args[1] . " entfernt.");
+                $sender->sendMessage($config->get("group") . "§6Die Permission §e" . $args[2] . " §6wurde von der Gruppe§e " . $args[1] . " §6entfernt.");
             }
             if ($args[0] == "default") {
                 if (empty($args[0])) {
@@ -196,14 +200,16 @@ class GruppeCommand extends Command
                     $sender->sendMessage($config->get("error") . "Die Gruppe gibts nicht... überprüfe deine Eingabe!");
                     return true;
                 }
-                $playerdata->setNested($name . ".group", $group);
-                $playergroup = $playerdata->getNested($name.".group");
-                $nametag = str_replace("{name}", $target->getName(), $groups->getNested("Groups.{$playergroup}.nametag1"));
-                $displayname = str_replace("{name}", $target->getName(), $groups->getNested("Groups.{$playergroup}.displayname"));
-                $target->setNameTag($nametag);
-                $target->setDisplayName($displayname);
+                $playerdata->setNested($name . ".groupprefix", $group );
                 $playerdata->setNested($name . ".group", $group);
                 $playerdata->save();
+
+                $playergroup = $playerdata->getNested($name.".group");
+                $nametag = str_replace("{name}", $target->getName(), $groups->getNested("Groups.{$playergroup}.nametag"));
+                $displayname = str_replace("{name}", $target->getName(), $groups->getNested("Groups.{$playerdata->getNested($name.".group")}.displayname"));
+                $target->setNameTag($nametag);
+                $target->setDisplayName($displayname);
+
                 /*$permissionlist = (array)$groups->getNested("Groups.".$playergroup.".permissions", []);
                 foreach($permissionlist as $name => $data) {
                     $target->addAttachment($this->plugin)->setPermission($data, true);
