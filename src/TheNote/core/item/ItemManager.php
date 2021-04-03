@@ -45,7 +45,7 @@ class ItemManager
         ItemFactory::registerItem(new NetheritePickaxe(), true);
         ItemFactory::registerItem(new NetheriteHoe(), true);
         //ItemFactory::registerItem(new Campfire(), true);
-        ItemFactory::registerItem(new Camera(), true);
+        //ItemFactory::registerItem(new Camera(), true);
         ItemFactory::registerItem(new Beacon(), true);
         ItemFactory::registerItem(new JukeboxItem(), true);
         ItemFactory::registerItem(new Saddle(), true);
