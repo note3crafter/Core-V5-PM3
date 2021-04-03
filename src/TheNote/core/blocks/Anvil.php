@@ -7,23 +7,25 @@
 //     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
 //     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
 //   Copyright by TheNote! Not for Resale! Not for others
+//
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace TheNote\core\item;
+namespace TheNote\core\blocks;
 
+use pocketmine\block\Anvil as PMAnvil;
 use pocketmine\item\Item;
+use pocketmine\Player;
+use TheNote\core\inventar\AnvilInventory;
+use TheNote\core\server\WindowIds;
 
-class Campfire extends Item {
-
-    const CAMPFIRE = 720;
-
-    public function __construct(int $meta = 0)
+class Anvil extends PMAnvil
+{
+    public function onActivate(Item $item, Player $player = null): bool
     {
-        parent::__construct(self::CAMPFIRE, $meta, "Campfire");
-    }
-    public function getMaxStackSize(): int
-    {
-        return 64;
+        if ($player instanceof Player) {
+            $player->addWindow(new AnvilInventory($this), WindowIds::ANVIL);
+        }
+        return true;
     }
 }

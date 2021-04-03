@@ -2,18 +2,18 @@
 #Allgemeine Einstellungen
 
 #Commands & Funktionen
-AntiXray: false
-BoosterCommand: false
+AntiXray: true
+BoosterCommand: true
 StarterKit: true
 #ItemDisplay
-inames: false #aktiviere/deaktiviere die ItemNamen
+inames: true #aktiviere/deaktiviere die ItemNamen
 
 #Blitze beim Join
-blitze: false #aktiviere/deaktiviere Blitze beim Joinen des Servers
+blitze: true #aktiviere/deaktiviere Blitze beim Joinen des Servers
 sound: true #aktiviere/deaktiviere den Donner
 
 #NetzwerkName
-networkname: "CoreV5" #schreibe hier dein servername oder was frag mich rein...
+networkname: "§f[§eCore§4V5§f]" #schreibe hier dein servername oder was frag mich rein...
 
 #EconomySystem
 DefaultMoney: 1000
@@ -27,7 +27,17 @@ maxhomes: 10 #Setze ein Limit für Homes
 collision: true #aktiviere/deaktiviere collision/schubsen
 serverversion: pocketmine #nutze altay oder pocketmine um zwichen den verschiedenen versionen zu wechseln
 keepinventory: false #setze auf true um dein Inventar zu Behalten
-PingLimit: 300 #Setze das Maximale Pinglimit ein
+PingLimit: 30000 #Setze das Maximale Pinglimit ein
+
+#Regelwerk
+Regeln: true #Entscheide selber ob du die Regeln nutzten willst oder nicht...
+
+#HubCommand
+Defaultworld: world #Setze hier die Defaultwelt
+Gamemode: 2 #setze hier den Gamemode für die Welt
+Food: true #Aktivier/Deaktivier das Auffüllen des Hungers
+Heal: true #Aktivier/Deaktivier das Auffüllen des Lebens
+Teleportsound: true #Aktivier/Deaktivier den Teleportsound
 
 #LiftSystem
 helferprivatliftuse: true

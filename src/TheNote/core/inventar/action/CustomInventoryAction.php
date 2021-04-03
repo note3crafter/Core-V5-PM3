@@ -12,7 +12,7 @@
 namespace TheNote\core\inventar\action;
 
 
-use TheNote\core\beacon\Beacons;
+use TheNote\core\blocks\Beacon;
 use pocketmine\inventory\CraftingGrid;
 use pocketmine\inventory\transaction\action\CreativeInventoryAction;
 use pocketmine\inventory\transaction\action\DropItemAction;

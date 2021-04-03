@@ -42,6 +42,7 @@ use pocketmine\network\mcpe\NetworkBinaryStream;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\BatchPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
+use pocketmine\network\mcpe\protocol\LoginPacket;
 use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
@@ -58,9 +59,11 @@ use pocketmine\item\ItemFactory;
 //Command
 use TheNote\core\command\AFKCommand;
 use TheNote\core\command\BurnCommand;
+use TheNote\core\command\CommandManager;
 use TheNote\core\command\DayCommand;
 use TheNote\core\command\DelWarpCommand;
 use TheNote\core\command\GiveMoneyCommand;
+use TheNote\core\command\HubCommand;
 use TheNote\core\command\KickCommand;
 use TheNote\core\command\ListWarpCommand;
 use TheNote\core\command\MyMoneyCommand;
@@ -70,6 +73,7 @@ use TheNote\core\command\FeedCommand;
 use TheNote\core\command\HealCommand;
 use TheNote\core\command\NukeCommand;
 use TheNote\core\command\PayMoneyCommand;
+use TheNote\core\command\SellCreateCommand;
 use TheNote\core\command\SetMoneyCommand;
 use TheNote\core\command\SetWarpCommand;
 use TheNote\core\command\SizeCommand;
@@ -78,6 +82,9 @@ use TheNote\core\command\KreativCommand;
 use TheNote\core\command\AbenteuerCommand;
 use TheNote\core\command\ChatClearCommand;
 use TheNote\core\command\TopMoneyCommand;
+use TheNote\core\command\TpaacceptCommand;
+use TheNote\core\command\TpaCommand;
+use TheNote\core\command\TpadenyCommand;
 use TheNote\core\command\WarpCommand;
 use TheNote\core\command\ZuschauerCommand;
 use TheNote\core\command\FlyCommand;
@@ -133,11 +140,15 @@ use TheNote\core\command\SeeMoneyCommand;
 use TheNote\core\command\TakeMoneyCommand;
 
 //Server
+use TheNote\core\events\RegelEvent;
+use TheNote\core\events\SignSellEvent;
+use TheNote\core\formapi\SimpleForm;
 use TheNote\core\item\Fireworks;
 use TheNote\core\item\NetheriteBoots;
 use TheNote\core\item\NetheriteChestplate;
 use TheNote\core\item\NetheriteHelmet;
 use TheNote\core\item\NetheriteLeggings;
+use TheNote\core\server\RegelServer;
 use TheNote\core\server\Version;
 
 //Events
@@ -185,7 +196,6 @@ use pocketmine\Achievement;
 
 //Task
 use TheNote\core\task\ScoreboardTask;
-use TheNote\core\task\OnlineTask;
 use TheNote\core\task\StatstextTask;
 use TheNote\core\task\CallbackTask;
 use TheNote\core\task\RTask;
@@ -209,6 +219,7 @@ class Main extends PluginBase implements Listener
     public $config;
     public $economyapi;
     protected static $inventories = [];
+    public $invite = [];
 
     public $ores = [14, 15, 21, 22, 41, 42, 56, 57, 73, 129, 133, 152];
     /** @var array $cooldown */
@@ -225,10 +236,10 @@ class Main extends PluginBase implements Listener
     const ITEM_NETHERITE_HOE = 747;
 
     //PluginVersion
-    public static $version = "5.1.4ALPHA";
+    public static $version = "5.1.5ALPHA";
     public static $protokoll = "428";
     public static $mcpeversion = "1.16.210";
-    public static $dateversion = "02.04.2021";
+    public static $dateversion = "03.04.2021";
     public static $plname = "CoreV5";
 
     //Configs
@@ -256,6 +267,9 @@ class Main extends PluginBase implements Listener
     private $sessions = [];
     public $lists = [];
     public $clearItems;
+    protected $deviceModel;
+    protected $deviceOS;
+    protected $deviceId;
 
     final public static function getPacketsFromBatch(BatchPacket $packet)
     {
@@ -385,7 +399,7 @@ class Main extends PluginBase implements Listener
 
         $this->myplot = $this->getServer()->getPluginManager()->getPlugin("MyPlot");
         $this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-        $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+        $this->config = new Config($this->getDataFolder() . Main::$cloud. "Count.json", Config::JSON);
 
         if ($this->myplot === null) {
             $this->getLogger()->error("§cMyPlot fehlt bitte installiere dies bevor du die Core benutzt!");
@@ -398,10 +412,12 @@ class Main extends PluginBase implements Listener
         }*/
         $this->getLogger()->info($config->get("prefix") . "§6Plugins wurden Erfolgreich geladen!");
         $this->bank = new Config($this->getDataFolder() . "bank.json", Config::JSON);
-        new Config($this->getDataFolder() . Main::$cloud . "Count.json", Config::JSON);
         $votes = new Config($this->getDataFolder() . Main::$setup . "vote.yml", Config::YAML);
         //Blocks
         $this->getServer()->getPluginManager()->registerEvents(new PowerBlock($this), $this);
+
+
+        //$this->getServer()->getCommandMap()->register("sellsign", new SellCreateCommand($this));
 
         //Commands
         $this->getServer()->getCommandMap()->register("gma", new AbenteuerCommand($this));
@@ -480,6 +496,11 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("burn", new BurnCommand($this));
         $this->getServer()->getCommandMap()->register("kick", new KickCommand($this));
         $this->getServer()->getCommandMap()->register("afk", new AFKCommand($this));
+        $this->getServer()->getCommandMap()->register("tpa", new TpaCommand($this));
+        $this->getServer()->getCommandMap()->register("tpaccept", new TpaacceptCommand($this));
+        $this->getServer()->getCommandMap()->register("tpadeny", new TpadenyCommand($this));
+        $this->getServer()->getCommandMap()->register("hub", new HubCommand($this));
+
         //todo
         if ($this->economyapi === null) {
             $this->getServer()->getCommandMap()->register("mymoney", new MyMoneyCommand($this));
@@ -489,8 +510,10 @@ class Main extends PluginBase implements Listener
             $this->getServer()->getCommandMap()->register("takemoney", new TakeMoneyCommand($this));
             $this->getServer()->getCommandMap()->register("givemoney", new GiveMoneyCommand($this));
             $this->getServer()->getCommandMap()->register("topmoney", new TopMoneyCommand($this));
+            //$this->getServer()->getPluginManager()->registerEvents(new SignSellEvent($this), $this);
             $this->getLogger()->info("EconomyAPI ist nicht installiert daher wird das Interne Economysystem genutzt");
         }
+
         //Emotes
         $this->getServer()->getCommandMap()->register("burb", new burb($this));
         $this->getServer()->getCommandMap()->register("geil", new geil($this));
@@ -529,11 +552,14 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("restart", new RestartServer($this));
         $this->getServer()->getPluginManager()->registerEvents(new Rezept($this), $this);
         $this->getServer()->getPluginManager()->registerEvents(new Stats($this), $this);
+        if ($configs->get("Regeln") == true) {
+            $this->getServer()->getCommandMap()->register("regeln", new RegelServer($this));
+            $this->getServer()->getPluginManager()->registerEvents(new RegelEvent($this), $this);
+        }
         $this->getServer()->getCommandMap()->register("version", new Version($this));
 
         //Task
         $this->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "particle"]), 10);
-        $this->getScheduler()->scheduleRepeatingTask(new OnlineTask($this), 20);
         $this->getScheduler()->scheduleDelayedTask(new RTask($this), (20 * 60 * 10));
         $this->getScheduler()->scheduleRepeatingTask(new StatstextTask($this), 60);
         $this->getScheduler()->scheduleRepeatingTask(new PingTask($this), 20);
@@ -709,7 +735,7 @@ class Main extends PluginBase implements Listener
         $playerdata = new Config($this->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
         $playergroup = $playerdata->getNested($name . ".group");
         $nametag = str_replace("{name}", $player->getName(), $groups->getNested("Groups.{$playergroup}.nametag"));
-        $this->getServer()->broadcastMessage("§f[§a+§f] " . $nametag . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
+
 
         $this->addStrike($player);
         $fj = date('d.m.Y H:I') . date_default_timezone_set("Europe/Berlin");
@@ -807,8 +833,8 @@ class Main extends PluginBase implements Listener
             }
             //Economy
             $amount = $configs->get("DefaultMoney");
-            if($money->getNested("money.".$name) == null) {
-                $money->setNested($name.".money", $amount);
+            if($money->getNested("money." . $player->getName()) == null) {
+                $money->setNested("money." . $player->getName(), $amount);
                 $money->save();
             }
 
@@ -818,6 +844,7 @@ class Main extends PluginBase implements Listener
             $log->set("first-join", $fj);
             $log->set("first-ip", $player->getAddress());
             $log->set("first-XboxID", $player->getXuid());
+            $log->set("first-uuid", $player->getUniqueId());
             if ($configs->get("serverversion") == "altay") {
                 $log->set("first-gereat", $player->getDeviceModel());
                 $log->set("first-ID", $player->getPlayer()->getDeviceId());
@@ -841,6 +868,7 @@ class Main extends PluginBase implements Listener
             $user->set("scoreboard", 2);
             $user->set("coins", 100);
             $user->set("nodm", false);
+            $user->set("rulesaccpet", false);
             $user->set("clananfrage", false);
             $user->set("heistatus", false);
             $user->set("accept", false);
@@ -901,7 +929,29 @@ class Main extends PluginBase implements Listener
                 $msg = str_replace("{time}", $time, str_replace("{player}", $nickname, $format));
                 $this->sendMessage($nickname, $msg);
             }
+            if($configs->get("Regeln") == true) {
+                $form = new SimpleForm(function (Player $player, int $data = null) {
+
+                    $result = $data;
+                    if ($result === null) {
+                        return true;
+                    }
+                    switch ($result) {
+                        case 0:
+                            $player->sendMessage("§eWir haben auch ein Discordserver : §d");
+                            break;
+                        case 1:
+                            $player->kick("§cDu hättest dich besser entscheiden sollen :P", false);
+                    }
+                });
+                $form->setTitle("§0======§f[§cWillkommen]§0======");
+                $form->setContent("§eHerzlich willkommen " . $groups->get("nickname") . " wir wünschen dir Viel Spaß auf " . "! Bevor du loslegst zu Spielen solltest du Zuerst unsere Regeln sowie die Datenschutzgrundverordung durschlesen. Wenn du Hilfe brauchst schau einfach bei /hilfe nach dort findest du einige sachen die dir helfen können.\n\n Wir wünschen dir einen Guten Start!");
+                $form->addButton("§0Alles Klar!");
+                $form->addButton("§0Juckt mich Nicht");
+                $form->sendToPlayer($player);
+            }
         }
+        $this->getServer()->broadcastMessage("§f[§a+§f] " . $nametag . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
     }
 
     public function onPlayerQuit(PlayerQuitEvent $event)
@@ -953,6 +1003,7 @@ class Main extends PluginBase implements Listener
                 $sound->z = $player->getZ();
                 $sound->volume = 1;
                 $sound->pitch = 1;
+                Server::getInstance()->broadcastPacket($player->getLevel()->getPlayers(), $sound);
             }
         }
     }
@@ -1014,11 +1065,16 @@ class Main extends PluginBase implements Listener
         }
         $msg = $event->getMessage();
         $p = $event->getPlayer();
+        $money = new Config($this->getDataFolder() . Main::$cloud . "Money.yml", Config::YAML);
 
         if ($this->win != null && $this->price != null) {
             if ($msg == $this->win) {
                 $this->getServer()->broadcastMessage($config->get("info") . "§7Der Spieler §6" . $p->getNameTag() . " §7hat das Wort: §e" . $this->win . " §7entschlüsselt und hat §a" . $this->price . "€ §7gewonnen!");
-                $this->economy->addMoney($p->getName(), $this->price);
+                if($this->economyapi == null){
+                    $money->setNested("money." . $p->getName(), $money->getNested("money." . $p->getName()) + $this->price);
+                } else {
+                    $this->economy->addMoney($p->getName(), $this->price);
+                }
                 $this->win = null;
                 $this->price = null;
                 $event->setCancelled();
@@ -1382,6 +1438,34 @@ class Main extends PluginBase implements Listener
         $this->getServer()->getCraftingManager()->registerShapelessRecipe(new ShapelessRecipe([Item::get(Item::DIAMOND_BOOTS), Item::get(self::ITEM_NETHERITE_INGOT)], [Item::get(NetheriteBoots::NETHERITE_BOOTS)]));
     }
 
+    //TPASystem
+    public function setInvite(Player $sender, Player $target) : void{
+        $this->invite[$target->getName()] = $sender->getName();
+    }
+    public function getInvite($name) : string{
+        return $this->invite[$name];
+    }
+    public function getInviteControl(string $name) : bool{
+        return isset($this->invite[$name]);
+    }
+    public function handleLogin(LoginPacket $packet) {
+        $this->deviceId = $packet->clientData["DeviceId"] ?? null;
+        $this->deviceModel = $packet->clientData["DeviceModel"] ?? null;
+        $this->deviceOS = $packet->clientData["DeviceOS"] ?? null;
+        if(count($this->getServer()->getOnlinePlayers()) >= $this->getServer()->getMaxPlayers() and $this->getSessionById()->kick("Server ist Voll", false)){
+            return true;
+        }
+    }
+    public function getDeviceModel(): ?string{
+        return $this->deviceModel;
+    }
+    public function getDeviceOS(): ?int{
+        return $this->deviceOS;
+    }
+    public function getDeviceId(): ?string{
+        return $this->deviceId;
+    }
+    //Configs
     public function groupsgenerate()
     {
         if (!file_exists($this->getDataFolder() . Main::$cloud . "groups.yml")) {
@@ -1402,6 +1486,14 @@ class Main extends PluginBase implements Listener
             //Defaultgroup
             $groups->set("DefaultGroup", "default");
             $groups->save();
+        }
+    }
+    public function configgenerate()
+    {
+        if (!file_exists($this->getDataFolder() . Main::$cloud . "Money.yml")) {
+            $money = new Config($this->getDataFolder() . "Money.yml", Config::YAML);
+            $money->setNested("money.CoreV5.", 1000);
+            $money->save();
         }
     }
 }

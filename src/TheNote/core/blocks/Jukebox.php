@@ -28,11 +28,6 @@ class Jukebox extends Solid{
 
     private $plugin;
 
-    /*public function __construct(Main $plugin)
-    {
-        $this->plugin = $plugin;
-        parent::__construct(84, 0, "Jukebox", 84);
-    }*/
     public function __construct(){
         parent::__construct(84, 0, "Jukebox", 84);
 

@@ -11,9 +11,7 @@
 
 namespace TheNote\core\item;
 
-use pocketmine\block\Block;
 use pocketmine\item\Item;
-use pocketmine\item\ItemBlock;
 use pocketmine\item\ItemFactory;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 
@@ -46,9 +44,11 @@ class ItemManager
         ItemFactory::registerItem(new NetheriteAxe(), true);
         ItemFactory::registerItem(new NetheritePickaxe(), true);
         ItemFactory::registerItem(new NetheriteHoe(), true);
-        ItemFactory::registerItem(new Campfire(), true);
+        //ItemFactory::registerItem(new Campfire(), true);
         ItemFactory::registerItem(new Camera(), true);
         ItemFactory::registerItem(new Beacon(), true);
+        ItemFactory::registerItem(new JukeboxItem(), true);
+        ItemFactory::registerItem(new Saddle(), true);
 
         //ItemFactory::registerItem(new Fireworks(), true); Defekt... Wer bock hat es zu repaieren nur zu!
         ItemFactory::registerItem(new Record(500, "13", LevelSoundEventPacket::SOUND_RECORD_13), true);

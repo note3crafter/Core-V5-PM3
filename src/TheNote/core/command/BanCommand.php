@@ -74,6 +74,8 @@ class BanCommand extends Command
                         } catch (Exception $e) {
                         }
                     }
+                    $banneduuid = new Config($this->plugin->getDataFolder() . Main::$cloud . "banneduuid.yml");
+
                     $target = Server::getInstance()->getPlayer(strtolower($args[0]));
                     $format = $date->format('Y-m-d H:i:s');
                     $by = $sender->getName();
@@ -82,6 +84,8 @@ class BanCommand extends Command
                         $banlist->set(strtolower($args[0]), $id . ", " . $by . ", " . $format);
                         $sender->sendMessage($config->get("error") . "Der Spieler " . strtolower($args[0]) . " konnte nicht gefunden werden oder ist bereits gebannt!.");
                     } else {
+                        $banneduuid->setNested("uuids.banneduuids." . $target->getUniqueId(), $target->getName());
+                        $banneduuid->save();
                         $banlist->set(strtolower($sender2->getName()), $id . ", " . $by . ", " . $format);
                         $msg = "Der Spieler §2 {banned-player} §awurde erfolgreich für§2 {reason} §agebannt.";
                         $msg = str_replace("{reason}", $idList['Reason'], $msg);

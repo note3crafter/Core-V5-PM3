@@ -5,8 +5,8 @@
 DC: false #setze auf true um es zu aktivieren
 
 dclink: "Discord-Link"
-chatname: "Chat"
+chatname: "CoreV5"
 webhookurl: "" #füge hier deine Webhockurl ein
 webhookdc: "https://discordapp.com/api/webhooks/"
-webhookname: "Name"
+webhookname: "CoreV5"
 ...

@@ -7,23 +7,25 @@
 //     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
 //     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
 //   Copyright by TheNote! Not for Resale! Not for others
+//
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace TheNote\core\item;
+namespace TheNote\core\inventar;
 
-use pocketmine\item\Item;
+use pocketmine\inventory\AnvilInventory as PMAnvilInventory;
+use pocketmine\Player;
 
-class Campfire extends Item {
+class AnvilInventory extends PMAnvilInventory {
 
-    const CAMPFIRE = 720;
-
-    public function __construct(int $meta = 0)
-    {
-        parent::__construct(self::CAMPFIRE, $meta, "Campfire");
+    public function getDefaultSize(): int{
+        return 3;
     }
-    public function getMaxStackSize(): int
-    {
-        return 64;
+    public function onClose(Player $who): void{
+        foreach($this->getContents() as $item){
+            foreach($who->getInventory()->addItem($item) as $doesntFit){
+                $who->getLevel()->dropItem($this->holder, $doesntFit);
+            }
+        }
     }
 }

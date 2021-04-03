@@ -16,9 +16,11 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - MyPlot -> Sollte drinnen sein wegen dem LiftSystem aber kein Muss
 
 # Neues!
--> GroupSystem vollständig überarbeitet!
--> Neues EconomySystem!
--> Neue Blöcke wie Jukebox & Beacon
+- Neues TPA-System
+- Eine RegelUI die man bestätigen muss um auf dem Server spielen zu Können!
+- Überarbeitete Commands und paar Bugfixxes!
+- Neues RegelSystem! (Regeln derzeit Hardcode)
+- HubCommand
 
 # Für die Zukunft Geplant :
 - HeadSystem
@@ -27,6 +29,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - EconomyShop (Schildersystem etc)
 - API fürs EconomySystem
 - /top command
+- SprachenSystem (Leider sehr arbeitsintensiv daher kanns noch dauern)
 
 # Features
 - AntiXray (by HimmelKreis4865)
@@ -112,13 +115,16 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - /warp (Teleporte dich zu deinem Warp)
 - /zuschauer (Setze deinen/anderen Spielmodus zu Zuschauer)
 -> Neues EconomySystem!
-- /topmoney 
-- /seemoney
-- /takemoney
-- /givemoney
-- /setmoney
-- /mymoney
-- /pay 
+- /topmoney (Zeige die Topspieler mit den Meisten Geld)
+- /seemoney (Sehe das Geld eines anderen Spielers)
+- /takemoney (Nehme das Geld eines anderen Spielers)
+- /givemoney (Gebe einen Spieler das Geld)
+- /setmoney (Setze das Geld eines Spielers)
+- /mymoney (Sehe deinen Geldstand)
+- /pay (Zahle einen anderen Spieler dein Geld)
+-> TPASystem
+- /tpa, /tpaccept, /tpadeny (Schicke eine Tpa zu einem Spieler oder Lehne sie ab!
+- /regeln (Aktzeptiere sie)
 
 # Hilfe & Support
 Ich werde die Core solange wie Möglich Aktuell halten und Updaten sofern es meine Zeit zulässt
@@ -135,7 +141,7 @@ Und an unseren Forker! Gebt das Plugin nicht als Euers aus! Ich habe eine menge 
 - Crasher508 aka KommandToasti (Fürs repaieren mancher dinge! und er ist der Beste!)
 - CortexPE (Für ein Teil das ich von Teaspoon mit Intregiert habe) 
 - HimmelKreis4865 (Für AntiXray)
-- MDevPmmP (Für das GroupSystem)
+- MDevPmmP (Für das GroupSystem, EconomySystem)
 - LookitsAku & und vielen vielen weiteren Helfern!
 
 2017-2021 ©NoteLand & TheNote/Rudolf2000 
