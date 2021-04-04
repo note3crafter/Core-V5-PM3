@@ -33,6 +33,10 @@ class NickCommand extends Command
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+        $pf = new Config($this->plugin->getDataFolder() . Main::$gruppefile . $sender->getName() . ".json", Config::JSON);
+        $groups = new Config($this->plugin->getDataFolder(). Main::$cloud . "groups.yml", Config::YAML);
+        $playerdata = new Config($this->plugin->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
+
         if (!$sender instanceof Player) {
             $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
             return false;
@@ -41,12 +45,7 @@ class NickCommand extends Command
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
-        $playerfile = new Config($this->plugin->getDataFolder() . Main::$gruppefile . $sender->getName() . ".json", Config::JSON);
-        if ($playerfile->get("NickP") === false or NULL) {
-            $sender->sendMessage($config->get("error") . "§cDazu bist du nicht Berechtigt§f!");
-            return true;
-        }
-        if ($playerfile->get("Nick") === true) {
+        if ($pf->get("Nick") === true) {
             $sender->sendMessage($config->get("error") . "Du hast bereits ein Nickname");
             return true;
         }
@@ -54,48 +53,19 @@ class NickCommand extends Command
             $sender->sendMessage($config->get("info") . "§eBitte benutze /nick <name>");
             return true;
         }
+        $name = $sender->getName();
         If (isset($args[0])) {
-            if ($playerfile->get("NickP") === true) {
-                $nickname = $args[0];
-                if ($playerfile->get("Default") === true) {
-                    $sender->setDisplayName("§eS§f:§f" . $nickname . "§7");
-                    $sender->setNameTag($config->get("spieler") . " §f" . $nickname . "§7");
-                } else if ($playerfile->get("Owner") === true) {
-                    $sender->setDisplayName("§4O§f:§c" . $nickname . "§c");
-                    $sender->setNameTag($config->get("owner") . " §c" . $nickname . "§c");
-                } else if ($playerfile->get("Admin") === true) {
-                    $sender->setDisplayName("§cA§f:§c" . $nickname . "§c");
-                    $sender->setNameTag($config->get("admin") . " §c" . $nickname . "§c");
-                } else if ($playerfile->get("Developer") === true) {
-                    $sender->setDisplayName("§dD§f:§d" . $nickname . "§d");
-                    $sender->setNameTag($config->get("developer") . " §d" . $nickname . "§d");
-                } else if ($playerfile->get("Moderator") === true) {
-                    $sender->setDisplayName("§1M§f:§b" . $nickname . "§b");
-                    $sender->setNameTag($config->get("moderator") . " §b" . $nickname . "§b");
-                } else if ($playerfile->get("Builder") === true) {
-                    $sender->setDisplayName("§aB§f:§a" . $nickname . "§a");
-                    $sender->setNameTag($config->get("builder") . " §a" . $nickname . "§a");
-                } else if ($playerfile->get("Supporter") === true) {
-                    $sender->setDisplayName("§bS§f:§b" . $nickname . "§b");
-                    $sender->setNameTag($config->get("supporter") . " §b" . $nickname . "§b");
-                } else if ($playerfile->get("YouTuber") === true) {
-                    $sender->setDisplayName("§cY§fT:§f" . $nickname . "§f");
-                    $sender->setNameTag($config->get("youtuber") . " §f" . $nickname . "§f");
-                } else if ($playerfile->get("Hero") === true) {
-                    $sender->setDisplayName("§dH§f:§d" . $nickname . "§d");
-                    $sender->setNameTag($config->get("hero") . " §d" . $nickname . "§d");
-                } else if ($playerfile->get("Suppremium") === true) {
-                    $sender->setDisplayName("§3S§f:§3" . $nickname . "§7");
-                    $sender->setNameTag($config->get("suppremium") . " §3" . $nickname . "§3");
-                } else if ($playerfile->get("Premium") === true) {
-                    $sender->setDisplayName("§6P§f:§6" . $nickname . "§6");
-                    $sender->setNameTag($config->get("premium") . " §6" . $nickname . "§6");
-                }
-                $sender->sendMessage($config->get("info") . "Du hast deinen Nicknamen zu §e$nickname §6geändert!");
-                $playerfile->set("Nick", true);
-                $playerfile->set("Nickname", $args[0]);
-                $playerfile->save();
-            }
+
+            $nickname = $args[0];
+            $sender->sendMessage($config->get("info") . "§6Du hast deinen Nicknamen zu §e$nickname §6geändert!");
+            $pf->set("Nick", true);
+            $pf->set("Nickname", $args[0]);
+            $pf->save();
+            $playergroup = $playerdata->getNested($name . ".group");
+            $nametag = str_replace("{name}", $pf->get("Nickname"), $groups->getNested("Groups.{$playergroup}.nametag"));
+            $displayname = str_replace("{name}", $pf->get("Nickname"), $groups->getNested("Groups.{$playerdata->getNested($name.".group")}.displayname"));
+            $sender->setDisplayName($displayname);
+            $sender->setNameTag($nametag);
         }
         return true;
     }

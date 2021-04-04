@@ -1,6 +1,6 @@
 name: CoreV5
 main: TheNote\core\Main
-version: 5.1.5
+version: 5.1.6
 mcpe-protocol:
   - 388 # 1.13.x
   - 389 # 1.14.x
@@ -31,7 +31,7 @@ authors:
   - CortexPE #Braustand und mehr
   - HimmelKreis4865 #AntiXray
   - MDevPmmP #GroupSystem/EconomySystem
-description: Core v5.1.5 Alpha Release
+description: Core v5.1.6 Alpha Release
 
 permissions:
   core.command.adventure:

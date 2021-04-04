@@ -47,14 +47,13 @@ class ErfolgCommand extends Command
         });
         $form->setTitle($config->get("uiname"));
         $form->setContent("§6======§f[§2Erfolge§f]§6======\n" .
-            "§aErfolge Abgeslossen §f:§2 " . $stats->get("erfolge") . "§f/§27\n" .
+            "§aErfolge Abgeschlossen §f:§2 " . $stats->get("erfolge") . "§f/§27\n" .
             "§aBereits Gesprungen §f:§e " . $stats->get("jumps") . "§f/§e10000\n".
-            "§aBereits Gesprungen §f:§e " . $stats->get("jumps") . "§f/§e10000\n" .
             "§aDeine Kicks §f:§e " . $stats->get("kicks") . "§f/§e1000\n" .
             "§aDeine Joins §f:§e " . $stats->get("joins") . "§f/§e10000\n" .
             "§aAbgebaute Blöcke §f:§e " . $stats->get("break") . "§f/§e1000000\n" .
             "§aGesetzte Blöcke §f:§e " . $stats->get("place") . "§f/§e1000000\n" .
-            "§aGeschriebene Nachrrichten §f:§e " . $stats->get("messages") . "§f/§e1000000\n");
+            "§aGeschriebene Nachrichten §f:§e " . $stats->get("messages") . "§f/§e1000000\n");
         $form->addButton("§0OK", 0);
         $form->sendToPlayer($sender);
     }

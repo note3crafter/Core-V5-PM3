@@ -48,7 +48,9 @@ class Rezept  implements Listener {
         );
         $this->plugin->getServer()->getCraftingManager()->registerShapedRecipe($recipe3);
         $recipe4 = new ShapedRecipe(
-            ["XXX", "XYX", "XZX"],
+               ["XXX",
+                "XYX",
+                "XZX"],
             ["X" => $air, "Y" =>  $tailgrass, "Z" => $dirt],
             [$grass]
         );

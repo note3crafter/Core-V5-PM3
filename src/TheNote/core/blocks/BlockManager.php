@@ -15,7 +15,9 @@ namespace TheNote\core\blocks;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
+use pocketmine\item\ItemFactory;
 use TheNote\core\Main;
+//use JavierLeon9966\ExtendedBlocks\block\PlaceholderTrait;
 
 class BlockManager {
 

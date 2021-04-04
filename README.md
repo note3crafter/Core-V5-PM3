@@ -15,12 +15,10 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 # Ohne dies Funktioniert die Core nicht 
 - MyPlot -> Sollte drinnen sein wegen dem LiftSystem aber kein Muss
 
-# Neues!
-- Neues TPA-System
-- Eine RegelUI die man bestätigen muss um auf dem Server spielen zu Können!
-- Überarbeitete Commands und paar Bugfixxes!
-- Neues RegelSystem! (Regeln derzeit Hardcode)
-- HubCommand
+# Neues! v5.1.6
+- Fast alle Items/Blöcke der 1.16 sind vorhanden! Jedoch noch nicht aktiviert-> Folgt in Künftige Updates!
+- Überarbeitets NickSystem
+- Rechtschreinkorrekturen sowie Bugfixxes!
 
 # Für die Zukunft Geplant :
 - HeadSystem
@@ -28,6 +26,8 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - rewrite BoosterCommand
 - EconomyShop (Schildersystem etc)
 - API fürs EconomySystem
+- Neue Blöcke der 1.16
+- Internes WorlEdit
 - /top command
 - SprachenSystem (Leider sehr arbeitsintensiv daher kanns noch dauern)
 

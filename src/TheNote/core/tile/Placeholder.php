@@ -12,37 +12,14 @@
 declare(strict_types = 1);
 
 namespace TheNote\core\tile;
-
-use pocketmine\tile\Tile as Tile;
-use TheNote\core\tile\JBTile;
+use pocketmine\tile\Tile;
 use pocketmine\nbt\tag\CompoundTag;
-
-abstract class Tiles extends Tile implements PlaceholderInterface
-{
-    public const
-        JUKEBOX = "Jukebox", CAULDRON = "Cauldron";
-    public const SHULKER_BOX = "ShulkerBox";
-
+class Placeholder extends Tile implements PlaceholderInterface{
     use PlaceholderTrait;
-
-    protected function readSaveData(CompoundTag $nbt): void
-    {
+    protected function readSaveData(CompoundTag $nbt): void{
         $this->loadBlock($nbt);
     }
-
-    protected function writeSaveData(CompoundTag $nbt): void
-    {
+    protected function writeSaveData(CompoundTag $nbt): void{
         $this->saveBlock($nbt);
     }
-
-    public static function init() {
-        self::registerTile(BrewingStand::class);
-        self::registerTile(Cauldron::class);
-        self::registerTile(ShulkerBox::class, [self::SHULKER_BOX, "minecraft:shulker_box"]);
-        JBTile::registerTile(JBTile::class, ["Jukebox"]);
-        Tile::registerTile(Beacon::class, [Beacon::BEACON, "minecraft:beacon"]);
-    }
-
-
 }
-

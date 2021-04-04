@@ -1,6 +1,6 @@
 {
     "ALLGEMEIN": 0,
-    "prefix": "§f[§fCore§4V5§f] §6",
+    "prefix": "§f[§eCore§4V5§f] §6",
     "info": "§f[§eInfo§f] §f",
     "error": "§f[§cFehler§f] §c",
     "friend": "§f[§eFreunde§f] §6",
@@ -21,8 +21,9 @@
     "uiname": "§0======§f[§fCore§4V5§f]§0======",
     "votelink": "https://bit.ly/Bfvote",
     "slots": 10,
+    "servername": "§f[§eCore§4V5§f]",
     "SCOREBOARD": 0,
-    "ueberschrift": "§f======§f[§fCore§4V5§f]§f======",
+    "ueberschrift": "§f======[§eCore§4V5§f]======",
     "KILLNACHRRICHTEN": 0,
     "zuhoch": " hat sein leben verschissen",
     "entityattacke": " hat sich mit einem Wischmob angelegt",

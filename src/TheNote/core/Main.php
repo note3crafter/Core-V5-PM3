@@ -47,6 +47,7 @@ use pocketmine\network\mcpe\protocol\OnScreenTextureAnimationPacket;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
 use pocketmine\network\mcpe\protocol\PacketPool;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;
@@ -55,11 +56,12 @@ use pocketmine\utils\Config;
 use pocketmine\command\ConsoleCommandSender;
 use pocketmine\utils\Random;
 use pocketmine\item\ItemFactory;
-
+use TheNote\core\blocks\BlockFactory;
+use TheNote\core\tile\Placeholder as PTile;
+use pocketmine\tile\Tile;
 //Command
 use TheNote\core\command\AFKCommand;
 use TheNote\core\command\BurnCommand;
-use TheNote\core\command\CommandManager;
 use TheNote\core\command\DayCommand;
 use TheNote\core\command\DelWarpCommand;
 use TheNote\core\command\GiveMoneyCommand;
@@ -73,7 +75,6 @@ use TheNote\core\command\FeedCommand;
 use TheNote\core\command\HealCommand;
 use TheNote\core\command\NukeCommand;
 use TheNote\core\command\PayMoneyCommand;
-use TheNote\core\command\SellCreateCommand;
 use TheNote\core\command\SetMoneyCommand;
 use TheNote\core\command\SetWarpCommand;
 use TheNote\core\command\SizeCommand;
@@ -144,6 +145,7 @@ use TheNote\core\events\RegelEvent;
 use TheNote\core\events\SignSellEvent;
 use TheNote\core\formapi\SimpleForm;
 use TheNote\core\item\Fireworks;
+use TheNote\core\item\ItemManagerNewItems;
 use TheNote\core\item\NetheriteBoots;
 use TheNote\core\item\NetheriteChestplate;
 use TheNote\core\item\NetheriteHelmet;
@@ -200,6 +202,7 @@ use TheNote\core\task\StatstextTask;
 use TheNote\core\task\CallbackTask;
 use TheNote\core\task\RTask;
 use TheNote\core\task\PingTask;
+use const pocketmine\RESOURCE_PATH;
 
 class Main extends PluginBase implements Listener
 {
@@ -236,10 +239,10 @@ class Main extends PluginBase implements Listener
     const ITEM_NETHERITE_HOE = 747;
 
     //PluginVersion
-    public static $version = "5.1.5ALPHA";
+    public static $version = "5.1.6ALPHA";
     public static $protokoll = "428";
     public static $mcpeversion = "1.16.210";
-    public static $dateversion = "03.04.2021";
+    public static $dateversion = "04.04.2021";
     public static $plname = "CoreV5";
 
     //Configs
@@ -296,13 +299,48 @@ class Main extends PluginBase implements Listener
         return self::$instance;
     }
 
+    private static function registerRuntimeIds(): void{
+        $nameToLegacyMap = json_decode(file_get_contents(RESOURCE_PATH."vanilla/block_id_map.json"), true);
+        $metaMap = [];
+
+        foreach(RuntimeBlockMapping::getBedrockKnownStates() as $runtimeId => $state){
+            $name = $state->getString("name");
+            if(!isset($nameToLegacyMap[$name])){
+                continue;
+            }
+
+            $legacyId = $nameToLegacyMap[$name];
+            if(!isset($metaMap[$legacyId])){
+                $metaMap[$legacyId] = 0;
+            }
+
+            $meta = $metaMap[$legacyId]++;
+            if($meta > 15){
+                continue;
+            }
+
+            /** @see RuntimeBlockMapping::registerMapping() */
+            $registerMapping = new \ReflectionMethod(RuntimeBlockMapping::class, 'registerMapping');
+            $registerMapping->setAccessible(true);
+            $registerMapping->invoke(null, $runtimeId, $legacyId, $meta);
+        }
+    }
 
     public function onLoad()
     {
+
+
         ItemManager::init();
         EntityManager::init();
         BlockManager::init();
         Tiles::init();
+        $config = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);
+        if ($config->get("NewItems") == true){
+            self::registerRuntimeIds();
+            BlockFactory::init();
+            ItemManagerNewItems::init();
+            Tile::registerTile(PTile::class);
+        }
         PacketPool::registerPacket(new InventoryTransactionPacketV2());
         Achievement::add("create_full_beacon", "Beaconator", ["Create a full beacon"]);
         $this->getServer()->getCraftingManager()->registerShapedRecipe(
@@ -734,7 +772,7 @@ class Main extends PluginBase implements Listener
         $groups = new Config($this->getDataFolder() . Main::$cloud . "groups.yml", Config::YAML);
         $playerdata = new Config($this->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
         $playergroup = $playerdata->getNested($name . ".group");
-        $nametag = str_replace("{name}", $player->getName(), $groups->getNested("Groups.{$playergroup}.nametag"));
+        $nametag = str_replace("{name}", $nicks->get("nickname"), $groups->getNested("Groups.{$playergroup}.nametag"));
 
 
         $this->addStrike($player);
@@ -977,8 +1015,9 @@ class Main extends PluginBase implements Listener
         $config = new Config($this->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         $groups = new Config($this->getDataFolder() . Main::$cloud . "groups.yml", Config::YAML);
         $playerdata = new Config($this->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
+
         $playergroup = $playerdata->getNested($name . ".group");
-        $nametag = str_replace("{name}", $player->getName(), $groups->getNested("Groups.{$playergroup}.nametag"));
+        $nametag = str_replace("{name}", $nicks->get("nickname"), $groups->getNested("Groups.{$playergroup}.nametag"));
         $this->getServer()->broadcastMessage("§f[§c-§f] " . $nametag . " §chat den Server verlassen §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
     }
 
@@ -1072,6 +1111,7 @@ class Main extends PluginBase implements Listener
                 $this->getServer()->broadcastMessage($config->get("info") . "§7Der Spieler §6" . $p->getNameTag() . " §7hat das Wort: §e" . $this->win . " §7entschlüsselt und hat §a" . $this->price . "€ §7gewonnen!");
                 if($this->economyapi == null){
                     $money->setNested("money." . $p->getName(), $money->getNested("money." . $p->getName()) + $this->price);
+                    $money->save();
                 } else {
                     $this->economy->addMoney($p->getName(), $this->price);
                 }
