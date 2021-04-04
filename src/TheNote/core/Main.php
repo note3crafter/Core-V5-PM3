@@ -418,7 +418,7 @@ class Main extends PluginBase implements Listener
         $config = new Config($this->getDataFolder() . Main::$setup . "settings.json", Config::JSON);
         $kit = new Config($this->getDataFolder() . Main::$setup . "kitsettings.yml", Config::YAML);
 
-        $serverstats = new Config($this->getDataFolder() . "Cloud/stats.json", Config::JSON);
+        $serverstats = new Config($this->getDataFolder() . Main::$cloud . "stats.json", Config::JSON);
         $serverstats->set("aktiviert", $serverstats->get("aktivieret") + 1);
         $serverstats->save();
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
@@ -444,10 +444,6 @@ class Main extends PluginBase implements Listener
             $this->setEnabled(false);
             return;
         }
-        /*if ($this->economyapi === null) {
-            $this->getLogger()->error("§cEconomyAPI fehlt bitte installiere dies bevor du die Core benutzt!");
-            return;
-        }*/
         $this->getLogger()->info($config->get("prefix") . "§6Plugins wurden Erfolgreich geladen!");
         $this->bank = new Config($this->getDataFolder() . "bank.json", Config::JSON);
         $votes = new Config($this->getDataFolder() . Main::$setup . "vote.yml", Config::YAML);
@@ -623,6 +619,298 @@ class Main extends PluginBase implements Listener
         $this->getLogger()->info($banner);
     }
 
+    public function onPlayerJoin(PlayerJoinEvent $event)
+    {
+
+        //Discord
+        $dcsettings = new Config($this->getDataFolder() . Main::$setup . "discordsettings" . ".yml", Config::YAML);
+        $dcname = $dcsettings->get("chatname");
+        if ($dcsettings->get("DC") == true) {
+            $playername = $event->getPlayer()->getName();
+            $ar = getdate();
+            $time = $ar['hours'] . ":" . $ar['minutes'];
+            $format = "**" . $dcname . " : {time} : {player} : hat den Server Betreten!**";
+            $msg = str_replace("{time}", $time, str_replace("{player}", $playername, $format));
+            $this->sendMessage($playername, $msg);
+        }
+
+        //Weiteres
+        $player = $event->getPlayer();
+        $name = $player->getName();
+        $ainv = $player->getArmorInventory();
+        $all = $this->getServer()->getOnlinePlayers();
+        $groups = new Config($this->getDataFolder() . Main::$cloud . "groups.yml", Config::YAML);
+        $playerdata = new Config($this->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
+        $fj = date('d.m.Y H:I') . date_default_timezone_set("Europe/Berlin");
+        $gruppe = new Config($this->getDataFolder() . Main::$gruppefile . $player->getName() . ".json", Config::JSON);
+        $log = new Config($this->getDataFolder() . Main::$logdatafile . $player->getLowerCaseName() . ".json", Config::JSON);
+        $stats = new Config($this->getDataFolder() . Main::$statsfile . $player->getLowerCaseName() . ".json", Config::JSON);
+        $user = new Config($this->getDataFolder() . Main::$userfile . $player->getLowerCaseName() . ".json", Config::JSON);
+        $sstats = new Config($this->getDataFolder() . Main::$cloud . "stats.json", Config::JSON);
+        $hei = new Config($this->getDataFolder() . Main::$heifile . $player->getLowerCaseName() . ".json", Config::JSON);
+        $config = new Config($this->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+        $configs = new Config($this->getDataFolder() . Main::$setup . "Config" . ".yml", Config::YAML);
+        $cfg = new Config($this->getDataFolder() . Main::$setup . "starterkit.yml", Config::YAML, array());
+        $money = new Config($this->getDataFolder() . Main::$cloud . "Money.yml", Config::YAML);
+
+
+        $log->set("Name", $player->getName());
+        $log->set("last-IP", $player->getAddress());
+        $log->set("last-XboxID", $player->getPlayer()->getXuid());
+        if ($configs->get("serverversion") == "altay") {
+            $log->set("last-Geraet", $player->getPlayer()->getDeviceModel());
+            $log->set("last-ID", $player->getPlayer()->getDeviceId());
+        }
+        $log->set("last-online", $fj);
+        if ($user->get("heistatus") === false) {
+            $player->sendMessage($config->get("heirat") . "Du bist nicht verheiratet!");
+        }
+        if ($gruppe->get("Clanstatus") === false) {
+            $player->sendMessage($config->get("clans") . "Du bist im keinem Clan!");
+        }
+
+        $this->addStrike($player);
+        //Spieler Erster Join
+        if ($user->get("register") == null or false) {
+            $player = $event->getPlayer();
+            $ainv = $player->getArmorInventory();
+            if ($configs->get("StarterKit") == true) {
+                if ($cfg->get("Inventory", false)) {
+                    foreach ($cfg->get("Slots", []) as $item) {
+                        $result = Item::get($item["id"], $item["damage"], $item["count"]);
+                        $result->setCustomName($item["name"]);
+                        $result->setLore([$item["lore"]]);
+                        $player->getInventory()->setItem($item["slot"], $result);
+                    }
+                }
+                if ($cfg->get("Armor", false)) {
+                    $data = $cfg->get("helm");
+                    $item = Item::get($data["id"]);
+                    $item->setCustomName($data["name"]);
+                    $item->setLore([$data["lore"]]);
+                    $ainv->setHelmet($item);
+
+                    $data = $cfg->get("chest");
+                    $item = Item::get($data["id"]);
+                    $item->setCustomName($data["name"]);
+                    $item->setLore([$data["lore"]]);
+                    $ainv->setChestplate($item);
+
+                    $data = $cfg->get("leggins");
+                    $item = Item::get($data["id"]);
+                    $item->setCustomName($data["name"]);
+                    $item->setLore([$data["lore"]]);
+                    $ainv->setLeggings($item);
+
+                    $data = $cfg->get("boots");
+                    $item = Item::get($data["id"]);
+                    $item->setCustomName($data["name"]);
+                    $item->setLore([$data["lore"]]);
+                    $ainv->setBoots($item);
+                }
+            }
+            //Groupsystem
+
+            $defaultgroup = $groups->get("DefaultGroup");
+            $player = $event->getPlayer();
+            $name = $player->getName();
+            if (!$playerdata->exists($name)) {
+                $groupprefix = $groups->getNested("Groups." . $defaultgroup . ".groupprefix");
+                $playerdata->setNested($name . ".groupprefix", $groupprefix);
+                $playerdata->setNested($name . ".group", $defaultgroup);
+                $perms = $playerdata->getNested("{$name}.permissions", []);
+                $perms[] = "CoreV5";
+                $playerdata->setNested("{$name}.permissions", $perms);
+                $playerdata->save();
+            }
+
+            $playergroup = $playerdata->getNested($name . ".group");
+            $nametag = str_replace("{name}", $player->getName(), $groups->getNested("Groups.{$playergroup}.groupprefix"));
+            $displayname = str_replace("{name}", $player->getName(), $groups->getNested("Groups.{$playerdata->getNested($name.".group")}.displayname"));
+            $player->setNameTag($nametag);
+            $player->setDisplayName($displayname);
+
+            //Group Perms
+            $permissionlist = (array)$groups->getNested("Groups." . $playergroup . ".permissions", []);
+            foreach ($permissionlist as $name => $data) {
+                $player->addAttachment($this)->setPermission($data, true);
+            }
+            //Economy
+            $amount = $configs->get("DefaultMoney");
+            if($money->getNested("money." . $player->getName()) == null) {
+                $money->setNested("money." . $player->getName(), $amount);
+                $money->save();
+            }
+
+            //Resgister
+            $sstats->set("Users", $sstats->get("Users") + 1);
+            $sstats->save();
+            $log->set("first-join", $fj);
+            $log->set("first-ip", $player->getAddress());
+            $log->set("first-XboxID", $player->getXuid());
+            $log->set("first-uuid", $player->getUniqueId());
+            if ($configs->get("serverversion") == "altay") {
+                $log->set("first-gereat", $player->getDeviceModel());
+                $log->set("first-ID", $player->getPlayer()->getDeviceId());
+            }
+            $log->save();
+            $gruppe->set("Nick", false);
+            $gruppe->set("NickPlayer", false);
+            $gruppe->set("Nickname", $player->getName());
+            $gruppe->set("ClanStatus", false);
+            $gruppe->save();
+            $user->set("Clananfrage", false);
+            $user->set("Clan", "");
+            $user->set("register", true);
+            $hei->set("antrag", null);
+            $hei->set("antrag-abgelehnt", 0);
+            $hei->set("heiraten", null);
+            $hei->set("heiraten-hit", 0);
+            $hei->set("geschieden", 0);
+            $hei->save();
+            $user->set("scoreboard", 2);
+            $user->set("coins", 100);
+            $user->set("nodm", false);
+            $user->set("rulesaccpet", false);
+            $user->set("clananfrage", false);
+            $user->set("heistatus", false);
+            $user->set("accept", false);
+            $user->set("starterkit", true);
+            $user->set("explode", false);
+            $user->set("angry", false);
+            $user->set("redstone", false);
+            $user->set("smoke", false);
+            $user->set("lava", false);
+            $user->set("heart", false);
+            $user->set("flame", false);
+            $user->set("portal", false);
+            $user->set("spore", false);
+            $user->set("splash", false);
+            $user->set("explodeperkpermission", false);
+            $user->set("angryperkpermission", false);
+            $user->set("redstoneperkpermission", false);
+            $user->set("smokeperkpermission", false);
+            $user->set("lavaperkpermission", false);
+            $user->set("heartperkpermission", false);
+            $user->set("flameperkpermission", false);
+            $user->set("portalperkpermission", false);
+            $user->set("sporeperkpermission", false);
+            $user->set("splashperkpermission", false);
+            $user->set("afkmove", false);
+            $user->set("afkchat", false);
+            $user->save();
+            $stats->set("joins", 0);
+            $stats->set("break", 0);
+            $stats->set("place", 0);
+            $stats->set("drop", 0);
+            $stats->set("pick", 0);
+            $stats->set("interact", 0);
+            $stats->set("jumps", 0);
+            $stats->set("messages", 0);
+            $stats->set("votes", 0);
+            $stats->set("consume", 0);
+            $stats->set("kicks", 0);
+            $stats->set("erfolge", 0);
+            $stats->set("movefly", 0);
+            $stats->set("movewalk", 0);
+            $stats->set("jumperfolg", false); //10000
+            $stats->set("breakerfolg", false); //1000000
+            $stats->set("placeerfolg", false); //1000000
+            $stats->set("messageerfolg", false); //1000000
+            $stats->set("joinerfolg", false); //10000
+            $stats->set("kickerfolg", false); //1000
+            $stats->save();
+            //$player->setDisplayName("§eS§f:§f" . $player->getName());
+            //$player->setNameTag("§f[§eSpieler§f] §f" . $player->getName());
+
+            //DiscordMessgae
+            if ($dcsettings->get("DC") == true) {
+                $nickname = $player->getName();
+                $this->getServer()->broadcastMessage($config->get("prefix") . $player->getName() . " ist neu auf dem Server willkommen");
+                $time = date('d.m.Y H:I') . date_default_timezone_set("Europe/Berlin");
+                $format = "**__WILLKOMMEN__ : {time} : Spieler : {player} ist NEU auf dem Server und ist __Herzlichst Willkommen!__**";
+                $msg = str_replace("{time}", $time, str_replace("{player}", $nickname, $format));
+                $this->sendMessage($nickname, $msg);
+            }
+            if($configs->get("Regeln") == true) {
+                $form = new SimpleForm(function (Player $player, int $data = null) {
+
+                    $result = $data;
+                    if ($result === null) {
+                        return true;
+                    }
+                    switch ($result) {
+                        case 0:
+                            $player->sendMessage("§eWir haben auch ein Discordserver : §d");
+                            break;
+                        case 1:
+                            $player->kick("§cDu hättest dich besser entscheiden sollen :P", false);
+                    }
+                });
+                $form->setTitle("§0======§f[§cWillkommen]§0======");
+                $form->setContent("§eHerzlich willkommen " . $groups->get("nickname") . " wir wünschen dir Viel Spaß auf " . "! Bevor du loslegst zu Spielen solltest du Zuerst unsere Regeln sowie die Datenschutzgrundverordung durschlesen. Wenn du Hilfe brauchst schau einfach bei /hilfe nach dort findest du einige sachen die dir helfen können.\n\n Wir wünschen dir einen Guten Start!");
+                $form->addButton("§0Alles Klar!");
+                $form->addButton("§0Juckt mich Nicht");
+                $form->sendToPlayer($player);
+            }
+        }
+        //Joinmessage
+        $prefix = $playerdata->getNested($player->getName() . ".groupprefix");
+        $name = $gruppe->get("Nickname");
+        $event->setJoinMessage("§f[§a+§f] " . $prefix . " " . $name . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
+
+    }
+
+    public function onPlayerQuit(PlayerQuitEvent $event)
+    {
+        $player = $event->getPlayer();
+        $all = $this->getServer()->getOnlinePlayers();
+        //Discord
+        $dcsettings = new Config($this->getDataFolder() . Main::$setup . "discordsettings" . ".yml", Config::YAML);
+        $dcname = $dcsettings->get("chatname");
+        if ($dcsettings->get("DC") == true) {
+            $playername = $event->getPlayer()->getName();
+            $ar = getdate();
+            $time = $ar['hours'] . ":" . $ar['minutes'];
+            $format = "**" . $dcname . " : {time} : {player} hat den CityBuild Server verlassen!**";
+            $msg = str_replace("{time}", $time, str_replace("{player}", $playername, $format));
+            $this->sendMessage($playername, $msg);
+        }
+        $gruppe = new Config($this->getDataFolder() . Main::$gruppefile . $player->getName() . ".json", Config::JSON);
+        $config = new Config($this->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+        $groups = new Config($this->getDataFolder() . Main::$cloud . "groups.yml", Config::YAML);
+        $playerdata = new Config($this->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
+
+        $prefix = $playerdata->getNested($player->getName() . ".groupprefix");
+        $name = $gruppe->get("Nickname");
+        $event->setQuitMessage("§f[§c-§f] " . $prefix . " " . $name . " §chat den Server verlassen! §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
+    }
+
+    public function addStrike(Player $player)
+    {
+        $config = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);
+        if ($config->get("blitze") == true) {
+            $level = $player->getLevel();
+            $light = new AddActorPacket();
+            $light->type = "minecraft:lightning_bolt";
+            $light->entityRuntimeId = Entity::$entityCount++;
+            $light->metadata = array();
+            $light->position = $player->asVector3()->add(0, $height = 0);
+            $light->yaw = $player->getYaw();
+            $light->pitch = $player->getPitch();
+            $player->getServer()->broadcastPacket($level->getPlayers(), $light);
+            if ($config->get("sound") == true) {
+                $sound = new PlaySoundPacket();
+                $sound->soundName = "ambient.weather.thunder";
+                $sound->x = $player->getX();
+                $sound->y = $player->getY();
+                $sound->z = $player->getZ();
+                $sound->volume = 1;
+                $sound->pitch = 1;
+                Server::getInstance()->broadcastPacket($player->getLevel()->getPlayers(), $sound);
+            }
+        }
+    }
     public function particle()
     {
 
@@ -745,308 +1033,6 @@ class Main extends PluginBase implements Listener
         }
         return $unit === 3 ? "rd" : "th";
     }
-
-    public function onPlayerJoin(PlayerJoinEvent $event)
-    {
-
-        //Discord
-        $dcsettings = new Config($this->getDataFolder() . Main::$setup . "discordsettings" . ".yml", Config::YAML);
-        $dcname = $dcsettings->get("chatname");
-        if ($dcsettings->get("DC") == true) {
-            $playername = $event->getPlayer()->getName();
-            $ar = getdate();
-            $time = $ar['hours'] . ":" . $ar['minutes'];
-            $format = "**" . $dcname . " : {time} : {player} : hat den Server Betreten!**";
-            $msg = str_replace("{time}", $time, str_replace("{player}", $playername, $format));
-            $this->sendMessage($playername, $msg);
-        }
-
-        //Weiteres
-        $player = $event->getPlayer();
-        $name = $player->getName();
-        $ainv = $player->getArmorInventory();
-        $all = $this->getServer()->getOnlinePlayers();
-        $event->setJoinMessage("");
-        $nicks = new Config($this->getDataFolder() . Main::$gruppefile . $player->getName() . ".json", Config::JSON);
-        $config = new Config($this->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        $groups = new Config($this->getDataFolder() . Main::$cloud . "groups.yml", Config::YAML);
-        $playerdata = new Config($this->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
-        $playergroup = $playerdata->getNested($name . ".group");
-        $nametag = str_replace("{name}", $nicks->get("nickname"), $groups->getNested("Groups.{$playergroup}.nametag"));
-
-
-        $this->addStrike($player);
-        $fj = date('d.m.Y H:I') . date_default_timezone_set("Europe/Berlin");
-        $gruppe = new Config($this->getDataFolder() . Main::$gruppefile . $player->getName() . ".json", Config::JSON);
-        $log = new Config($this->getDataFolder() . Main::$logdatafile . $player->getLowerCaseName() . ".json", Config::JSON);
-        $stats = new Config($this->getDataFolder() . Main::$statsfile . $player->getLowerCaseName() . ".json", Config::JSON);
-        $user = new Config($this->getDataFolder() . Main::$userfile . $player->getLowerCaseName() . ".json", Config::JSON);
-        $sstats = new Config($this->getDataFolder() . Main::$cloud . "stats.json", Config::JSON);
-        $hei = new Config($this->getDataFolder() . Main::$heifile . $player->getLowerCaseName() . ".json", Config::JSON);
-        $config = new Config($this->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        $configs = new Config($this->getDataFolder() . Main::$setup . "Config" . ".yml", Config::YAML);
-        $cfg = new Config($this->getDataFolder() . Main::$setup . "starterkit.yml", Config::YAML, array());
-        $money = new Config($this->getDataFolder() . Main::$cloud . "Money.yml", Config::YAML);
-
-
-        $log->set("Name", $player->getName());
-        $log->set("last-IP", $player->getAddress());
-        $log->set("last-XboxID", $player->getPlayer()->getXuid());
-        if ($configs->get("serverversion") == "altay") {
-            $log->set("last-Geraet", $player->getPlayer()->getDeviceModel());
-            $log->set("last-ID", $player->getPlayer()->getDeviceId());
-        }
-        $log->set("last-online", $fj);
-        if ($user->get("heistatus") === false) {
-            $player->sendMessage($config->get("heirat") . "Du bist nicht verheiratet!");
-        }
-        if ($gruppe->get("Clanstatus") === false) {
-            $player->sendMessage($config->get("clans") . "Du bist im keinem Clan!");
-        }
-        //Spieler Erster Join
-        if ($user->get("register") == null or false) {
-            $player = $event->getPlayer();
-            $ainv = $player->getArmorInventory();
-            if ($configs->get("StarterKit") == true) {
-                if ($cfg->get("Inventory", false)) {
-                    foreach ($cfg->get("Slots", []) as $item) {
-                        $result = Item::get($item["id"], $item["damage"], $item["count"]);
-                        $result->setCustomName($item["name"]);
-                        $result->setLore([$item["lore"]]);
-                        $player->getInventory()->setItem($item["slot"], $result);
-                    }
-                }
-                if ($cfg->get("Armor", false)) {
-                    $data = $cfg->get("helm");
-                    $item = Item::get($data["id"]);
-                    $item->setCustomName($data["name"]);
-                    $item->setLore([$data["lore"]]);
-                    $ainv->setHelmet($item);
-
-                    $data = $cfg->get("chest");
-                    $item = Item::get($data["id"]);
-                    $item->setCustomName($data["name"]);
-                    $item->setLore([$data["lore"]]);
-                    $ainv->setChestplate($item);
-
-                    $data = $cfg->get("leggins");
-                    $item = Item::get($data["id"]);
-                    $item->setCustomName($data["name"]);
-                    $item->setLore([$data["lore"]]);
-                    $ainv->setLeggings($item);
-
-                    $data = $cfg->get("boots");
-                    $item = Item::get($data["id"]);
-                    $item->setCustomName($data["name"]);
-                    $item->setLore([$data["lore"]]);
-                    $ainv->setBoots($item);
-                }
-            }
-            //Groupsystem
-
-            $defaultgroup = $groups->get("DefaultGroup");
-            $player = $event->getPlayer();
-            $name = $player->getName();
-            if (!$playerdata->exists($name)) {
-                $groupprefix = $groups->getNested("Groups." . $defaultgroup . ".groupprefix");
-                $playerdata->setNested($name . ".groupprefix", $groupprefix);
-                $playerdata->setNested($name . ".group", $defaultgroup);
-                $perms = $playerdata->getNested("{$name}.permissions", []);
-                $perms[] = "CoreV5";
-                $playerdata->setNested("{$name}.permissions", $perms);
-                $playerdata->save();
-            }
-
-            $playergroup = $playerdata->getNested($name . ".group");
-
-            $nametag = str_replace("{name}", $player->getName(), $groups->getNested("Groups.{$playergroup}.nametag"));
-            $displayname = str_replace("{name}", $player->getName(), $groups->getNested("Groups.{$playerdata->getNested($name.".group")}.displayname"));
-            $player->setNameTag($nametag);
-            $player->setDisplayName($displayname);
-
-            //Group Perms
-            $permissionlist = (array)$groups->getNested("Groups." . $playergroup . ".permissions", []);
-            foreach ($permissionlist as $name => $data) {
-                $player->addAttachment($this)->setPermission($data, true);
-            }
-            //Economy
-            $amount = $configs->get("DefaultMoney");
-            if($money->getNested("money." . $player->getName()) == null) {
-                $money->setNested("money." . $player->getName(), $amount);
-                $money->save();
-            }
-
-            //Resgister
-            $sstats->set("Users", $sstats->get("Users") + 1);
-            $sstats->save();
-            $log->set("first-join", $fj);
-            $log->set("first-ip", $player->getAddress());
-            $log->set("first-XboxID", $player->getXuid());
-            $log->set("first-uuid", $player->getUniqueId());
-            if ($configs->get("serverversion") == "altay") {
-                $log->set("first-gereat", $player->getDeviceModel());
-                $log->set("first-ID", $player->getPlayer()->getDeviceId());
-            }
-            $log->save();
-            $gruppe->set("Nick", false);
-            $gruppe->set("NickP", false);
-            $gruppe->set("NickPlayer", false);
-            $gruppe->set("Nickname", $player->getName());
-            $gruppe->set("ClanStatus", false);
-            $gruppe->save();
-            $user->set("Clananfrage", false);
-            $user->set("Clan", "");
-            $user->set("register", true);
-            $hei->set("antrag", null);
-            $hei->set("antrag-abgelehnt", 0);
-            $hei->set("heiraten", null);
-            $hei->set("heiraten-hit", 0);
-            $hei->set("geschieden", 0);
-            $hei->save();
-            $user->set("scoreboard", 2);
-            $user->set("coins", 100);
-            $user->set("nodm", false);
-            $user->set("rulesaccpet", false);
-            $user->set("clananfrage", false);
-            $user->set("heistatus", false);
-            $user->set("accept", false);
-            $user->set("starterkit", true);
-            $user->set("explode", false);
-            $user->set("angry", false);
-            $user->set("redstone", false);
-            $user->set("smoke", false);
-            $user->set("lava", false);
-            $user->set("heart", false);
-            $user->set("flame", false);
-            $user->set("portal", false);
-            $user->set("spore", false);
-            $user->set("splash", false);
-            $user->set("explodeperkpermission", false);
-            $user->set("angryperkpermission", false);
-            $user->set("redstoneperkpermission", false);
-            $user->set("smokeperkpermission", false);
-            $user->set("lavaperkpermission", false);
-            $user->set("heartperkpermission", false);
-            $user->set("flameperkpermission", false);
-            $user->set("portalperkpermission", false);
-            $user->set("sporeperkpermission", false);
-            $user->set("splashperkpermission", false);
-            $user->set("afkmove", false);
-            $user->set("afkchat", false);
-            $user->save();
-            $stats->set("joins", 0);
-            $stats->set("break", 0);
-            $stats->set("place", 0);
-            $stats->set("drop", 0);
-            $stats->set("pick", 0);
-            $stats->set("interact", 0);
-            $stats->set("jumps", 0);
-            $stats->set("messages", 0);
-            $stats->set("votes", 0);
-            $stats->set("consume", 0);
-            $stats->set("kicks", 0);
-            $stats->set("erfolge", 0);
-            $stats->set("movefly", 0);
-            $stats->set("movewalk", 0);
-            $stats->set("jumperfolg", false); //10000
-            $stats->set("breakerfolg", false); //1000000
-            $stats->set("placeerfolg", false); //1000000
-            $stats->set("messageerfolg", false); //1000000
-            $stats->set("joinerfolg", false); //10000
-            $stats->set("kickerfolg", false); //1000
-            $stats->save();
-            //$player->setDisplayName("§eS§f:§f" . $player->getName());
-            //$player->setNameTag("§f[§eSpieler§f] §f" . $player->getName());
-
-            //DiscordMessgae
-            if ($dcsettings->get("DC") == true) {
-                $nickname = $player->getName();
-                $this->getServer()->broadcastMessage($config->get("prefix") . $player->getName() . " ist neu auf dem Server willkommen");
-                $time = date('d.m.Y H:I') . date_default_timezone_set("Europe/Berlin");
-                $format = "**__WILLKOMMEN__ : {time} : Spieler : {player} ist NEU auf dem Server und ist __Herzlichst Willkommen!__**";
-                $msg = str_replace("{time}", $time, str_replace("{player}", $nickname, $format));
-                $this->sendMessage($nickname, $msg);
-            }
-            if($configs->get("Regeln") == true) {
-                $form = new SimpleForm(function (Player $player, int $data = null) {
-
-                    $result = $data;
-                    if ($result === null) {
-                        return true;
-                    }
-                    switch ($result) {
-                        case 0:
-                            $player->sendMessage("§eWir haben auch ein Discordserver : §d");
-                            break;
-                        case 1:
-                            $player->kick("§cDu hättest dich besser entscheiden sollen :P", false);
-                    }
-                });
-                $form->setTitle("§0======§f[§cWillkommen]§0======");
-                $form->setContent("§eHerzlich willkommen " . $groups->get("nickname") . " wir wünschen dir Viel Spaß auf " . "! Bevor du loslegst zu Spielen solltest du Zuerst unsere Regeln sowie die Datenschutzgrundverordung durschlesen. Wenn du Hilfe brauchst schau einfach bei /hilfe nach dort findest du einige sachen die dir helfen können.\n\n Wir wünschen dir einen Guten Start!");
-                $form->addButton("§0Alles Klar!");
-                $form->addButton("§0Juckt mich Nicht");
-                $form->sendToPlayer($player);
-            }
-        }
-        $this->getServer()->broadcastMessage("§f[§a+§f] " . $nametag . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
-    }
-
-    public function onPlayerQuit(PlayerQuitEvent $event)
-    {
-
-        $player = $event->getPlayer();
-        $name = $player->getName();
-        $all = $this->getServer()->getOnlinePlayers();
-        //Discord
-        $dcsettings = new Config($this->getDataFolder() . Main::$setup . "discordsettings" . ".yml", Config::YAML);
-        $dcname = $dcsettings->get("chatname");
-        if ($dcsettings->get("DC") == true) {
-            $playername = $event->getPlayer()->getName();
-            $ar = getdate();
-            $time = $ar['hours'] . ":" . $ar['minutes'];
-            $format = "**" . $dcname . " : {time} : {player} hat den CityBuild Server verlassen!**";
-            $msg = str_replace("{time}", $time, str_replace("{player}", $playername, $format));
-            $this->sendMessage($playername, $msg);
-        }
-
-        $event->setQuitMessage("");
-        $nicks = new Config($this->getDataFolder() . Main::$gruppefile . $player->getName() . ".json", Config::JSON);
-        $config = new Config($this->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        $groups = new Config($this->getDataFolder() . Main::$cloud . "groups.yml", Config::YAML);
-        $playerdata = new Config($this->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
-
-        $playergroup = $playerdata->getNested($name . ".group");
-        $nametag = str_replace("{name}", $nicks->get("nickname"), $groups->getNested("Groups.{$playergroup}.nametag"));
-        $this->getServer()->broadcastMessage("§f[§c-§f] " . $nametag . " §chat den Server verlassen §f[§a" . count($all) . "§f/§a" . $config->get("slots") . "§f]");
-    }
-
-    public function addStrike(Player $player)
-    {
-        $config = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);
-        if ($config->get("blitze") == true) {
-            $level = $player->getLevel();
-            $light = new AddActorPacket();
-            $light->type = "minecraft:lightning_bolt";
-            $light->entityRuntimeId = Entity::$entityCount++;
-            $light->metadata = array();
-            $light->position = $player->asVector3()->add(0, $height = 0);
-            $light->yaw = $player->getYaw();
-            $light->pitch = $player->getPitch();
-            $player->getServer()->broadcastPacket($level->getPlayers(), $light);
-            if ($config->get("sound") == true) {
-                $sound = new PlaySoundPacket();
-                $sound->soundName = "ambient.weather.thunder";
-                $sound->x = $player->getX();
-                $sound->y = $player->getY();
-                $sound->z = $player->getZ();
-                $sound->volume = 1;
-                $sound->pitch = 1;
-                Server::getInstance()->broadcastPacket($player->getLevel()->getPlayers(), $sound);
-            }
-        }
-    }
-
 
     public function getBrewingManager(): BrauManager
     {
@@ -1511,7 +1497,7 @@ class Main extends PluginBase implements Listener
         if (!file_exists($this->getDataFolder() . Main::$cloud . "groups.yml")) {
             $groups = new Config($this->getDataFolder() . Main::$cloud . "groups.yml", Config::YAML);
             //Gruppenprefix
-            $groups->setNested("Groups.default.groupprefix", "§f[§eSpieler§f]");
+            $groups->setNested("Groups.default.groupprefix", "§f[§eSpieler§f]§7");
             //Chat
             $groups->setNested("Groups.default.format1", "§f[§eSpieler§f] {name} | {msg}");
             $groups->setNested("Groups.default.format2", "§f[§eSpieler§f] {clan} {name} | {msg}");
