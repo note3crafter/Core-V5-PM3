@@ -4,7 +4,13 @@
 #Voten Aktivieren/Deaktivieren
 votes: false # aktiviere oder deaktiviere den /vote command
 
-#
+#Wo bekomme ich die minecraftpocket-servers-com.vrc file her?
+#Step:1 Gehe auf https://minecraftpocket-servers.com
+#Step:2 Gehe auf My Options dann auf "Manage Yours Servers"
+#Step:3 Nun siehste deine Server! Drücke neben "VRC File" auf das Downloadsymbol
+#Step:4 Nun fügste die datai.vrc  in plugin_data/CoreV5/Setup ein
+#Nun ist alles erledigt und du solltest das VoteSystem nun nutzen können!
+
 #Aktiviere/Deaktiviere den MindestVote
 MussVoten: false #nutze true/false zum Aktivieren oder Deaktivieren. Standart ist false
 Mindestvotes: 1 #ändere die anzahl der Votes die man Benötigt um in den Chat zu schreiben oder eine MSG zu schreiben etc

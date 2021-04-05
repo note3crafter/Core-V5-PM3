@@ -1,8 +1,10 @@
 <h1>CoreV5 ALPHA<img src="https://github.com/note3crafter/Core-V5/blob/main/resources/icon.png" height="64" width="64" align="left"></img></h1>
 <br />
+Du willst helfen? Hier mein Discord! [![Discord](https://img.shields.io/discord/427472879072968714.svg?style=flat-square&label=discord&colorB=7289da)](https://discord.gg/Pebq8Wu) |<br>
 
-# Download und Wichtig [![Poggit](https://poggit.pmmp.io/ci/note3crafter/Core-V5~)](https://poggit.pmmp.io/ci/note3crafter/Core-V5~)
+# Download und Wichtig 
 
+- [Hier downloaden](https://poggit.pmmp.io/ci/note3crafter/Core-V5/Core-V5)!
   Die Core wurde Spieziell für CityBuild Server entwickelt! Beachtet bitte das es eine ALPHA Version ist und wohlmöglich instabiel ist!
 
 # Fehler & Bugs
@@ -15,23 +17,31 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 # Ohne dies Funktioniert die Core nicht 
 - MyPlot -> Sollte drinnen sein wegen dem LiftSystem aber kein Muss
 
-# Neues! v5.1.6
-- Fast alle Items/Blöcke der 1.16 sind vorhanden! Jedoch noch nicht aktiviert-> Folgt in Künftige Updates!
-- Überarbeitets NickSystem
-- Rechtschreinkorrekturen sowie Bugfixxes!
+# Neues! v5.1.7
+- Neuer Command : /seeperms -> /fperms, /rankshop[Idee aus issues}
+- Erweiterte Config sowie weitere beschreibungen Hinzugefügt!
+- AntiXray Update von HimmelKreis4798
+- Überarbeitung der Main.php -> Überarbeitetes Join/Leave System
+# Server die die CoreV5/V4 nutzen
+- play.baufieber.net 19132
+- Hier könnte dein Server stehen
 
 # Für die Zukunft Geplant :
-- HeadSystem
-- /milk, /nofire, /invsee, /ecinvsee
-- rewrite BoosterCommand
-- EconomyShop (Schildersystem etc)
+- ScoreBoard überarbeiten
+- HeadSystem im Blockformat
+- Weitere Commands wie : /top, /milk, /nofire, /invsee, /ecinvsee
+- Neuschreiben des BoosterCommand
+- EconomyShop/Sell (Schildersystem etc)
 - API fürs EconomySystem
-- Neue Blöcke der 1.16
+- Neue Blöcke der 1.16 hinzufügen
 - Internes WorlEdit
-- /top command
-- SprachenSystem (Leider sehr arbeitsintensiv daher kanns noch dauern)
+- SprachenSystem (Leider sehr arbeitsintensiv daher kanns noch dauern) 
+- -> Mit Auswahl auf eigener Sprachen und erweiterung auf mehreren Sprachen!
+- Amboss & Enchantment Table  
+- Funktionsfähiges Redstone
 
 # Features
+- Sämtliche Items der 1.16 sind drinne!
 - AntiXray (by HimmelKreis4865)
 - MCPEtoDiscord (by JackMD)
 - VoteSystem   
@@ -40,10 +50,10 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - FreundeSystem
 - Perks, Booster und vieles Weiteres
 - Intregriertes ScoreBoard (Kann derzeit nicht Selbst Bearbeitet werden)  
-- Funktionierender Braustand & Kessel
+- Funktionierender Braustand, Jukebox, Beacon & Kessel
 - NetheriteRüstung, Barren, Schrott sowie Werkzeuge
 - Viele Weitere Kleinigkeiten
-- Gruppensystem (Nutzbar mit PurePerms & co! Es wird kein PureChat etc Untertzützt)
+- Gruppensystem (Inkompatible zu PurePerms!!!)
 - Farbiges Schreiben mit &
 - Economy System (Kompatible mit EconomyAPI) (Money.yml kann weitergenutzt werden)
 
@@ -125,6 +135,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 -> TPASystem
 - /tpa, /tpaccept, /tpadeny (Schicke eine Tpa zu einem Spieler oder Lehne sie ab!
 - /regeln (Aktzeptiere sie)
+- /rankshop -> Kaufe dir Ränge
 
 # Hilfe & Support
 Ich werde die Core solange wie Möglich Aktuell halten und Updaten sofern es meine Zeit zulässt
@@ -133,16 +144,16 @@ Und an unseren Forker! Gebt das Plugin nicht als Euers aus! Ich habe eine menge 
 
 # Großes Dankeschön geht an :
 
-- tim03we (Ban & MSG System)
+- [tim03we](https://github.com/tim03we) (Ban & MSG System)
 - xxflow (Heiratsystem & Payall)
 - Aneoxic (Für das Grundgerüst und den Einstig)
-- FleekRush (Für das Boostersystem)
-- JackMD (Für die MCPE to Discord Codes die ich verwende)
-- Crasher508 aka KommandToasti (Fürs repaieren mancher dinge! und er ist der Beste!)
-- CortexPE (Für ein Teil das ich von Teaspoon mit Intregiert habe) 
-- HimmelKreis4865 (Für AntiXray)
-- MDevPmmP (Für das GroupSystem, EconomySystem)
-- LookitsAku & und vielen vielen weiteren Helfern!
+- [FleekRush](https://github.com/FleekRush) (Für das Boostersystem)
+- [JaxkDev](https://github.com/JaxkDev) (Für die MCPE to Discord Codes die ich verwende)
+- [Crasher508](https://github.com/Crasher508) aka KommandToasti (Fürs repaieren mancher dinge! und er ist der Beste!)
+- [CortexPE](https://github.com/CortexPE) (Für ein Teil das ich von Teaspoon mit Intregiert habe) 
+- [HimmelKreis4865](https://github.com/HimmelKreis4865) (Für AntiXray)
+- [MDevPmmP](https://github.com/MarlonDevPMMP) (Für das GroupSystem, EconomySystem)
+- [LookitsAku](https://github.com/Akuroma) & und vielen vielen weiteren Helfern!
 
 2017-2021 ©NoteLand & TheNote/Rudolf2000 
 

@@ -18,7 +18,20 @@ class RTask extends Task
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
 
-        $w = ["granit", "erde", "stein", "diorit", "drachen", "spielzeit", "spielspaß", "minecraft", "downloaden", "nukkit", "wortschatz", "wartungen", "pocketmine", "diamant", "copyright", "redstone", "bruchstein", "verlassen", "kinderspiele", "abzocken", "gartenarbeit", "motorrad", "note3crafter", "adminshop", "schwein", "kochen", "votefornote", "kindergarten", "assozial", "mensch", "computer", "festplatte", "monster", "logitech", "javascript", "humor", "whatsapp", "tiktok", "snapchat", "musicaly", "playstore", "lastkraftwagen", "tracktor", "hupe", "pupsen", "fairplay", "piratenbucht", "koenigsmine", "hyperdraft", "noteland", "motorola", "kacken", "samsung", "kuscheltier", "facebock", "wikipedia", "kennzeichen", "einsendungen", "einzelkabiene", "suppremium", "administrator", "moderator", "supporter", "atomkraftwerk", "cavegame", "kreuzfahrt", "bremerhaven", "polizei", "flugzeugbau", "container", "spielplatz", "lachanfall", "aufnahme", "videoaufnahme", "bildschirm", "dokument", "werbung", "teamspeak", "blockieren", "programmieren", "ladekabel", "akkumulator", "festplatte", "arbeiter", "grafikkarte", "computer", "smartphone", "playstation", "nintendo", "mondschein", "sonnenschein", "fahrradfahrer", "autofahrer", "linux", "windows", "microsoft", "sekunden", "magdeburg", "hamburg", "europapark", "phantasialand", "russland", "coronavirus", "griechenland", "albanien", "deutschland", "papagai", "giraffe", "spielzeuge"];
+        $w = ["granit", "erde", "stein", "diorit", "drachen", "spielzeit", "spielspass", "minecraft", "downloaden", "nukkit",
+            "wortschatz", "wartungen", "pocketmine", "diamant", "copyright", "redstone", "bruchstein", "verlassen", "kinderspiele",
+            "abzocken", "gartenarbeit", "motorrad", "note3crafter", "adminshop", "schwein", "kochen", "votefornote",
+            "kindergarten", "assozial", "mensch", "computer", "festplatte", "monster", "logitech",
+            "javascript", "humor", "whatsapp", "tiktok", "snapchat", "musicaly", "playstore", "lastkraftwagen",
+            "tracktor", "hupe", "pupsen", "fairplay", "piratenbucht", "koenigsmine", "hyperdraft", "noteland", "motorola",
+            "kacken", "samsung", "kuscheltier", "facebock", "wikipedia", "kennzeichen", "einsendungen", "einzelkabiene",
+            "suppremium", "administrator", "moderator", "supporter", "atomkraftwerk", "cavegame", "kreuzfahrt", "bremerhaven",
+            "polizei", "flugzeugbau", "container", "spielplatz", "lachanfall", "aufnahme", "videoaufnahme", "bildschirm",
+            "dokument", "werbung", "teamspeak", "blockieren", "programmieren", "ladekabel", "akkumulator", "festplatte",
+            "arbeiter", "grafikkarte", "computer", "smartphone", "playstation", "nintendo", "mondschein", "sonnenschein",
+            "fahrradfahrer", "autofahrer", "linux", "windows", "microsoft", "sekunden", "magdeburg", "hamburg",
+            "europapark", "phantasialand", "russland", "coronavirus", "griechenland", "albanien", "deutschland",
+            "papagai", "giraffe", "spielzeuge"];
         $key = array_rand($w);
         $word = $w[$key];
         $this->plugin->win = $word;

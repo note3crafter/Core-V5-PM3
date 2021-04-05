@@ -1,6 +1,6 @@
 name: CoreV5
 main: TheNote\core\Main
-version: 5.1.6
+version: 5.1.7
 mcpe-protocol:
   - 388 # 1.13.x
   - 389 # 1.14.x
@@ -31,11 +31,14 @@ authors:
   - CortexPE #Braustand und mehr
   - HimmelKreis4865 #AntiXray
   - MDevPmmP #GroupSystem/EconomySystem
-description: Core v5.1.6 Alpha Release
+description: Core v5.1.7 Alpha Release
 
 permissions:
   core.command.adventure:
     description: "Setze deinen Spielermodus zu Abendteuer"
+    default: op
+  core.command.adventure.other:
+    description: "Setze einen anderen Spieler den Spielermodus zu Abendteuer"
     default: op
   core.command.adminitems:
     description: "Sei der King und benutze die Wunderwaffen"
@@ -55,8 +58,14 @@ permissions:
   core.command.chatclear:
     description: "Lösche den Chat"
     default: op
+  core.command.givemoney:
+    description: "Gebe dir Geld"
+    default: op
   core.command.clear:
     description: "Cleare dein Inventar"
+    default: op
+  core.command.clear.other:
+    description: "Cleare einem anderen Spieler das Inventar"
     default: op
   core.command.clearlagg:
     description: "Lösche alle Items & Blöcke die auf dem Boden Liegen"
@@ -66,6 +75,9 @@ permissions:
     default: op
   core.command.creativ:
     description: "Setze deinen Spielmodus zu Kreativ"
+    default: op
+  core.command.creativ.other:
+    description: "Setze einem anderen Spieler den Spielmodus zu Kreativ"
     default: op
   core.command.datenbank:
     description: "Siehe in die DatenBank"
@@ -85,8 +97,14 @@ permissions:
   core.command.feed:
     description: "Fress dich voll"
     default: op
+  core.command.feed.other:
+    description: "Füttere einen anderen Spieler"
+    default: op
   core.command.fly:
     description: "Redbull verleiht dir die Macht zu fliegen!"
+    default: op
+  core.command.fly.other:
+    description: "Redbull verleiht einem anderen die Macht zu fliegen!"
     default: op
   core.comamnd.givecoins:
     description: "Geld für die Armen"
@@ -96,6 +114,9 @@ permissions:
     default: op
   core.command.heal:
     description: "Der lauch ist stark in dir und das heilt dich!"
+    default: op
+  core.command.heal.other:
+    description: "Heile einen anderen Spieler!"
     default: op
   core.command.kick:
     description: "Kicke einen Spieler vom Server"
@@ -115,6 +136,9 @@ permissions:
   core.command.nuke:
     desctiption: "Jage ein dickes Loch in den Boden!"
     default: op
+  core.command.nuke.other:
+    desctiption: "Nuke einen anderen Spieler!"
+    default: op
   core.command.paycoins:
     description: "Schenke einen Armen Geld"
     default: op
@@ -130,8 +154,14 @@ permissions:
   core.command.restart:
     description: "Restarte deinen Server"
     default: op
+  core.command.seeperms:
+    description: "Siehe die Perms eines Plugins"
+    default: op
   core.command.servermute:
     description: "Stelle den Chat für Alle Stumm"
+    default: op
+  core.command.setmoney:
+    description: "Setze den Geldstand eines Spielers"
     default: op
   core.command.setwarp:
     description: "Setze ein Warp"
@@ -145,6 +175,9 @@ permissions:
   core.command.spectator:
     description: "Setze deinen Spielmodus zu Zuschauer"
     default: op
+  core.command.spectator.other:
+    description: "Setze einen anderem den Spielmodus zu Zuschauer"
+    default: op
   core.command.sudo:
     description: "Führe eine Nachrricht/Command über ein anderen Spieler aus"
     default: op
@@ -154,6 +187,11 @@ permissions:
   core.command.survival:
     description: "Setze deinen Spielmodus zu Survival"
     default: op
+  core.command.survival.other:
+    description: "Setze einem anderem Spielmodus zu Survival"
+    default: op
+  core.command.takemoney:
+    description: "Nehme das Held eines anderen Spielers"
   core.command.tpall:
     description: "Teleportiere alle Spieler zu dir"
     default: op

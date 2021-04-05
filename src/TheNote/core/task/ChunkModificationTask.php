@@ -27,10 +27,16 @@ use function mt_rand;
 
 class ChunkModificationTask extends AsyncTask {
 
+    /** @var Chunk $chunk */
     protected $chunk;
+    /** @var string $player */
     protected $player;
+    /** @var int $level */
     protected $level;
+    /** @var int[] $ores */
     protected $ores;
+
+    /** @var int[] */
     public const BLOCK_SIDES = [
         Vector3::SIDE_DOWN,
         Vector3::SIDE_UP,

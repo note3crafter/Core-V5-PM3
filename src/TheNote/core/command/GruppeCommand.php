@@ -36,7 +36,6 @@ class GruppeCommand extends Command
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         $groups = new Config($this->plugin->getDataFolder() . Main::$cloud . "groups.yml", Config::YAML);
         $playerdata = new Config($this->plugin->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
-
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
@@ -72,10 +71,10 @@ class GruppeCommand extends Command
                     return false;
                 }
                 $groups->setNested("Groups." . $groupName . ".groupprefix", $groupName);
-                $groups->setNested("Groups." . $groupName . ".format1", "[$groupName] {name} | {msg}");
-                $groups->setNested("Groups." . $groupName . ".format2", "[$groupName] {clan} {name} | {msg}");
-                $groups->setNested("Groups." . $groupName . ".format3", "[$groupName] {heirat} {name} | {msg}");
-                $groups->setNested("Groups." . $groupName . ".format4", "[$groupName] {heirat} {clan} {name} | {msg}");
+                $groups->setNested("Groups." . $groupName . ".format1", "[$groupName] : {name} | {msg}");
+                $groups->setNested("Groups." . $groupName . ".format2", "[$groupName] : {clan} {name} | {msg}");
+                $groups->setNested("Groups." . $groupName . ".format3", "[$groupName] : {heirat} {name} | {msg}");
+                $groups->setNested("Groups." . $groupName . ".format4", "[$groupName] : {heirat} {clan} {name} | {msg}");
                 $groups->setNested("Groups." . $groupName . ".nametag", "$groupName §7: §8{name}");
                 $groups->setNested("Groups." . $groupName . ".displayname", "$groupName §7: §8{name}");
                 $groups->setNested("Groups." . $groupName . ".permissions", ["CoreV5"]);
@@ -198,9 +197,10 @@ class GruppeCommand extends Command
                 $group = $args[2];
                 if ($groups->getNested("Groups." . $group) == null) {
                     $sender->sendMessage($config->get("error") . "Die Gruppe gibts nicht... überprüfe deine Eingabe!");
-                    return true;
+                    return false;
                 }
-                $playerdata->setNested($name . ".groupprefix", $group );
+                $groupprefix = $groups->getNested("Groups." . $group .".groupprefix");
+                $playerdata->setNested($name . ".groupprefix", $groupprefix );
                 $playerdata->setNested($name . ".group", $group);
                 $playerdata->save();
 
@@ -210,11 +210,11 @@ class GruppeCommand extends Command
                 $target->setNameTag($nametag);
                 $target->setDisplayName($displayname);
 
-                /*$permissionlist = (array)$groups->getNested("Groups.".$playergroup.".permissions", []);
+                $permissionlist = (array)$groups->getNested("Groups.".$playergroup.".permissions", []);
                 foreach($permissionlist as $name => $data) {
                     $target->addAttachment($this->plugin)->setPermission($data, true);
-                }*/
-                $target->kick($config->get("gruppe") . "§6Deine Gruppe wurde zu : $group §6geändert!\n§6Rejoine einfach den Server!", false);
+                }
+                //$target->kick($config->get("gruppe") . "§6Deine Gruppe wurde zu : $group §6geändert!\n§6Rejoine einfach den Server!", false);
                 $sender->sendMessage("gruppe von $victim wurde zu $group geändert");
             }
             if ($args[0] == "adduserperm") {
