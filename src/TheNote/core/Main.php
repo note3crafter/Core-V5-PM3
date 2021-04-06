@@ -62,6 +62,7 @@ use TheNote\core\blocks\BlockFactory;
 use TheNote\core\command\BockOpenCommand;
 use TheNote\core\command\RankShopCommand;
 use TheNote\core\command\SeePermsCommand;
+use TheNote\core\command\SoundsCommand;
 use TheNote\core\inventar\BeaconInventory;
 use TheNote\core\task\ChunkModificationTask;
 use TheNote\core\tile\Placeholder as PTile;
@@ -214,6 +215,15 @@ use Volatile;
 
 class Main extends PluginBase implements Listener
 {
+
+    //PluginVersion
+    public static $version = "5.1.8ALPHA";
+    public static $protokoll = "428";
+    public static $mcpeversion = "1.16.210";
+    public static $dateversion = "06.04.2021";
+    public static $plname = "CoreV5";
+    public static $configversion = "5.1.8";
+
     private $clicks;
     private $message = "";
     private $items = [];
@@ -246,12 +256,7 @@ class Main extends PluginBase implements Listener
     const ITEM_NETHERITE_AXE = 746;
     const ITEM_NETHERITE_HOE = 747;
 
-    //PluginVersion
-    public static $version = "5.1.8ALPHA";
-    public static $protokoll = "428";
-    public static $mcpeversion = "1.16.210";
-    public static $dateversion = "06.04.2021";
-    public static $plname = "CoreV5";
+
 
     //Configs
     public static $clanfile = "Cloud/players/Clans/";
@@ -364,12 +369,19 @@ class Main extends PluginBase implements Listener
         EntityManager::init();
         BlockManager::init();
         Tiles::init();
-        $config = new Config($this->getDataFolder() . Main::$setup . "Config.yml");
-        if ($config->get("NewItems") == true) {
-            self::registerRuntimeIds();
-            BlockFactory::init();
-            ItemManagerNewItems::init();
-            Tile::registerTile(PTile::class);
+        if (!file_exists( $this->getDataFolder() . "Setup/Config.yml")) {
+            rename("Setup/Config.yml", "Setup/ConfigOLD.yml");
+            $this->getLogger()->alert("§cDie Config.yml ist nicht vorhanden! Der Server wird automatisch neugestartet!");
+            $this->saveResource("Setup/Config.yml", true);
+            $this->getServer()->shutdown();
+        } else {
+            $config = new Config($this->getDataFolder() . "Setup/Config.yml", Config::YAML);
+            if ($config->get("NewItems") == true) {
+                self::registerRuntimeIds();
+                BlockFactory::init();
+                ItemManagerNewItems::init();
+                Tile::registerTile(PTile::class);
+            }
         }
         PacketPool::registerPacket(new InventoryTransactionPacketV2());
         Achievement::add("create_full_beacon", "Beaconator", ["Create a full beacon"]);
@@ -424,6 +436,13 @@ class Main extends PluginBase implements Listener
         $configs = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);
         $config = new Config($this->getDataFolder() . Main::$setup . "settings.json", Config::JSON);
         $kit = new Config($this->getDataFolder() . Main::$setup . "kitsettings.yml", Config::YAML);
+        $configs = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);
+        if (!$configs->get("ConfigVersion") == Main::$configversion) {
+            $this->getLogger()->alert("Die Config.yml ist veraltet! Bitte Update diese! Der Server wird automatisch neugestartet!");
+            rename("Setup/Config.yml", "Setup/ConfigOLD.yml");
+            $this->getServer()->shutdown();
+        }
+
 
         $serverstats = new Config($this->getDataFolder() . Main::$cloud . "stats.json", Config::JSON);
         $serverstats->set("aktiviert", $serverstats->get("aktivieret") + 1);

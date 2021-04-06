@@ -13,11 +13,7 @@ declare(strict_types = 1);
 
 namespace TheNote\core\blocks;
 
-use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\item\ItemFactory;
-use TheNote\core\Main;
-//use JavierLeon9966\ExtendedBlocks\block\PlaceholderTrait;
 
 class BlockManager {
 
@@ -37,5 +33,6 @@ class BlockManager {
         BlockFactory::registerBlock(new Jukebox(), true);
         BlockFactory::registerBlock(new Beacon(), true);
         BlockFactory::registerBlock(new Anvil(), true);
+        BlockFactory::registerBlock(new NoteBlock(), true);
     }
 }

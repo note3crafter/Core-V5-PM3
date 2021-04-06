@@ -86,6 +86,7 @@ class Stats implements Listener
             $stats->save();
         }
     }
+
     public function place(BlockPlaceEvent $event)
     {
         $player = $event->getPlayer();
@@ -190,6 +191,7 @@ class Stats implements Listener
         $serverstats->set("pick", $serverstats->get("pick") + 1);
         $serverstats->save();
     }
+
     public function onPickItem(InventoryPickupItemEvent $event)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $pl) {
@@ -255,21 +257,20 @@ class Stats implements Listener
         $to = $event->getTo()->round();
         $from = $event->getFrom()->round();
         $blocks = $from->distance($to);
-        //$blocks = intval($blocks);
-
+        $round = round($blocks, 2);
         if ($player->isFlying()) {
             $stats = new Config($this->plugin->getDataFolder() . Main::$statsfile . $name . ".json", Config::JSON);
-            $stats->set("movefly", $stats->get("movefly") + $blocks);
+            $stats->set("movefly", $stats->get("movefly") + $round);
             $stats->save();
             $serverstats = new Config($this->plugin->getDataFolder() . Main::$cloud . "stats.json", Config::JSON);
-            $serverstats->set("movefly", $serverstats->get("movefly") + $blocks);
+            $serverstats->set("movefly", $serverstats->get("movefly") + $round);
             $serverstats->save();
         } else {
             $stats = new Config($this->plugin->getDataFolder() . Main::$statsfile . $name . ".json", Config::JSON);
-            $stats->set("movewalk", $stats->get("movewalk") + $blocks);
+            $stats->set("movewalk", $stats->get("movewalk") + $round);
             $stats->save();
             $serverstats = new Config($this->plugin->getDataFolder() . Main::$cloud . "stats.json", Config::JSON);
-            $serverstats->set("movewalk", $serverstats->get("movewalk") + $blocks);
+            $serverstats->set("movewalk", $serverstats->get("movewalk") + $round);
             $serverstats->save();
         }
     }

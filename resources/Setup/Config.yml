@@ -1,5 +1,6 @@
 ---
 #Allgemeine Einstellungen
+ConfigVersion: 5.1.8 #FingerWeg!
 
 #Commands & Funktionen
 AntiXray: false
