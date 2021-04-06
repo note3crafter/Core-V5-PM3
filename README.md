@@ -20,6 +20,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 # Neues! v5.1.8
 - Sämtliche Gefundene Bugs Gefunden und behoben
 - /size Command hinzugefügt
+- Voll funktionsfähige Notenblöcke
 
 # Server die die CoreV5/V4 nutzen
 - play.baufieber.net 19132
@@ -40,6 +41,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - Funktionsfähiges Redstone
 
 # Features
+- Voll Funktionsfähige Notenblöcke
 - Sämtliche Items der 1.16 sind drinne!
 - AntiXray (by HimmelKreis4865)
 - MCPEtoDiscord (by JackMD)
