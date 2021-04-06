@@ -19,6 +19,7 @@ use TheNote\core\Main;
 
 class FriendCommand extends Command
 {
+    private $plugin;
 
     public function __construct(Main $plugin)
     {
@@ -44,32 +45,37 @@ class FriendCommand extends Command
             $sender->sendMessage("§c/friend » §7deny » §f Lehne eine Anfrage ab");
             $sender->sendMessage("§c/friend » §7remove » §fEntferne einen Freund");
             $sender->sendMessage("§c/friend » §7block » §fDeaktiviere Freundschaftsanfragen");
-        } else
-            if ($args[0] == "add") {
-                if (empty($args[1])) {
-                    $sender->sendMessage($config->get("friend") . "§7Benutze: §c/friend add [name]");
-                } else {
-                    if (file_exists($this->plugin->getDataFolder() . Main::$freundefile . $args[1] . ".json")) {
-                        $vplayerfile = new Config($this->plugin->getDataFolder() . Main::$freundefile . $args[1] . ".json", Config::JSON);
-                        if ($vplayerfile->get("blocked") == false) {
-                            $einladungen = $vplayerfile->get("Invitations");
-                            $einladungen[] = $sender->getName();
-                            $vplayerfile->set("Invitations", $einladungen);
-                            $vplayerfile->save();
-                            $sender->sendMessage($config->get("friend") . "§aDeine Freundschaftsanfrage wurde gesendet zu  " . $args[1]);
-                            $v = $this->plugin->getServer()->getPlayerExact($args[1]);
-                            if (!$v == null) {
-                                $v->sendMessage($config->get("friend") . "§a" . $sender->getName() . " hat Dir eine Freundschafts Anfrage gesendet akzeptier sie mit §e/friend accept " . $sender->getName() . "§a oder lehne sie ab mit §e /friend deny " . $sender->getName() . "§a!");
-                            }
-                        } else {
-                            $sender->sendMessage($config->get("friend") . "§aDieser Spieler hat Deine Freundschaftsanfrage nicht angenommen!");
+            return false;
+        }
+
+        if ($args[0] == "add") {
+            if (empty($args[1])) {
+                $sender->sendMessage($config->get("friend") . "§7Benutze: §c/friend add [name]");
+                return false;
+            } else {
+                if (file_exists($this->plugin->getDataFolder() . Main::$freundefile . $args[1] . ".json")) {
+                    $vplayerfile = new Config($this->plugin->getDataFolder() . Main::$freundefile . $args[1] . ".json", Config::JSON);
+                    if ($vplayerfile->get("blocked") == false) {
+                        $einladungen = $vplayerfile->get("Invitations");
+                        $einladungen[] = $sender->getName();
+                        $vplayerfile->set("Invitations", $einladungen);
+                        $vplayerfile->save();
+                        $sender->sendMessage($config->get("friend") . "§aDeine Freundschaftsanfrage wurde gesendet zu  " . $args[1]);
+                        $v = $this->plugin->getServer()->getPlayerExact($args[1]);
+                        if (!$v == null) {
+                            $v->sendMessage($config->get("friend") . "§a" . $sender->getName() . " hat Dir eine Freundschafts Anfrage gesendet akzeptier sie mit §e/friend accept " . $sender->getName() . "§a oder lehne sie ab mit §e /friend deny " . $sender->getName() . "§a!");
                         }
+                    } else {
+                        $sender->sendMessage($config->get("friend") . "§aDieser Spieler hat Deine Freundschaftsanfrage nicht angenommen!");
+                        return true;
                     }
                 }
             }
+        }
         if ($args[0] == "accept") {
             if (empty($args[1])) {
                 $sender->sendMessage($config->get("friend") . "§7Benutze: §c/friend accept [name]");
+                return false;
             } else {
                 if (file_exists($this->plugin->getDataFolder() . Main::$freundefile . $args[1] . ".json")) {
                     if (in_array($args[1], $playerfile->get("Invitations"))) {
@@ -101,6 +107,7 @@ class FriendCommand extends Command
         if ($args[0] == "deny") {
             if (empty($args[1])) {
                 $sender->sendMessage($config->get("friend") . "§7Benutze: §c/friend deny [name]");
+                return false;
             } else {
                 if (file_exists($this->plugin->getDataFolder() . Main::$freundefile . $args[1] . ".json")) {
                     if (in_array($args[1], $playerfile->get("Invitations"))) {
@@ -120,6 +127,7 @@ class FriendCommand extends Command
         if ($args[0] == "remove") {
             if (empty($args[1])) {
                 $sender->sendMessage($config->get("friend") . "§7Benutze: §c/friend remove [name]");
+                return false;
             } else {
                 if (file_exists($this->plugin->getDataFolder() . Main::$freundefile . $args[1] . ".json")) {
                     if (in_array($args[1], $playerfile->get("Friend"))) {
@@ -139,12 +147,14 @@ class FriendCommand extends Command
                     }
                 } else {
                     $sender->sendMessage($config->get("friend") . "§aDiesen Spieler gibt es nicht!");
+                    return false;
                 }
             }
         }
         if ($args[0] == "list") {
             if (empty($playerfile->get("Friend"))) {
                 $sender->sendMessage($config->get("friend") . "§aDu hast keine Freunde!");
+                return false;
             } else {
                 $sender->sendMessage("§f=======[§aDeine Freunde§f]=======");
                 foreach ($playerfile->get("Friend") as $f) {
@@ -154,6 +164,7 @@ class FriendCommand extends Command
                         $sender->sendMessage("§b" . $f . " » §7(§aOnline§7)");
                     }
                 }
+                return true;
             }
         }
         if ($args[0] == "block") {
@@ -168,7 +179,7 @@ class FriendCommand extends Command
             }
         } else {
             $this->plugin->getLogger()->info($config->get("friend") . "§aDie Console hat keine Freunde!");
-            return true;
+            return false;
         }
     }
 }

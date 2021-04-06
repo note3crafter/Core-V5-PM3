@@ -56,6 +56,7 @@ class ErfolgCommand extends Command
             "§aGeschriebene Nachrichten §f:§e " . $stats->get("messages") . "§f/§e1000000\n");
         $form->addButton("§0OK", 0);
         $form->sendToPlayer($sender);
+        return true;
     }
 }
 //last edit by Rudolf2000 : 15.03.2021 19:45

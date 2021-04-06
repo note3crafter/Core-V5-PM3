@@ -24,6 +24,7 @@ use TheNote\core\formapi\SimpleForm;
 
 class PerkCommand extends Command
 {
+    private $plugin;
 
     public function __construct(Main $plugin)
     {
@@ -407,55 +408,82 @@ class PerkCommand extends Command
         $form->setTitle($config->get("uiname"));
         $form->setContent("§6=============§f[§dPerks§f]§6============\n\n" .
             "§aAktiviere §6oder §cDeaktiviere §6dein Perk");
-        if ($daten->get("explodeperkpermission") == true) {
-            $form->addButton("§0ExplodePerk\n§aGekauft", 0);
-        } else {
+        if ($daten->get("explodeperkpermission") == false) {
             $form->addButton("§0ExplodePerk\n§cKostet : " . $perk->get("explode"),0);
+        } elseif ($daten->get("explode") == false){
+            $form->addButton("§0ExplodePerk\n§cDeaktiviert");
+        } elseif ($daten->get("explode") == true) {
+            $form->addButton("§0ExplodePerk\n§aAktiviert", 0);
         }
-        if ($daten->get("angryperkpermission") == true) {
-            $form->addButton("§0VillagerAngryPerk\n§aGekauft", 0);
-        } else {
+
+        if ($daten->get("angryperkpermission") == false) {
             $form->addButton("§0VillagerAngryPerk\n§cKostet : " . $perk->get("angry"),0);
+        } elseif ($daten->get("angry") == false){
+            $form->addButton("§0AngryPerk\n§cDeaktiviert");
+        } elseif ($daten->get("angry") == true) {
+            $form->addButton("§0AngryPerk\n§aAktiviert", 0);
         }
-        if ($daten->get("redstoneperkpermission") == true) {
-            $form->addButton("§0RedstonePerk\n§aGekauft", 0);
-        } else {
+
+        if ($daten->get("redstoneperkpermission") == false) {
             $form->addButton("§0RedstonePerk\n§cKostet : " . $perk->get("redstone"),0);
+        } elseif ($daten->get("redstone") == false){
+            $form->addButton("§0RedstonePerk\n§cDeaktiviert");
+        } elseif ($daten->get("redstone") == true) {
+            $form->addButton("§0RedstonePerk\n§aAktiviert", 0);
         }
-        if ($daten->get("smokeperkpermission") == true) {
-            $form->addButton("§0RauchPerk\n§aGekauft", 0);
-        } else {
+        if ($daten->get("smokeperkpermission") == false) {
             $form->addButton("§0RauchPerk\n§cKostet : " . $perk->get("smoke"),0);
+        } elseif ($daten->get("smoke") == false){
+            $form->addButton("§0RauchPerk\n§cDeaktiviert");
+        } elseif ($daten->get("smoke") == true) {
+            $form->addButton("§0RauchPerk\n§aAktiviert", 0);
         }
-        if ($daten->get("lavaperkpermission") == true) {
-            $form->addButton("§0LavaPerk\n§aGekauft", 0);
-        } else {
+
+        if ($daten->get("lavaperkpermission") == false) {
             $form->addButton("§0LavaPerk\n§cKostet : " . $perk->get("lava"),0);
+        } elseif ($daten->get("lava") == false){
+            $form->addButton("§0LavaPerk\n§cDeaktiviert");
+        } elseif ($daten->get("lava") == true) {
+            $form->addButton("§0LavaPerk\n§aAktiviert", 0);
         }
-        if ($daten->get("heartperkpermission") == true) {
-            $form->addButton("§0HerzPerk\n§aGekauft", 0);
-        } else {
+
+        if ($daten->get("heartperkpermission") == false) {
             $form->addButton("§0HerzPerk\n§cKostet : " . $perk->get("heart"), 0);
+        } elseif ($daten->get("heart") == false){
+            $form->addButton("§0HerzPerk\n§cDeaktiviert");
+        } elseif ($daten->get("heart") == true) {
+            $form->addButton("§0HerzPerk\n§aAktiviert", 0);
         }
-        if ($daten->get("flameperkpermission") == true) {
-            $form->addButton("§0FlammenPerk\n§aGekauft", 0);
-        } else {
+
+        if ($daten->get("flameperkpermission") == false) {
             $form->addButton("§0FlammenPerk\n§cKostet : " . $perk->get("flame"),0);
+        } elseif ($daten->get("flame") == false){
+            $form->addButton("§0FlammenPerk\n§cDeaktiviert");
+        } elseif ($daten->get("flame") == true) {
+            $form->addButton("§0FlammenPerk\n§aAktiviert", 0);
         }
-        if ($daten->get("portalperkpermission") == true) {
-            $form->addButton("§0PortalPerk\n§aGekauft", 0);
-        } else {
+
+        if ($daten->get("portalperkpermission") == false) {
             $form->addButton("§0PortalPerk\n§cKostet : " . $perk->get("portal"),0);
+        } elseif ($daten->get("portal") == false){
+            $form->addButton("§0PortalPerk\n§cDeaktiviert");
+        } elseif ($daten->get("portal") == true) {
+            $form->addButton("§0PortalPerk\n§aAktiviert", 0);
         }
-        if ($daten->get("sporeperkpermission") == true) {
-            $form->addButton("§0SporenPerk\n§aGekauft", 0);
-        } else {
+        if ($daten->get("sporeperkpermission") == false) {
             $form->addButton("§0SporenPerk\n§cKostet : " . $perk->get("spore"),0);
+        } elseif ($daten->get("spore") == false){
+            $form->addButton("§0SporenPerk\n§cDeaktiviert");
+        } elseif ($daten->get("spore") == true) {
+            $form->addButton("§0SporenPerk\n§aAktiviert", 0);
         }
-        if ($daten->get("splashperkpermission") == true) {
-            $form->addButton("§0WasserPerk\n§aGekauft", 0);
-        } else {
+
+        if ($daten->get("splashperkpermission") == false) {
             $form->addButton("§0WasserPerk\n§cKostet : " . $perk->get("splash"),0);
+        } elseif ($daten->get("splash") == false){
+            $form->addButton("§0WasserPerk\n§cDeaktiviert");
+        } elseif ($daten->get("splash") == true) {
+            $form->addButton("§0WasserPerk\n§aAktiviert", 0);
         }
         $form->sendToPlayer($sender);
         return true;

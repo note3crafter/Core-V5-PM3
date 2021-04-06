@@ -215,7 +215,7 @@ class GruppeCommand extends Command
                     $target->addAttachment($this->plugin)->setPermission($data, true);
                 }
                 //$target->kick($config->get("gruppe") . "§6Deine Gruppe wurde zu : $group §6geändert!\n§6Rejoine einfach den Server!", false);
-                $sender->sendMessage("gruppe von $victim wurde zu $group geändert");
+                $sender->sendMessage($config->get("group") . "§6gruppe von $victim wurde zu $group geändert");
             }
             if ($args[0] == "adduserperm") {
                 $sender->sendMessage("Comming Soon...");

@@ -20,6 +20,8 @@ use pocketmine\utils\Config;
 
 class ZuschauerCommand extends Command
 {
+    private $plugin;
+
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -58,7 +60,7 @@ class ZuschauerCommand extends Command
             }
         }
         $sender->setGamemode(3);
-        $sender->sendMessage($config->get("info") . "Du bist nun im §eZuschauer §6modus.");
-        return false;
+        $sender->sendMessage($config->get("prefix") . "Du bist nun im §eZuschauer §6modus.");
+        return true;
     }
 }

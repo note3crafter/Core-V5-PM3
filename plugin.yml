@@ -1,6 +1,6 @@
 name: CoreV5
 main: TheNote\core\Main
-version: 5.1.7
+version: 5.1.8
 mcpe-protocol:
   - 388 # 1.13.x
   - 389 # 1.14.x
@@ -31,7 +31,7 @@ authors:
   - CortexPE #Braustand und mehr
   - HimmelKreis4865 #AntiXray
   - MDevPmmP #GroupSystem/EconomySystem
-description: Core v5.1.7 Alpha Release
+description: Core v5.1.8 Alpha Release
 
 permissions:
   core.command.adventure:
@@ -42,6 +42,15 @@ permissions:
     default: op
   core.command.adminitems:
     description: "Sei der King und benutze die Wunderwaffen"
+    default: op
+  core.command.admintitems.superbow:
+    description: "gebe dir den Superbow"
+    default: op
+  core.command.admintitems.explosivbow:
+    description: "gebe dir den Explosivbow"
+    default: op
+  core.command.admintitems.explosivegg:
+    description: "gebe dir den Explosiveg"
     default: op
   core.command.animation:
     description: "Teste verschiednene Animationen aus"

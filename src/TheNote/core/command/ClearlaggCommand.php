@@ -47,5 +47,6 @@ class ClearlaggCommand extends Command
             }
         }
         $sender->sendMessage($config->get("prefix") . "Du hast soeben alle Items die auf dem Boden gelegen haben Gelöscht!");
+        return true;
     }
 }

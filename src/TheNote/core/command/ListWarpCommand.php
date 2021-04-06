@@ -38,7 +38,7 @@ class ListWarpCommand extends Command
 
         $sender->sendMessage($config->get("info") . "Hier sind die Warps:");
         foreach ($warps as $key) {
-            $sender->sendMessage("§e" . $key);
+            $sender->sendMessage("§e-" . $key);
         }
         return true;
     }

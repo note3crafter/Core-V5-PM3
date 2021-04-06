@@ -12,7 +12,9 @@
 namespace TheNote\core\command;
 
 use pocketmine\block\Block;
+use pocketmine\entity\Entity;
 use pocketmine\level\Explosion;
+use pocketmine\network\mcpe\protocol\SetActorDataPacket;
 use pocketmine\Server;
 use TheNote\core\events\PlayerBurnEvent;
 use TheNote\core\Main;
@@ -35,6 +37,7 @@ class SizeCommand extends Command
 
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
+
         $configs = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
             $sender->sendMessage($configs->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
@@ -46,36 +49,24 @@ class SizeCommand extends Command
         }
         if (empty($args[0])) {
             $sender->setScale(1);
-            $sender->sendMessage("größe zurückgesetzt");
+            $sender->sendMessage($configs->get("prefix") . "§6Du hast deine Größe zurückgesetzt!");
             return false;
         }
-        $victim = $this->plugin->getServer()->getPlayer($args[0]);
-        $target = Server::getInstance()->getPlayer(strtolower($args[0]));
-        if (!isset($args[0])) {
-            if (is_numeric((float)$args[0]) && (float)$args[0] > 0) {
-                $sender->setScale((float)$args[0]);
-                $sender->sendMessage("deine größe ist " . $args[0]);
-            } else {
-                $sender->sendMessage("größer als 0 eingeben");
-            }
-            if ($sender->hasPermission("core.command.size.other")) {
-                if (is_numeric((float)$args[1]) && (float)$args[1] > 0) {
-                    if ($target == null) {
-                        $sender->sendMessage($configs->get("error") . "Der Spieler ist nicht Online!");
-                        return false;
-                    } else {
-                        $victim->setScale((float)$args[0]);
-                        $victim->sendMessage($configs->get("prefix") . "§6Deine Spielergröße wurde auf§e " . $args[0] . " §6gesetzt.");
-                        $sender->sendMessage($configs->get("prefix") . "§6Die Spielgröße von §e" . $victim->getName() . " §6wurde auf§e " . $args[0] . " §6gesetzt.");
-                        return false;
-                    }
-                } else {
-                    $sender->sendMessage("größere zahl als 0 victim");
+        if (isset($args[0])) {
+            if (is_numeric($args[0])) {
+                if ($args[0] > 10) {
+                    $sender->sendMessage($configs->get("error") . "§cDu kannst nicht größer wie §e10 §cwerden");
+                    return true;
+                } elseif ($args[0] < 0.05) {
+                    $sender->sendMessage($configs->get("error") . "§cDu kannst nicht kleiner wie §e0.05 §cwerden");
+                    return true;
                 }
+                $sender->setScale((float)$args[0]);
+                $sender->sendMessage($configs->get("prefix") . "§6Du hast deine Größe zu §e" . $args[0] . " §6geändert!");
+                return true;
             } else {
-                $sender->sendMessage("keine berechtigung");
+                $sender->sendMessage($configs->get("error") . "Deine eingabe war falsch überprüfe sie nochmal!");
             }
-
         }
         return true;
     }

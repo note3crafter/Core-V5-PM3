@@ -58,7 +58,7 @@ class KreativCommand extends Command
             }
         }
         $sender->setGamemode(1);
-        $sender->sendMessage($config->get("info") . "Du bist nun im §aKreativ §6modus.");
+        $sender->sendMessage($config->get("prefix") . "§6Du bist nun im §aKreativ §6modus.");
         return false;
     }
 }

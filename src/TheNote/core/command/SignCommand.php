@@ -21,7 +21,9 @@ use pocketmine\utils\TextFormat as TF;
 use TheNote\core\Main;
 
 class SignCommand extends Command {
-	
+
+    private $plugin;
+
 	public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -42,8 +44,8 @@ class SignCommand extends Command {
             return false;
         }
 		if(empty($args)) {
-			$sender->sendMessage($this->getUsage());
-			return true;
+			$sender->sendMessage($config->get("info") . "Nutze: /sign {text}");
+			return false;
 		}
 		$item = $sender->getInventory()->getItemInHand();
         $date = date("d.m.Y");
@@ -55,7 +57,7 @@ class SignCommand extends Command {
 		$item->setCustomName(str_replace("&", TF::ESCAPE, $fullargs));
         $sender->getInventory()->setItemInHand($item);
         $sender->sendMessage($config->get("prefix") . "Du hast dein Item erfolgreich Signiert");
-        return false;
+        return true;
     }
 
     public function convert(string $string, $date, $time, $name): string{

@@ -247,10 +247,10 @@ class Main extends PluginBase implements Listener
     const ITEM_NETHERITE_HOE = 747;
 
     //PluginVersion
-    public static $version = "5.1.7ALPHA";
+    public static $version = "5.1.8ALPHA";
     public static $protokoll = "428";
     public static $mcpeversion = "1.16.210";
-    public static $dateversion = "05.04.2021";
+    public static $dateversion = "06.04.2021";
     public static $plname = "CoreV5";
 
     //Configs
@@ -631,7 +631,7 @@ class Main extends PluginBase implements Listener
         $this->getLogger()->info($banner);
     }
 
-    public function onPlayerJoin(PlayerJoinEvent $event)
+    public function onPlayerJoin(PlayerJoinEvent $event): void
     {
         //Allgemeines
         $player = $event->getPlayer();
@@ -671,6 +671,7 @@ class Main extends PluginBase implements Listener
             $this->sendMessage($format, $msg);
         }
 
+        //Weiteres
         $log->set("Name", $player->getName());
         $log->set("last-IP", $player->getAddress());
         $log->set("last-XboxID", $player->getPlayer()->getXuid());
@@ -690,6 +691,8 @@ class Main extends PluginBase implements Listener
         $this->addStrike($player);
         //Spieler Erster Join
         if ($user->get("register") == null or false) {
+
+            //StarterKit
             $player = $event->getPlayer();
             $ainv = $player->getArmorInventory();
             if ($config->get("StarterKit") == true) {
@@ -751,6 +754,7 @@ class Main extends PluginBase implements Listener
             foreach ($permissionlist as $name => $data) {
                 $player->addAttachment($this)->setPermission($data, true);
             }
+
             //Economy
             $amount = $config->get("DefaultMoney");
             if ($money->getNested("money." . $player->getName()) == null) {
@@ -869,13 +873,15 @@ class Main extends PluginBase implements Listener
                 $form->sendToPlayer($player);
             }
         }
+
+        //JoinMessages
         $all = $this->getServer()->getOnlinePlayers();
         $prefix = $playerdata->getNested($player->getName() . ".groupprefix");
-        $spielername = $gruppe->get("Nickname");
         $slots = $settings->get("slots");
+        $spielername = $gruppe->get("Nickname");
         if ($config->get("JoinTitle") == true) { //JoinTitle
-            $subtitle = str_replace("{player}", $name, $config->get("Subtitlemsg"));
-            $title = str_replace("{player}", $name, $config->get("Titlemsg"));
+            $subtitle = str_replace("{player}", $player->getName(), $config->get("Subtitlemsg"));
+            $title = str_replace("{player}", $player->getName(), $config->get("Titlemsg"));
             $player->addTitle($title);
             $player->addSubTitle($subtitle);
         }
@@ -884,7 +890,11 @@ class Main extends PluginBase implements Listener
             $player->sendTip($tip);
         }
         if ($config->get("JoinMessage") == true) { //Joinmessage
-            $stp1 = str_replace("{player}", $player->getName(), $config->get("Joinmsg"));
+            if($gruppe->get("Nickname") == null){
+                $stp1 = str_replace("{player}", $player->getName(), $config->get("Joinmsg"));
+            } else {
+                $stp1 = str_replace("{player}", $spielername, $config->get("Joinmsg"));
+            }
             $stp2 = str_replace("{count}", count($all), $stp1);
             $stp3 = str_replace("{slots}", $slots , $stp2);
             $joinmsg = str_replace("{prefix}", $prefix, $stp3);
@@ -916,7 +926,6 @@ class Main extends PluginBase implements Listener
             $stp1 = str_replace("{dcprefix}", $chatprefix, $dcsettings->get("Quitmsg"));
             $stp2 = str_replace("{count}", count($all), $stp1);
             $stp3 = str_replace("{slots}", $slots, $stp2);
-            var_dump($slots);
             $format = str_replace("{gruppe}", $group, $stp3);
             $msg = str_replace("{time}", $time, str_replace("{player}", $playername, $format));
             $this->sendMessage($format, $msg);

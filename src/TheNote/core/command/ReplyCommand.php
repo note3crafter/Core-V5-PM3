@@ -20,7 +20,7 @@ use pocketmine\command\utils\InvalidCommandSyntaxException;
 
 class ReplyCommand extends Command
 {
-
+    private $plugin;
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -39,21 +39,20 @@ class ReplyCommand extends Command
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
-        if(count($args) < 1) {
-            throw new InvalidCommandSyntaxException();
+        if (empty($args[0])) {
+            $sender->sendMessage($config->get("info") . "Nutze: /reply {message}");
         }
-
         if(!empty($this->plugin->getLastSent($sender->getName()))) {
             $player = $this->plugin->getServer()->getPlayer($this->plugin->getLastSent($sender->getName()));
                 if($player instanceof CommandSender) {
                     $msg = implode(" ", $args);
                     $sName = $sender->getName();
                     $pName = $player->getName();
-                    $sender->sendMessage(Main::$msg . $pName . " §b->§f " . $sName . " §f|§f ". $msg);
-                    $player->sendMessage(Main::$msg . $pName . " §b->§f " . $sName . " §f|§f ". $msg);
+                    $sender->sendMessage($config->get("msg") . $pName . " §b->§f " . $sName . " §f|§f ". $msg);
+                    $player->sendMessage($config->get("msg") . $pName . " §b->§f " . $sName . " §f|§f ". $msg);
                     $this->plugin->onMessage($sender, $player);
                 }else{
-                    $sender->sendMessage($config->get("error") . "§r§cDer Spieler konnte nicht gefunden werden!");
+                    $sender->sendMessage($config->get("error") . "§r§cDer Spieler konnte nicht gefunden werden order ist nicht Online!");
                 }
         }else{
             $sender->sendMessage($config->get("error") . "§r§cDer Spieler konnte nicht gefunden werden!");

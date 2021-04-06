@@ -42,22 +42,17 @@ class VanishCommand extends Command
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
-        $Spieler = new Config($this->plugin->getDataFolder(). "vanish.json", Config::JSON);
-        if (!$this->testPermission($sender)) {
-            $Spieler->set("Vanish");
-            return false;
-        }
         if ($sender->hasPermission("core.command.vanish") || $sender->isOp()) {
             if(!isset($this->vanish[$sender->getName()])){
                 $this->vanish[$sender->getName()] = true;
                 $sender->setNameTagVisible(false);
                 $sender->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, true);
-                $sender->sendMessage($config->get("info") . "Dein §eVanish §6wurde §aAktiviert§6.");
+                $sender->sendMessage($config->get("prefix") . "Dein §eVanish §6wurde §aAktiviert§6.");
             }else{
                 unset($this->vanish[$sender->getName()]);
                 $sender->setNameTagVisible(true);
                 $sender->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, false);
-                $sender->sendMessage($config->get("info") . "Dein §eVanish §6wurde §cDeaktiviert§6.");
+                $sender->sendMessage($config->get("prefix") . "Dein §eVanish §6wurde §cDeaktiviert§6.");
             }
         }
         return false;

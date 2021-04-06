@@ -20,6 +20,8 @@ use pocketmine\utils\Config;
 
 class SurvivalCommand extends Command
 {
+    private $plugin;
+
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -53,7 +55,7 @@ class SurvivalCommand extends Command
                     return false;
                 }
             } else {
-                $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um anderen Spielern den Survivalmodus zu geben!");
+                $sender->sendMessage($config->get("prefix") . "Du hast keine Berechtigung um anderen Spielern den Survivalmodus zu geben!");
                 return false;
             }
         }

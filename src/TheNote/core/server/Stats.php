@@ -13,6 +13,7 @@ namespace TheNote\core\server;
 
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\inventory\InventoryPickupItemEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerBlockPickEvent;
 use pocketmine\event\player\PlayerChatEvent;
@@ -30,6 +31,8 @@ use TheNote\core\Main;
 
 class Stats implements Listener
 {
+    private $plugin;
+
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -83,7 +86,6 @@ class Stats implements Listener
             $stats->save();
         }
     }
-
     public function place(BlockPlaceEvent $event)
     {
         $player = $event->getPlayer();
@@ -187,6 +189,18 @@ class Stats implements Listener
         $serverstats = new Config($this->plugin->getDataFolder() . Main::$cloud . "stats.json", Config::JSON);
         $serverstats->set("pick", $serverstats->get("pick") + 1);
         $serverstats->save();
+    }
+    public function onPickItem(InventoryPickupItemEvent $event)
+    {
+        foreach ($this->plugin->getServer()->getOnlinePlayers() as $pl) {
+            $name = $pl->getLowerCaseName();
+            $stats = new Config($this->plugin->getDataFolder() . Main::$statsfile . $name . ".json", Config::JSON);
+            $stats->set("pick", $stats->get("pick") + 1);
+            $stats->save();
+            $serverstats = new Config($this->plugin->getDataFolder() . Main::$cloud . "stats.json", Config::JSON);
+            $serverstats->set("pick", $serverstats->get("pick") + 1);
+            $serverstats->save();
+        }
     }
 
     public function onConsume(PlayerItemConsumeEvent $event)

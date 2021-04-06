@@ -19,6 +19,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 
 class StatsCommand extends Command {
+    private $plugin;
 
     public function __construct(Main $plugin)
     {
@@ -64,5 +65,6 @@ class StatsCommand extends Command {
 
         $form->addButton("§0OK", 0);
         $form->sendToPlayer($sender);
+        return true;
     }
 }

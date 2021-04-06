@@ -35,48 +35,40 @@ class AdminItemsCommand extends Command implements Listener
     {
         $configs = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-             $sender->sendMessage($configs->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
-             return false;
+            $sender->sendMessage($configs->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            return false;
         }
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($configs->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
-        $gruppe = new Config($this->plugin->getDataFolder() . Main::$gruppefile . $sender->getName() . ".json", Config::JSON);
-        $owner = $gruppe->get("Owner");
         if (empty($args[0])) {
             $sender->sendMessage($configs->get("prefix") . "/adminitems <superbow|explosivbow|explosivegg>");
             return true;
         }
         if (isset($args[0])) {
-            if ($owner === false) {
-                $sender->sendMessage($configs->get("error") . "Tut mir leid du gehörst nicht zu, Stammbaum : Owner");
-                return true;
+            if ($args[0] == "superbow") {
+                if ($sender->hasPermission("core.command.adminitems.superbow")) {
+                    $this->superbow($sender);
+                    $sender->sendMessage($configs->get("prefix") . "§aDu hast das SuperItem Erhalten!");
+                } else {
+                    $sender->sendMessage($configs->get("error") . "Nene nix für kleine Kinder!");
+                }
             }
-            if ($owner === true) {
-                if ($args[0] == "superbow") {
-                    if ($sender->hasPermission("core.command.adminitems.superbow.superbow")) {
-                        $this->superbow($sender);
-                        $sender->sendMessage($configs->get("prefix") . "§aDu hast das SuperItem Erhalten!");
-                    } else {
-                        $sender->sendMessage($configs->get("error") . "Nene nix für kleine Kinder!");
-                    }
+            if ($args[0] == "explosivbow") {
+                if ($sender->hasPermission("core.command.adminitems.explosivbow")) {
+                    $this->explosivbow($sender);
+                    $sender->sendMessage($configs->get("prefix") . "§aDu hast das SuperItem Erhalten!");
+                } else {
+                    $sender->sendMessage($configs->get("error") . "Nene nix für kleine Kinder!");
                 }
-                if ($args[0] == "explosivbow") {
-                    if ($sender->hasPermission("core.command.adminitems.explosivbow")) {
-                        $this->explosivbow($sender);
-                        $sender->sendMessage($configs->get("prefix") . "§aDu hast das SuperItem Erhalten!");
-                    } else {
-                        $sender->sendMessage($configs->get("error") . "Nene nix für kleine Kinder!");
-                    }
-                }
-                if ($args[0] == "explosivegg") {
-                    if ($sender->hasPermission("core.command.adminitems.explosivbow")) {
-                        $this->explodeegg($sender);
-                        $sender->sendMessage($configs->get("prefix") . "§aDu hast das SuperItem Erhalten!");
-                    } else {
-                        $sender->sendMessage($configs->get("error") . "Nene nix für kleine Kinder!");
-                    }
+            }
+            if ($args[0] == "explosivegg") {
+                if ($sender->hasPermission("core.command.adminitems.explosivbow")) {
+                    $this->explodeegg($sender);
+                    $sender->sendMessage($configs->get("prefix") . "§aDu hast das SuperItem Erhalten!");
+                } else {
+                    $sender->sendMessage($configs->get("error") . "Nene nix für kleine Kinder!");
                 }
             }
         }

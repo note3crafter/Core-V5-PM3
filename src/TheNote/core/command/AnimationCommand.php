@@ -41,6 +41,14 @@ class AnimationCommand extends Command
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
+        if (empty($args[0])) {
+            $sender->sendMessage($config->get("info") . "Nutze : /animation [1-30]");
+            return false;
+        }
+        if ($args[0] > 30){
+            $sender->sendMessage($config->get("info") . "Nutze : /animation [1-30]");
+            return false;
+        }
         if (count($args) == 1) {
             $effectId = (int)$args[0];
             $this->plugin->screenanimation($sender, $effectId);

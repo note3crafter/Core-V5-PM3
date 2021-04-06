@@ -36,10 +36,6 @@ class PayCoinsCommand extends Command
             $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
             return false;
         }
-        if (empty($args[0])) {
-            $sender->sendMessage($config->get("info") . "/notell <on|off>");
-            return true;
-        }
         $coins->set("coins", $coins->get("coins") + 1000);
         $coins->save();
         $sender->sendMessage($config->get("info") . "Du hast 1000 Coins erhalten");

@@ -20,6 +20,7 @@ use TheNote\core\Main;
 
 class ServermuteCommand extends Command implements Listener
 {
+    private $plugin;
 
     public function __construct(Main $plugin)
     {
@@ -31,8 +32,6 @@ class ServermuteCommand extends Command implements Listener
 
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
-        self::$config = $this->plugin->getConfig()->getAll();
-
         $configs = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($configs->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
@@ -56,7 +55,6 @@ class ServermuteCommand extends Command implements Listener
         }
     }
     public function onChat(PlayerChatEvent $event){
-        self::$config = $this->plugin->getConfig()->getAll();
         $configs = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         $player = $event->getPlayer();
         if($this->plugin->isMuted()){

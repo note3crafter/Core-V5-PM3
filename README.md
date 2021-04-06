@@ -17,11 +17,10 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 # Ohne dies Funktioniert die Core nicht 
 - MyPlot -> Sollte drinnen sein wegen dem LiftSystem aber kein Muss
 
-# Neues! v5.1.7
-- Neuer Command : /seeperms -> /fperms, /rankshop[Idee aus issues}
-- Erweiterte Config sowie weitere beschreibungen Hinzugefügt!
-- AntiXray Update von HimmelKreis4798
-- Überarbeitung der Main.php -> Überarbeitetes Join/Leave System
+# Neues! v5.1.8
+- Sämtliche Gefundene Bugs Gefunden und behoben
+- /size Command hinzugefügt
+
 # Server die die CoreV5/V4 nutzen
 - play.baufieber.net 19132
 - Hier könnte dein Server stehen

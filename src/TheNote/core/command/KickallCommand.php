@@ -32,16 +32,14 @@ class KickallCommand extends Command
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        if (!$sender instanceof Player) {
-
-            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
-        }
-
         if (!$this->testPermission($sender)) {
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
-        if ($sender instanceof Player) {
+        if (empty($args[0])) {
+            $sender->sendMessage($config->get("info") . "Nutze: /kickall {reason}");
+        }
+
             if (isset($args[0])) {
                 $onlinePlayers = $this->plugin->getServer()->getOnlinePlayers();
                 if ($sender->hasPermission("core.command.kickall") || $sender->isOp()) {
@@ -56,7 +54,7 @@ class KickallCommand extends Command
                     }
                 }
             }
-        }
+
         return true;
     }
 }

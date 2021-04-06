@@ -20,6 +20,8 @@ use pocketmine\command\utils\InvalidCommandSyntaxException;
 
 class TellCommand extends Command
 {
+    private $plugin;
+
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
@@ -35,15 +37,16 @@ class TellCommand extends Command
             $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
             return false;
         }
-        if (count($args) < 2) {
-            throw new InvalidCommandSyntaxException();
+        if(empty($args[0])) {
+            $sender->sendMessage("info" . "Nutze: /tell {player} [message]");
+            return false;
         }
 
         $player = $sender->getServer()->getPlayer(strtolower($args[0]));
         unset($args[0]);
         if ($player == null) {
             $sender->sendMessage($config->get("error") . "Der Spieler ist nicht Online!");
-            return true;
+            return false;
         }
         $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $sender->getLowerCaseName() . ".json", Config::JSON);
         $stats = new Config($this->plugin->getDataFolder() . Main::$statsfile . $player->getLowerCaseName() . ".json", Config::JSON);
@@ -51,19 +54,19 @@ class TellCommand extends Command
         if ($vote->get("votes") == true) {
             if ($stats->get("votes") < 1) {
                 $player->sendMessage($config->get("error") . "§cDu musst mindestens 1x Gevotet haben um auf dem Server Schreiben zu können! §f-> §e" . $config->get("votelink"));
-                return true;
+                return false;
             }
         }
         if($cfg->get("nodm") === true) {
             $sender->sendMessage($config->get("error") . "Dieser Spieler hat seine MSGs Ausgeschaltet!");
-            return true;
+            return false;
         }
         if($player === $sender){
             $sender->sendMessage($config->get("error") . "Du kannst dir nicht selbst eine Nachricht senden!");
-            return true;
+            return false;
         }
         if ($player instanceof Player) {
-            $sender->sendMessage(Main::$msg . "{$sender->getNameTag()} §f-> {$player->getNameTag()} §f| §b" . implode(" ", $args));
+            $sender->sendMessage($config->get("msg") . "{$sender->getNameTag()} §f-> {$player->getNameTag()} §f| §b" . implode(" ", $args));
             $name = $config->get("msg") . $sender->getNameTag();
             $player->sendMessage($config->get("msg") . "$name §f-> zu dir | §b" . implode(" ", $args));
             $this->plugin->onMessage($sender, $player);

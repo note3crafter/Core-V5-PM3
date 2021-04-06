@@ -24,6 +24,7 @@ class SuperVanishCommand extends Command
 {
     public static $vanished = [];
     private static $instance;
+    private $plugin;
 
     public function __construct(Main $plugin)
     {
@@ -37,34 +38,35 @@ class SuperVanishCommand extends Command
     }
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
-        $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
+        $config = new Config($this->plugin->getDataFolder() . Main::$cloud . "Config.yml", Config::YAML);
+        $settings = new Config($this->plugin->getDataFolder() . Main::$setup . "settings.json", Config::JSON);
+        $playerdata = new Config($this->plugin->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
+        $gruppe = new Config($this->plugin->getDataFolder() . Main::$gruppefile . $sender->getName() . ".json", Config::JSON);
         if (!$sender instanceof Player) {
-            $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
+            $sender->sendMessage($settings->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
             return false;
         }
         if (!$this->testPermission($sender)) {
-            $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
-            return false;
-        }
-        $Spieler = new Config($this->plugin->getDataFolder() . "vanish.json", Config::JSON);
-        if (!$this->testPermission($sender)) {
-            $Spieler->set("SuperVanish");
+            $sender->sendMessage($settings->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
         if (empty($args[0])) {
-            $sender->sendMessage($config->get("info") . "Nutze : /sv <on|off>");
-            return true;
+            $sender->sendMessage($settings->get("info") . "Nutze : /sv <on|off>");
+            return false;
         }
-
         if (isset($args[0])) {
-
             if ($args[0] == "on") {
-                $sender->sendMessage($config->get("info") . "Dein §eSuperVanish §6wurde §aAktiviert§6.");
+                $sender->sendMessage($settings->get("info") . "Dein §eSuperVanish §6wurde §aAktiviert§6.");
                 self::$vanished[$sender->getName()] = $sender;
-
-
                 $all = $this->plugin->getServer()->getOnlinePlayers();
-                $this->plugin->getServer()->broadcastMessage("§f[§c-§f] " . $sender->getNameTag() . " §chat den Server verlassen! §f[§a" . count($all) . "§f/§a100§f]");
+                $prefix = $playerdata->getNested($sender->getName() . ".groupprefix");
+                $slots = $settings->get("slots");
+                $spielername = $gruppe->get("Nickname");
+                $stp1 = str_replace("{player}", $spielername, $config->get("Quitmsg"));
+                $stp2 = str_replace("{count}", count($all), $stp1);
+                $stp3 = str_replace("{slots}", $slots , $stp2);
+                $quitmsg = str_replace("{prefix}", $prefix, $stp3);
+                $this->plugin->getServer()->broadcastMessage($quitmsg);
                 $sender->getServer()->removePlayerListData($sender->getUniqueId());
                 $sender->getServer()->removeOnlinePlayer($sender);
 
@@ -77,19 +79,25 @@ class SuperVanishCommand extends Command
                 }
             }
             if ($args[0] == "off") {
-                $sender->sendMessage($config->get("info") . "Dein §eSuperVanish §6wurde §cDeaktiviert§6.");
+                $sender->sendMessage($settings->get("info") . "Dein §eSuperVanish §6wurde §cDeaktiviert§6.");
                 unset(self::$vanished[$sender->getName()]);
 
                 assert(true);
                 $all = $this->plugin->getServer()->getOnlinePlayers();
-                $this->plugin->getServer()->broadcastMessage("§f[§a+§f] " . $sender->getNameTag() . " §ahat den Server betreten! §f[§a" . count($all) . "§f/§a100§f]");
+                $prefix = $playerdata->getNested($sender->getName() . ".groupprefix");
+                $slots = $settings->get("slots");
+                $spielername = $gruppe->get("Nickname");
+                $stp1 = str_replace("{player}", $spielername, $config->get("Joinmsg"));
+                $stp2 = str_replace("{count}", count($all), $stp1);
+                $stp3 = str_replace("{slots}", $slots , $stp2);
+                $joinmsg = str_replace("{prefix}", $prefix, $stp3);
+                $this->plugin->getServer()->broadcastMessage($joinmsg);
                 $sender->getServer()->updatePlayerListData($sender->getUniqueId(), $sender->getId(), $sender->getDisplayName(), $sender->getSkin(), $sender->getXuid());
 
                 foreach (Server::getInstance()->getOnlinePlayers() as $player) {
                     assert(true);
                     $player->showPlayer($sender);
                 }
-
             }
         }
         return true;
