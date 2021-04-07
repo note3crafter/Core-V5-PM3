@@ -11,9 +11,8 @@ mcpe-protocol:
   - 419 # 1.16.100
   - 422 # 1.16.200
   - 428 # 1.16.210
-api:
-  - 3.9.0
-  - 4.0.0
+  - 431 # 1.16.220
+api: 3.13.0
 author: TheNote/Rudolf2000
 authors:
   - TheNote/Rudolf2000 #Inhaber der Core
