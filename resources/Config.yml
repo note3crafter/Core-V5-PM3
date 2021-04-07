@@ -1,0 +1,91 @@
+---
+#Allgemeine Einstellungen
+ConfigVersion: 5.1.9 #FingerWeg!
+
+#Commands & Funktionen
+AntiXray: false
+BoosterCommand: true
+StarterKit: true
+
+#Neue Items & Blöcke 1.16 ALPHA Kann Fehler enthalten da dies auserhalb der BlockID : 255 ist
+NewItems: false #Setze es auf false um es zu deaktivieren
+
+#ItemDisplay
+inames: true #aktiviere/deaktiviere die ItemNamen
+
+#Join/QuitMessages:
+#Stelle hier die JoinMessage ein / {prefix} {player} {count} {slots}
+JoinMessage: true
+Joinmsg: "§f[§a+§f] {prefix} {player} §ahat den Server betreten! §f[§a{count}§f/§a{slots}§f]"
+#Stelle hier die Quitmessage ein / {prefix} {player} {count} {slots}
+QuitMessage: true
+Quitmsg: "§f[§c-§f] {prefix} {player} §chat den Server verlassen! §f[§a{count}§f/§a{slots}§f]"
+#Stelle hier den JoinTip ein / {player}
+JoinTip: true
+Tipmsg: "§eDanke das du die CoreV5 benutzt {player}"
+#Stelle hier den JoinTitle ein / {player}
+JoinTitle: true
+Titlemsg: "§dWillkommen"
+Subtitlemsg: "§e{player}"
+#Blitze beim Join
+blitze: true #aktiviere/deaktiviere Blitze beim Joinen des Servers
+sound: true #aktiviere/deaktiviere den Donner
+
+#NetzwerkName
+networkname: "§f[§eCore§4V5§f] §eALPHA" #schreibe hier dein servername oder was frag mich rein...
+
+#EconomySystem
+DefaultMoney: 1000
+
+#Weitere Einstellungen
+defaultspawn: true
+rejoinallowed: true #möchtest du das die Spieler automatich rejoinen?
+rejoinserverip: 127.0.0.1
+rejoinserverport: 19132
+maxhomes: 10 #Setze ein Limit für Homes
+collision: true #aktiviere/deaktiviere collision/schubsen
+serverversion: pocketmine #nutze altay oder pocketmine um zwichen den verschiedenen versionen zu wechseln
+keepinventory: false #setze auf true um dein Inventar zu Behalten
+PingLimit: 30000 #Setze das Maximale Pinglimit ein
+ExplodeEgg: false #Setzt auf True um Explodierende Eier ohne Damage zu erhalten!
+
+#Regelwerk
+Regeln: false #Entscheide selber ob du die Regeln nutzten willst oder nicht...
+
+#HubCommand
+Defaultworld: world #Setze hier die Defaultwelt
+Gamemode: 2 #setze hier den Gamemode für die Welt
+Food: true #Aktivier/Deaktivier das Auffüllen des Hungers
+Heal: true #Aktivier/Deaktivier das Auffüllen des Lebens
+Teleportsound: true #Aktivier/Deaktivier den Teleportsound
+
+#LiftSystem
+helferprivatliftuse: true
+helperprivateLift: true
+checkFloor: true
+
+#Statstext
+statstext: false
+X: 0
+Y: 0
+Z: 0
+level: world
+
+#RankShop
+RankShopCommand: true #<- Setze es auf false um dem Command zu deaktivieren!
+
+Rankname1: premium #<- Setze hier die Gruppe rein (Muss genauso heißen wie die Gruppe!
+Rankprice1: 125000 #<- Setze hier den Betrag fest!
+#Hier kannst du 3 Weitere Ränge einstellen!
+Rank2: false
+Rankname2: default
+Rankprice2: 0
+
+Rank3: false
+Rankname3: default
+Rankprice3: 0
+
+Rank4: false
+Rankname4: default
+Rankprice4: 0
+...

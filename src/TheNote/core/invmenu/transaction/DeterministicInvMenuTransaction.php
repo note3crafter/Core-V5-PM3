@@ -9,21 +9,29 @@
 //   Copyright by TheNote! Not for Resale! Not for others
 //
 
-namespace TheNote\core\formapi;
+namespace TheNote\core\invmenu\transaction;
 
-use pocketmine\plugin\PluginBase;
+use Closure;
+use InvalidStateException;
 
-class FormAPI extends PluginBase{
+final class DeterministicInvMenuTransaction extends InvMenuTransaction{
 
-    public function createCustomForm(?callable $function = null) : CustomForm {
-        return new CustomForm($function);
-    }
+	private $result;
 
-    public function createSimpleForm(?callable $function = null) : SimpleForm {
-        return new SimpleForm($function);
-    }
+	public function __construct(InvMenuTransaction $transaction, InvMenuTransactionResult $result){
+		parent::__construct($transaction->getPlayer(), $transaction->getOut(), $transaction->getIn(), $transaction->getAction(), $transaction->getTransaction());
+		$this->result = $result;
+	}
 
-    public function createModalForm(?callable $function = null) : ModalForm {
-        return new ModalForm($function);
-    }
+	public function continue() : InvMenuTransactionResult{
+		throw new InvalidStateException("Cannot change state of deterministic transactions");
+	}
+
+	public function discard() : InvMenuTransactionResult{
+		throw new InvalidStateException("Cannot change state of deterministic transactions");
+	}
+
+	public function then(?Closure $callback) : void{
+		$this->result->then($callback);
+	}
 }

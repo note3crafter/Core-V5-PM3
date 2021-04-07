@@ -9,21 +9,37 @@
 //   Copyright by TheNote! Not for Resale! Not for others
 //
 
-namespace TheNote\core\formapi;
+namespace TheNote\core\invmenu\session;
 
-use pocketmine\plugin\PluginBase;
+use pocketmine\math\Vector3;
 
-class FormAPI extends PluginBase{
+class MenuExtradata{
 
-    public function createCustomForm(?callable $function = null) : CustomForm {
-        return new CustomForm($function);
-    }
+	protected $position;
+	protected $name;
 
-    public function createSimpleForm(?callable $function = null) : SimpleForm {
-        return new SimpleForm($function);
-    }
+	public function getPosition() : ?Vector3{
+		return $this->position;
+	}
 
-    public function createModalForm(?callable $function = null) : ModalForm {
-        return new ModalForm($function);
-    }
+	public function getPositionNotNull() : Vector3{
+		return $this->position;
+	}
+
+	public function getName() : ?string{
+		return $this->name;
+	}
+
+	public function setPosition(?Vector3 $pos) : void{
+		$this->position = $pos;
+	}
+
+	public function setName(?string $name) : void{
+		$this->name = $name;
+	}
+
+	public function reset() : void{
+		$this->position = null;
+		$this->name = null;
+	}
 }

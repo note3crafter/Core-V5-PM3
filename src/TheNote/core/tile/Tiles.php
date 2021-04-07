@@ -28,7 +28,7 @@ abstract class Tiles extends Tile
         self::registerTile(Cauldron::class);
         self::registerTile(ShulkerBox::class, [self::SHULKER_BOX, "minecraft:shulker_box"]);
         JBTile::registerTile(JBTile::class, ["Jukebox"]);
-        Tile::registerTile(Beacon::class, [Beacon::BEACON, "minecraft:beacon"]);
+        //Tile::registerTile(Beacon::class, [Beacon::BEACON, "minecraft:beacon"]);
         self::registerTile(NoteBlockTile::class , [self::NOTE_BLOCK, "minecraft:noteblock"]);
     }
 }

@@ -18,6 +18,8 @@ use TheNote\core\Main;
 
 class UserdataListener implements Listener {
 
+    private $plugin;
+
     public function __construct(Main $plugin){
         $this->plugin = $plugin;
     }
@@ -48,10 +50,6 @@ class UserdataListener implements Listener {
             $pf->set("IP", $player->getAddress());
             $pf->set("Xbox-ID", $player->getPlayer()->getXuid());
             //$pf->set("OS", $player->getPlayer()->getDeviceOS($os));
-            if ($config->get("serverversion") == "altay") {
-                $pf->set("Geraet", $player->getPlayer()->getDeviceModel());
-                $pf->set("ID", $player->getPlayer()->getDeviceId());
-            }
             $pf->set("Last_Join", date('d.m.Y H:I') . date_default_timezone_set("Europe/Berlin"));
             $pf->save();
         }

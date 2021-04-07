@@ -1,6 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+//   ╔═════╗╔═╗ ╔═╗╔═════╗╔═╗    ╔═╗╔═════╗╔═════╗╔═════╗
+//   ╚═╗ ╔═╝║ ║ ║ ║║ ╔═══╝║ ╚═╗  ║ ║║ ╔═╗ ║╚═╗ ╔═╝║ ╔═══╝
+//     ║ ║  ║ ╚═╝ ║║ ╚══╗ ║   ╚══╣ ║║ ║ ║ ║  ║ ║  ║ ╚══╗
+//     ║ ║  ║ ╔═╗ ║║ ╔══╝ ║ ╠══╗   ║║ ║ ║ ║  ║ ║  ║ ╔══╝
+//     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
+//     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
+//   Copyright by TheNote! Not for Resale! Not for others
+//
 
 namespace TheNote\core\formapi;
 
@@ -9,24 +16,13 @@ use pocketmine\Player;
 
 abstract class Form implements IForm{
 
-    /** @var array */
     protected $data = [];
-    /** @var callable|null */
     private $callable;
 
-    /**
-     * @param callable|null $callable
-     */
     public function __construct(?callable $callable) {
         $this->callable = $callable;
     }
 
-    /**
-     * @deprecated
-     * @see Player::sendForm()
-     *
-     * @param Player $player
-     */
     public function sendToPlayer(Player $player) : void {
         $player->sendForm($this);
     }

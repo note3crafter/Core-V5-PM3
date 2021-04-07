@@ -9,21 +9,12 @@
 //   Copyright by TheNote! Not for Resale! Not for others
 //
 
-namespace TheNote\core\formapi;
+namespace TheNote\core\invmenu\session\network\handler;
 
-use pocketmine\plugin\PluginBase;
+use Closure;
+use TheNote\core\invmenu\session\network\NetworkStackLatencyEntry;
 
-class FormAPI extends PluginBase{
+interface PlayerNetworkHandler{
 
-    public function createCustomForm(?callable $function = null) : CustomForm {
-        return new CustomForm($function);
-    }
-
-    public function createSimpleForm(?callable $function = null) : SimpleForm {
-        return new SimpleForm($function);
-    }
-
-    public function createModalForm(?callable $function = null) : ModalForm {
-        return new ModalForm($function);
-    }
+	public function createNetworkStackLatencyEntry(Closure $then) : NetworkStackLatencyEntry;
 }

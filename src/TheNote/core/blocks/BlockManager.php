@@ -31,7 +31,7 @@ class BlockManager {
         BlockFactory::registerBlock(new ShulkerBox(), true);
         BlockFactory::registerBlock(new UndyedShulkerBox(), true);
         BlockFactory::registerBlock(new Jukebox(), true);
-        BlockFactory::registerBlock(new Beacon(), true);
+        //BlockFactory::registerBlock(new Beacon(), true);
         BlockFactory::registerBlock(new Anvil(), true);
         BlockFactory::registerBlock(new NoteBlock(), true);
     }

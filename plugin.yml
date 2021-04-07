@@ -1,19 +1,10 @@
 name: CoreV5
 main: TheNote\core\Main
-version: 5.1.8
+version: 5.1.9
 mcpe-protocol:
-  - 388 # 1.13.x
-  - 389 # 1.14.x
-  - 390 # 1.14.60
-  - 391 # 1.15.x
-  - 407 # 1.16.0
-  - 408 # 1.16.40
-  - 419 # 1.16.100
-  - 422 # 1.16.200
-  - 428 # 1.16.210
+  - 431 # 1.16.220
 api:
-  - 3.9.0
-  - 4.0.0
+  - 3.19.0
 author: TheNote/Rudolf2000
 authors:
   - TheNote/Rudolf2000 #Inhaber der Core
@@ -31,7 +22,12 @@ authors:
   - CortexPE #Braustand und mehr
   - HimmelKreis4865 #AntiXray
   - MDevPmmP #GroupSystem/EconomySystem
-description: Core v5.1.8 Alpha Release
+  - TuranicTeam #Paar Items/Blöcke von Altay
+  - jojoe77777 #FormAPI
+  - muqsit #InvMenü
+  - TheBalkanDev #ecinvsee, invsee
+  - jasonwynn10 #Beacons
+description: Core v5.1.9 Alpha Release
 
 permissions:
   core.command.adventure:
@@ -126,6 +122,12 @@ permissions:
     default: op
   core.command.heal.other:
     description: "Heile einen anderen Spieler!"
+    default: op
+  core.command.invsee:
+    description: "Siehe das Inventar eines anderen Spielers."
+    default: op
+  core.command.invsee.use:
+    description: "Bearbeite das Inventar eines anderen Spielers."
     default: op
   core.command.kick:
     description: "Kicke einen Spieler vom Server"

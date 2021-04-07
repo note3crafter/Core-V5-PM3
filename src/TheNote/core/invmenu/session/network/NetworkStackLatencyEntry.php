@@ -9,21 +9,19 @@
 //   Copyright by TheNote! Not for Resale! Not for others
 //
 
-namespace TheNote\core\formapi;
+namespace TheNote\core\invmenu\session\network;
 
-use pocketmine\plugin\PluginBase;
+use Closure;
 
-class FormAPI extends PluginBase{
+final class NetworkStackLatencyEntry{
 
-    public function createCustomForm(?callable $function = null) : CustomForm {
-        return new CustomForm($function);
-    }
+	public $timestamp;
+	public $network_timestamp;
+	public $then;
 
-    public function createSimpleForm(?callable $function = null) : SimpleForm {
-        return new SimpleForm($function);
-    }
-
-    public function createModalForm(?callable $function = null) : ModalForm {
-        return new ModalForm($function);
-    }
+	public function __construct(int $timestamp, Closure $then, ?int $network_timestamp = null){
+		$this->timestamp = $timestamp;
+		$this->then = $then;
+		$this->network_timestamp = $network_timestamp ?? $timestamp;
+	}
 }

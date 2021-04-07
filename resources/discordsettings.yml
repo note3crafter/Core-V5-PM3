@@ -1,0 +1,25 @@
+---
+#DiscordEinstellungen
+
+#Möchtest du MCPE to Discord funktion Aktivieren?
+DC: true #setze auf true um es zu aktivieren
+
+#Haupteinstellungen
+dclink: "Discord-Link"
+chatprefix: "CoreV5"
+webhookurl: "https://discord.com/api/webhooks/786652779191861308/bl21p4_fQR_HBZs6uudlC9qsL7M7Gz8zMuKfWI080vBnB-POUrv8BTQUuJFs8B3AY7to" #füge hier deine Webhockurl ein
+webhookdc: "https://discordapp.com/api/webhooks/"
+webhookname: "CoreV5"
+
+#JoinNachrricht
+Joinmsg: "** {dcprefix} : {time} : {gruppe} {player} hat den Server betreten. [{count}/{slots}] **"
+#QuitNachrricht
+Quitmsg: "** {dcprefix} : {time} : {gruppe} {player} hat den Server verlassen. [{count}/{slots}] **"
+#KickNachrricht
+Kickmsg: "** {dcprefix} : {time} : {gruppe} {player} wurde vom Server gekickt!**"
+#DeathNachrricht
+Deathmsg: "** {dcprefix} : {time} : {gruppe} {player} starb an irgendwas!**"
+#ChatNachrricht
+Chatmsg: "```{dcprefix} : {time} : {gruppe} {player} : {msg}```"
+
+...

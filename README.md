@@ -17,10 +17,12 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 # Ohne dies Funktioniert die Core nicht 
 - MyPlot -> Sollte drinnen sein wegen dem LiftSystem aber kein Muss
 
-# Neues! v5.1.8
-- Sämtliche Gefundene Bugs Gefunden und behoben
-- /size Command hinzugefügt
-- Voll funktionsfähige Notenblöcke
+# Neues! v5.1.9
+- Update : 1.16.220
+- Beacons vorerst deaktiviert
+- Discordeinstellungen erweitert
+- Neue Commands wie /invsee, /enderinvsee sowie /id
+Neuer Schildershop! Kompatible mit EconomyAPI
 
 # Server die die CoreV5/V4 nutzen
 - play.baufieber.net 19132
@@ -29,9 +31,8 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 # Für die Zukunft Geplant :
 - ScoreBoard überarbeiten
 - HeadSystem im Blockformat
-- Weitere Commands wie : /top, /milk, /nofire, /invsee, /ecinvsee
+- Weitere Commands wie : /top, /milk, /nofire
 - Neuschreiben des BoosterCommand
-- EconomyShop/Sell (Schildersystem etc)
 - API fürs EconomySystem
 - Neue Blöcke der 1.16 hinzufügen
 - Internes WorlEdit
@@ -39,9 +40,9 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - -> Mit Auswahl auf eigener Sprachen und erweiterung auf mehreren Sprachen!
 - Amboss & Enchantment Table  
 - Funktionsfähiges Redstone
+- ChestShop
 
 # Features
-- Voll Funktionsfähige Notenblöcke
 - Sämtliche Items der 1.16 sind drinne!
 - AntiXray (by HimmelKreis4865)
 - MCPEtoDiscord (by JackMD)
@@ -137,6 +138,8 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - /tpa, /tpaccept, /tpadeny (Schicke eine Tpa zu einem Spieler oder Lehne sie ab!
 - /regeln (Aktzeptiere sie)
 - /rankshop -> Kaufe dir Ränge
+- /id -> Siehe die ItemID/Name des Item in der Hand
+- /enderinvsee, /invsee -> Schaue in das Inventar eines anderen Spielers
 
 # Hilfe & Support
 Ich werde die Core solange wie Möglich Aktuell halten und Updaten sofern es meine Zeit zulässt
@@ -154,6 +157,11 @@ Und an unseren Forker! Gebt das Plugin nicht als Euers aus! Ich habe eine menge 
 - [CortexPE](https://github.com/CortexPE) (Für ein Teil das ich von Teaspoon mit Intregiert habe) 
 - [HimmelKreis4865](https://github.com/HimmelKreis4865) (Für AntiXray)
 - [MDevPmmP](https://github.com/MarlonDevPMMP) (Für das GroupSystem, EconomySystem)
+- [TheBalkanDev](https://github.com/TheBalkanDev) (Für das Invsee/Enderinvsee)  
+- [TuranicTeam](https://github.com/TuranicTeam) (Für Sämtliche Items/Blöcke etc)
+- [Muqsit](https://github.com/Muqsit) (Für das InvMenü)
+- [jojoe77777](https://github.com/jojoe77777) (Für FormAPI)
+- [jasonwynn10](https://github.com/jasonwynn10) (Beacons)
 - [LookitsAku](https://github.com/Akuroma) & und vielen vielen weiteren Helfern!
 
 2017-2021 ©NoteLand & TheNote/Rudolf2000 

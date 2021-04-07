@@ -19,15 +19,18 @@ use pocketmine\event\entity\ProjectileHitBlockEvent;
 use pocketmine\event\Listener;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\Explosion;
+use pocketmine\level\Position;
+use pocketmine\utils\Config;
 use TheNote\core\Main;
 
 class AdminItemsEvents implements Listener
 {
+    private $plugin;
+
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
     }
-
 
     public function onShoot(EntityShootBowEvent $event)
     {
@@ -47,6 +50,7 @@ class AdminItemsEvents implements Listener
 
     public function onProjektileHit(ProjectileHitBlockEvent $event)
     {
+        $configs = new Config($this->plugin->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);
         $entity = $event->getEntity();
         $block = $event->getBlockHit();
         $radius = 5;
@@ -77,6 +81,29 @@ class AdminItemsEvents implements Listener
                 $event->getEntity()->kill();
                 $explosion->explodeA();
                 $explosion->explodeB();
+            }
+        }
+        if ($entity->namedtag->hasTag("custom_data")) {
+            $value = $entity->namedtag->getString("custom_data");
+            if ($value == "explode_egg") {
+                if (!$event->getEntity() instanceof Egg) {
+                    return;
+                }
+                $explosion = new Explosion($event->getEntity()->getPosition(), $radius);
+                $event->getEntity()->kill();
+                $explosion->explodeA();
+                $explosion->explodeB();
+            }
+        }
+        if ($configs->get("ExplodeEgg") == true) {
+            if ($entity instanceof Egg) {
+                $theX = $entity->getX();
+                $theY = $entity->getY();
+                $theZ = $entity->getZ();
+                $level = $entity->getLevel();
+                $thePosition = new Position($theX, $theY, $theZ, $level);
+                $theExplosion = new Explosion($thePosition, 5, NULL);
+                $theExplosion->explodeB();
             }
         }
     }

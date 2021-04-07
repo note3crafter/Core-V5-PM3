@@ -9,21 +9,29 @@
 //   Copyright by TheNote! Not for Resale! Not for others
 //
 
-namespace TheNote\core\formapi;
+namespace TheNote\core\invmenu\transaction;
 
-use pocketmine\plugin\PluginBase;
+use Closure;
 
-class FormAPI extends PluginBase{
+final class InvMenuTransactionResult{
 
-    public function createCustomForm(?callable $function = null) : CustomForm {
-        return new CustomForm($function);
-    }
+	private $cancelled;
+	private $post_transaction_callback;
 
-    public function createSimpleForm(?callable $function = null) : SimpleForm {
-        return new SimpleForm($function);
-    }
+	public function __construct(bool $cancelled){
+		$this->cancelled = $cancelled;
+	}
 
-    public function createModalForm(?callable $function = null) : ModalForm {
-        return new ModalForm($function);
-    }
+	public function isCancelled() : bool{
+		return $this->cancelled;
+	}
+
+	public function then(?Closure $callback) : self{
+		$this->post_transaction_callback = $callback;
+		return $this;
+	}
+
+	public function getPostTransactionCallback() : ?Closure{
+		return $this->post_transaction_callback;
+	}
 }
