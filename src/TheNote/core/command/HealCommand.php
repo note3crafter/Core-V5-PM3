@@ -22,11 +22,13 @@ use pocketmine\utils\Config;
 class HealCommand extends Command
 {
 
+    private $plugin;
+
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        parent::__construct("heal", $config->get("prefix") . "§eHeilt §6dich", "/heal");
+        parent::__construct("heal", $config->get("prefix") . "§6Heile dich oder einen anderen", "/heal");
         $this->setPermission("core.command.heal");
     }
 

@@ -11,13 +11,14 @@
 
 namespace TheNote\core\command;
 
+use pocketmine\event\Listener;
 use pocketmine\Player;
-use pocketmine\utils\Config;
 use TheNote\core\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\utils\Config;
 
-class NickCommand extends Command
+class ItemIDCommand extends Command implements Listener
 {
     private $plugin;
 
@@ -25,17 +26,14 @@ class NickCommand extends Command
     {
         $this->plugin = $plugin;
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        parent::__construct("nick", $config->get("prefix") . "Ändere dein §eNickname", "/nick <Name>");
-        $this->setPermission("core.command.nick");
+        parent::__construct("id", $config->get("prefix") . "Zeige die ID unn den Namen des Items", "/id");
+        $this->setPermission("core.command.id");
+
     }
 
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        $pf = new Config($this->plugin->getDataFolder() . Main::$gruppefile . $sender->getName() . ".json", Config::JSON);
-        $groups = new Config($this->plugin->getDataFolder(). Main::$cloud . "groups.yml", Config::YAML);
-        $playerdata = new Config($this->plugin->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
-
         if (!$sender instanceof Player) {
             $sender->sendMessage($config->get("error") . "§cDiesen Command kannst du nur Ingame benutzen");
             return false;
@@ -44,28 +42,8 @@ class NickCommand extends Command
             $sender->sendMessage($config->get("error") . "Du hast keine Berechtigung um diesen Command auszuführen!");
             return false;
         }
-        if ($pf->get("Nick") === true) {
-            $sender->sendMessage($config->get("error") . "Du hast bereits ein Nickname");
-            return true;
-        }
-        If (empty($args[0])) {
-            $sender->sendMessage($config->get("info") . "§eBitte benutze /nick <name>");
-            return true;
-        }
-        $name = $sender->getName();
-        If (isset($args[0])) {
-
-            $nickname = $args[0];
-            $sender->sendMessage($config->get("info") . "§6Du hast deinen Nicknamen zu §e$nickname §6geändert!");
-            $pf->set("Nick", true);
-            $pf->set("Nickname", $args[0]);
-            $pf->save();
-            $playergroup = $playerdata->getNested($name . ".group");
-            $nametag = str_replace("{name}", $pf->get("Nickname"), $groups->getNested("Groups.{$playergroup}.nametag"));
-            $displayname = str_replace("{name}", $pf->get("Nickname"), $groups->getNested("Groups.{$playerdata->getNested($name.".group")}.displayname"));
-            $sender->setDisplayName($displayname);
-            $sender->setNameTag($nametag);
-        }
+        $item = $sender->getInventory()->getItemInHand();
+        $sender->sendMessage($config->get("prefix") . "§6Dein Item in der Hand ist §f:§e" . $item->getId() . "§f:§e" . $item->getVanillaName());
         return true;
     }
 }
