@@ -16,5 +16,10 @@ Joinmsg: "** {dcprefix} : {time} : {gruppe} {player} hat den Server betreten. [{
 #QuitNachrricht
 Quitmsg: "** {dcprefix} : {time} : {gruppe} {player} hat den Server verlassen. [{count}/{slots}] **"
 #KickNachrricht
+Kickmsg: "** {dcprefix} : {time} : {gruppe} {player} wurde vom Server gekickt!**"
+#DeathNachrricht
+Deathmsg: "** {dcprefix} : {time} : {gruppe} {player} starb an irgendwas!**"
+#ChatNachrricht
+Chatmsg: "```{dcprefix} : {time} : {gruppe} {player} : {msg}```"
 
 ...

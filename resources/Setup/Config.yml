@@ -1,6 +1,6 @@
 ---
 #Allgemeine Einstellungen
-ConfigVersion: 5.1.8 #FingerWeg!
+ConfigVersion: 5.1.9 #FingerWeg!
 
 #Commands & Funktionen
 AntiXray: false
@@ -8,7 +8,7 @@ BoosterCommand: true
 StarterKit: true
 
 #Neue Items & Blöcke 1.16 ALPHA Kann Fehler enthalten da dies auserhalb der BlockID : 255 ist
-NewItems: true #Setze es auf false um es zu deaktivieren
+NewItems: false #Setze es auf false um es zu deaktivieren
 
 #ItemDisplay
 inames: true #aktiviere/deaktiviere die ItemNamen
@@ -47,6 +47,7 @@ collision: true #aktiviere/deaktiviere collision/schubsen
 serverversion: pocketmine #nutze altay oder pocketmine um zwichen den verschiedenen versionen zu wechseln
 keepinventory: false #setze auf true um dein Inventar zu Behalten
 PingLimit: 30000 #Setze das Maximale Pinglimit ein
+ExplodeEgg: false #Setzt auf True um Explodierende Eier ohne Damage zu erhalten!
 
 #Regelwerk
 Regeln: false #Entscheide selber ob du die Regeln nutzten willst oder nicht...

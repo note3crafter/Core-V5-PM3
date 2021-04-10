@@ -1,6 +1,6 @@
 name: CoreV5
 main: TheNote\core\Main
-version: 5.1.9
+version: 5.1.10
 mcpe-protocol:
   - 431 # 1.16.220
 api:
@@ -20,14 +20,15 @@ authors:
   - FlussRaplay #proxysystem, Waterfall
   - Crasher508 #Fixxer
   - CortexPE #Braustand und mehr
-  - HimmelKreis4865 #AntiXray
+  - HimmelKreis4865 #AntiXray & BetterSkulls
   - MDevPmmP #GroupSystem/EconomySystem
   - TuranicTeam #Paar Items/Blöcke von Altay
   - jojoe77777 #FormAPI
   - muqsit #InvMenü
   - TheBalkanDev #ecinvsee, invsee
   - jasonwynn10 #Beacons
-description: Core v5.1.9 Alpha Release
+  - CLADevs #VanillaX sachen
+description: Core v5.2.10 ALPHA
 
 permissions:
   core.command.adventure:
@@ -95,6 +96,9 @@ permissions:
     default: op
   core.command.enderchest:
     description: "Nutze deine Enderchest jederzeit"
+    default: op
+  core.command.enderinvsee:
+    description: "Siehe in die Enderchest eines anderen Spielers"
     default: op
   core.command.fake:
     description: "Mache ein Fake leave/join"

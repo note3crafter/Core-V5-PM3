@@ -15,14 +15,13 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - 1GB Festplatte
 
 # Ohne dies Funktioniert die Core nicht 
-- MyPlot -> Sollte drinnen sein wegen dem LiftSystem aber kein Muss
+- [MyPlot](https://poggit.pmmp.io/p/MyPlot) -> Sollte drinnen sein wegen dem LiftSystem aber kein Muss
 
-# Neues! v5.1.9
-- Update : 1.16.220
-- Beacons vorerst deaktiviert
-- Discordeinstellungen erweitert
-- Neue Commands wie /invsee, /enderinvsee sowie /id
-Neuer Schildershop! Kompatible mit EconomyAPI
+# Neues! v5.1.10 ALPHA
+- [BetterSkulls](https://github.com/HimmelKreis4865/BetterSkulls) von HimmelKreis4865
+- [RedstoneCircuit](https://github.com/tedo0627/RedstoneCircuit_PMMP-Plugin) Importiert und NotenBlöcke vollständig nutzbar
+- Language System angefangen ACHTUNG : Wird stehts erweitert
+- ClanSystem überarbeitet und Sämtliche weitere Commands!
 
 # Server die die CoreV5/V4 nutzen
 - play.baufieber.net 19132
@@ -30,116 +29,38 @@ Neuer Schildershop! Kompatible mit EconomyAPI
 
 # Für die Zukunft Geplant :
 - ScoreBoard überarbeiten
-- HeadSystem im Blockformat
 - Weitere Commands wie : /top, /milk, /nofire
 - Neuschreiben des BoosterCommand
+- Neuschreiben des BanSystems
 - API fürs EconomySystem
 - Neue Blöcke der 1.16 hinzufügen
 - Internes WorlEdit
 - SprachenSystem (Leider sehr arbeitsintensiv daher kanns noch dauern) 
 - -> Mit Auswahl auf eigener Sprachen und erweiterung auf mehreren Sprachen!
-- Amboss & Enchantment Table  
-- Funktionsfähiges Redstone
+- Amboss & Enchantment Table
 - ChestShop
 
 # Features
+- [Alle Commands](https://github.com/note3crafter/Core-V5/blob/main/resources/commands.md)
+- MultiLanguage Support!!
+- [Vanilla Redstone](https://github.com/tedo0627/RedstoneCircuit_PMMP-Plugin) (by [tedo0627](https://github.com/tedo0627))
 - Sämtliche Items der 1.16 sind drinne!
-- AntiXray (by HimmelKreis4865)
-- MCPEtoDiscord (by JackMD)
+- [AntiXray](https://github.com/HimmelKreis4865/AntiXray) & [HeadSystem](https://github.com/HimmelKreis4865/BetterSkulls) (by HimmelKreis4865)
+- [MCPEtoDiscord](https://github.com/JaxkDev/MCPEToDiscord) (by [JaxkDev](https://github.com/JaxkDev))
 - VoteSystem   
 - ClanSystem
 - HeiratsSystem
 - FreundeSystem
 - Perks, Booster und vieles Weiteres
 - Intregriertes ScoreBoard (Kann derzeit nicht Selbst Bearbeitet werden)  
-- Funktionierender Braustand, Jukebox, Beacon & Kessel
+- Funktionierender [Braustand](https://github.com/CortexPE/TeaSpoon), [Jukebox](https://github.com/JaxkDev/JukeBox-pmmp), [Beacon](https://github.com/jasonwynn10/PM-Beacons) & [Kessel](https://github.com/CortexPE/TeaSpoon)
 - NetheriteRüstung, Barren, Schrott sowie Werkzeuge
 - Viele Weitere Kleinigkeiten
 - Gruppensystem (Inkompatible zu PurePerms!!!)
 - Farbiges Schreiben mit &
 - Economy System (Kompatible mit EconomyAPI) (Money.yml kann weitergenutzt werden)
 
-# Commands
-- /abenteuer (Setze deinen/anderen Spielermodus zu Abenteuer)
-- /adminitem (Nutze verschiedene CustomItems)
-- /afk (Stelle dich AFK)
-- /animation (Spiele mit Animationen Rum)
-- /ban <Spieler> <ID> (Banne einen Spieler)
-- /banids (Siehe die BanIDS)
-- /banlist (Siehe die Gebannten Spieler ein)
-- /booster (Nutze die Booster)
-- /burn (Zünde einen Spieler an)
-- /chatclear (Cleare den Chat)
-- /clan (Voll Funktionsfähiges Clansystem)
-- /clear (Cleare dein/anderen Inventar)
-- /clearlagg (Entferne alle Items die auf dem Boden Liegen)
-- /craft (Öffne die Werkbank via UI)
-- /day (Setze die Zeit auf Tag)
-- /delhome <Homename> (Lösche deinen Home)
-- /delwarp <Warpname> (Lösche deinen Warp)
-- /enderchest (Öffne deine Enderchest via UI)
-- /erfolg (Siehe deine Erfolge ein)
-- /fake (Mache einen Fake Join/Leave)
-- /feed (Stille deinen/anderen Hunger)
-- /fly (Gebe dir/anderen Fly)
-- /friend (Voll Funktionsfähiges Freundesystem)
-- /givecoins <Menge>(Gebe einen Spieler Coins)
-- /gruppe <Gruppenname> (Gebe einen Spieler eine Gruppe) NOTICE: Braucht PurePerms
-- /heal (Heile dich/anderen)
-- /heiraten >scheidung|annehmen|ablehnen|surprise> (Heirate einen anderen Spieler)
-- /home <Homename> (Teleportiere dich zu deinem Home)
-- /kickall (Kicke alle Spieler)
-- /kick <Spieler|Grund> (Kicke einen Spieler mit oder ohne Grund)
-- /kreativ (Setze deinen/anderen Spielmodus zu Kreativ)
-- /listhome (Liste deine Homes auf)
-- /listwarp (Liste alle Warps auf)
-- /mycoins (Sehe deine Coins)
-- /nick (Nicke dich selbst)
-- /night (Stelle die Zeit auf Nacht)
-- /nightvision (Gebe dir 10 Minuten Nachtsicht)
-- /nuke (Sprenge ein dickes loch in den Bodem)
-- /nodm (Aktiviere/Deaktiviere deine Privatnachrrichten)
-- /payall (Schenke jedem Spieler Geld)
-- /paycoins (Gebe dir selbst 1000 Coins)
-- /perk (Aktivier/Deaktiviere) NOTICE: Braucht PurePerms
-- /perkshop (Kaufe dir Perks) NOTICE: Bracht PurePerms
-- /pos (Zeige deine Position an)
-- /rename (Rename ein Item)
-- /repair (Repaier ein Item)
-- /reply (Antworte auf deine Letzte Privatnachricht)
-- /servermute (Mute den Serverchat)
-- /serverstats (Siehe die Serverstats ein)
-- /sethome (Setze einen Home)
-- /setwarp (Setze einen Warp)
-- /sign (Signiere ein Item)
-- /size (Verändere deine Größe)
-- /stats (Siehe deine Stats ein)
-- /sudo (Führe ein Befehl oder sene eine Nachrricht über ein anderen Spieler)
-- /supervanish (Gehe in den SuperVansih)
-- /tell (Sende eine Privatnachrricht)
-- /tpall (Teleportiere alle Spieler zu dir)
-- /tree (Setze einen Baum)
-- /unban (Entbanne einen Spieler)
-- /unnick (Entnicke dich)
-- /userdata (Siehe die Userdaten ein)
-- /vanish (Gehe in den Vanish)
-- /vote (Vote für deinen Server)
-- /warp (Teleporte dich zu deinem Warp)
-- /zuschauer (Setze deinen/anderen Spielmodus zu Zuschauer)
--> Neues EconomySystem!
-- /topmoney (Zeige die Topspieler mit den Meisten Geld)
-- /seemoney (Sehe das Geld eines anderen Spielers)
-- /takemoney (Nehme das Geld eines anderen Spielers)
-- /givemoney (Gebe einen Spieler das Geld)
-- /setmoney (Setze das Geld eines Spielers)
-- /mymoney (Sehe deinen Geldstand)
-- /pay (Zahle einen anderen Spieler dein Geld)
--> TPASystem
-- /tpa, /tpaccept, /tpadeny (Schicke eine Tpa zu einem Spieler oder Lehne sie ab!
-- /regeln (Aktzeptiere sie)
-- /rankshop -> Kaufe dir Ränge
-- /id -> Siehe die ItemID/Name des Item in der Hand
-- /enderinvsee, /invsee -> Schaue in das Inventar eines anderen Spielers
+
 
 # Hilfe & Support
 Ich werde die Core solange wie Möglich Aktuell halten und Updaten sofern es meine Zeit zulässt
@@ -152,10 +73,10 @@ Und an unseren Forker! Gebt das Plugin nicht als Euers aus! Ich habe eine menge 
 - xxflow (Heiratsystem & Payall)
 - Aneoxic (Für das Grundgerüst und den Einstig)
 - [FleekRush](https://github.com/FleekRush) (Für das Boostersystem)
-- [JaxkDev](https://github.com/JaxkDev) (Für die MCPE to Discord Codes die ich verwende)
+- [JaxkDev](https://github.com/JaxkDev) (Für die MCPE to Discord Codes die ich verwende & JukeBox-pmmp)
 - [Crasher508](https://github.com/Crasher508) aka KommandToasti (Fürs repaieren mancher dinge! und er ist der Beste!)
 - [CortexPE](https://github.com/CortexPE) (Für ein Teil das ich von Teaspoon mit Intregiert habe) 
-- [HimmelKreis4865](https://github.com/HimmelKreis4865) (Für AntiXray)
+- [HimmelKreis4865](https://github.com/HimmelKreis4865) (Für AntiXray & BetterSkulls)
 - [MDevPmmP](https://github.com/MarlonDevPMMP) (Für das GroupSystem, EconomySystem)
 - [TheBalkanDev](https://github.com/TheBalkanDev) (Für das Invsee/Enderinvsee)  
 - [TuranicTeam](https://github.com/TuranicTeam) (Für Sämtliche Items/Blöcke etc)
