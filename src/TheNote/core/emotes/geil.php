@@ -30,20 +30,20 @@ class geil extends Command {
 
     public function execute(CommandSender $sender, string $commandLabel, array $args)
     {
-        $dcsettings = new Config($this->plugin->getDataFolder() . Main::$setup . "discordsettings.yml", Config::YAML);
         if (!$sender instanceof Player) {
             return $this->plugin->getServer()->broadcastMessage("§cDer Server ist geil O_o");
         }
+        $dcsettings = new Config($this->plugin->getDataFolder() . Main::$setup . "discordsettings" . ".yml", Config::YAML);
+        $playerdata = new Config($this->plugin->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
         $nickname = $sender->getNameTag();
         $name = $sender->getName();
-        if (!$this->testPermission($sender)){
-            return false;
-        }
+        $prefix = $playerdata->getNested($sender->getName() . ".group");
+        $chatprefix = $dcsettings->get("chatprefix");
         $this->plugin->getServer()->broadcastMessage("§c$nickname §cist geil O_o");
         if ($dcsettings->get("DC") == true) {
             $ar = getdate();
             $time = $ar['hours'] . ":" . $ar['minutes'];
-            $format = Main::$dcname . " : {time} : {player} ist geil O_o";
+            $format = $chatprefix . " : {time} : $prefix {player} ist geil O_o";
             $msg = str_replace("{time}", $time, str_replace("{player}", $name, $format));
             $this->plugin->sendMessage($name, $msg);
         }

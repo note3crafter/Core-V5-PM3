@@ -30,20 +30,20 @@ class happy extends Command
 
     public function execute(CommandSender $sender, string $commandLabel, array $args)
     {
-        $dcsettings = new Config($this->plugin->getDataFolder() . Main::$setup . "discordsettings.yml", Config::YAML);
         if (!$sender instanceof Player) {
             return $this->plugin->getServer()->broadcastMessage("§aDer Server ist glücklich :D");
         }
+        $dcsettings = new Config($this->plugin->getDataFolder() . Main::$setup . "discordsettings" . ".yml", Config::YAML);
+        $playerdata = new Config($this->plugin->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
         $nickname = $sender->getNameTag();
         $name = $sender->getName();
-        if (!$this->testPermission($sender)) {
-            return false;
-        }
+        $prefix = $playerdata->getNested($sender->getName() . ".group");
+        $chatprefix = $dcsettings->get("chatprefix");
         $this->plugin->getServer()->broadcastMessage("§a$nickname §aist glücklich :D");
         if ($dcsettings->get("DC") == true) {
             $ar = getdate();
             $time = $ar['hours'] . ":" . $ar['minutes'];
-            $format = Main::$dcname . " : {time} : {player} ist glücklich :D";
+            $format = $chatprefix . " : {time} : $prefix {player} ist glücklich :D";
             $msg = str_replace("{time}", $time, str_replace("{player}", $name, $format));
             $this->plugin->sendMessage($name, $msg);
         }

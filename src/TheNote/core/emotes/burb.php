@@ -30,20 +30,20 @@ class burb extends Command
 
     public function execute(CommandSender $sender, string $commandLabel, array $args)
     {
-        $dcsettings = new Config($this->plugin->getDataFolder() . Main::$setup . "discordsettings.yml", Config::YAML);
         if (!$sender instanceof Player) {
             return $this->plugin->getServer()->broadcastMessage("§bDer Server hat gerülpst O_O");
         }
-        $nickname = $sender->getNameTag();
+        $dcsettings = new Config($this->plugin->getDataFolder() . Main::$setup . "discordsettings" . ".yml", Config::YAML);
+        $playerdata = new Config($this->plugin->getDataFolder() . Main::$cloud . "players.yml", Config::YAML);
+        $tag = $sender->getNameTag();
         $name = $sender->getName();
-        if (!$this->testPermission($sender)) {
-            return false;
-        }
-        $this->plugin->getServer()->broadcastMessage("§b$nickname §bhat gerülpst O_O");
+        $prefix = $playerdata->getNested($sender->getName() . ".group");
+        $chatprefix = $dcsettings->get("chatprefix");
+        $this->plugin->getServer()->broadcastMessage("§b$tag §bhat gerülpst O_O");
         if ($dcsettings->get("DC") == true) {
             $ar = getdate();
             $time = $ar['hours'] . ":" . $ar['minutes'];
-            $format = Main::$dcname . " : {time} : {player} hat gerülpst O_O";
+            $format = $chatprefix . " : {time} : $prefix {player} hat gerülpst O_O";
             $msg = str_replace("{time}", $time, str_replace("{player}", $name, $format));
             $this->plugin->sendMessage($name, $msg);
         }
