@@ -13,9 +13,16 @@ namespace TheNote\core\events;
 
 use pocketmine\block\Block;
 use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\BlockSpreadEvent;
+use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\Listener;
+use pocketmine\item\Item;
+use pocketmine\level\generator\GeneratorManager;
 use pocketmine\nbt\tag\StringTag;
+use pocketmine\network\mcpe\protocol\ChangeDimensionPacket;
+use pocketmine\Player;
+use pocketmine\Server;
 use TheNote\core\entity\SkullEntity;
 use TheNote\core\Main;
 
@@ -48,4 +55,46 @@ class EventsListener implements Listener {
             }
         }
     }
+    public function onPlace(BlockPlaceEvent $event) {
+        $player = $event->getPlayer();
+        $inv = $player->getInventory()->getItemInHand();
+        If ($player->getLevelNonNull()->getProvider()->getGenerator() === "myplot") {
+            if ($inv->getId() === Item::COMPARATOR){
+                $event->setCancelled(true);
+                $player->sendTip("§cThis item is banned here!");
+                return false;
+            }
+            return false;
+        }
+    }
+    public function onLevelChange(EntityLevelChangeEvent $event) {
+        $entity = $event->getEntity();
+        if($entity instanceof Player) {
+
+            $originGenerator = $event->getOrigin()->getProvider()->getGenerator();
+            $targetGenerator = $event->getTarget()->getProvider()->getGenerator();
+
+            $getDimension = function ($generator): int {
+                switch ($generator) {
+                    case "normal":
+                    case "skyblock":
+                    case "void":
+                        return 0;
+                    case "nether":
+                        return 1;
+                    case "ender":
+                        return 2;
+                    default:
+                        return 0;
+                }
+            };
+
+            if($getDimension($originGenerator) == $getDimension($targetGenerator)) return;
+            $pk = new ChangeDimensionPacket();
+            $pk->dimension = $getDimension($targetGenerator);
+            $pk->position = $event->getTarget()->getSpawnLocation();
+            $entity->dataPacket($pk);
+        }
+    }
+
 }

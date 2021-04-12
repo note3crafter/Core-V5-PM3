@@ -17,11 +17,10 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 # Ohne dies Funktioniert die Core nicht 
 - [MyPlot](https://poggit.pmmp.io/p/MyPlot) -> Sollte drinnen sein wegen dem LiftSystem aber kein Muss
 
-# Neues! v5.1.10 ALPHA
-- [BetterSkulls](https://github.com/HimmelKreis4865/BetterSkulls) von HimmelKreis4865
-- [RedstoneCircuit](https://github.com/tedo0627/RedstoneCircuit_PMMP-Plugin) Importiert und NotenBlöcke vollständig nutzbar
-- Language System angefangen ACHTUNG : Wird stehts erweitert
-- ClanSystem überarbeitet und Sämtliche weitere Commands!
+# Neues! v5.1.11 ALPHA
+- Neuer Command /world -> Manage deine Welten und generiere auch welche! ACHTUNG: Könnte fehler enthalten
+- Weitere Commands /credits, /setstatstext
+- Bugfixxes gefixxt
 
 # Server die die CoreV5/V4 nutzen
 - play.baufieber.net 19132
@@ -37,7 +36,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - Internes WorlEdit
 - SprachenSystem (Leider sehr arbeitsintensiv daher kanns noch dauern) 
 - -> Mit Auswahl auf eigener Sprachen und erweiterung auf mehreren Sprachen!
-- Amboss & Enchantment Table
+- Amboss & Enchantment Table -> Denke eher weniger....
 - ChestShop
 
 # Features
@@ -59,8 +58,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - Gruppensystem (Inkompatible zu PurePerms!!!)
 - Farbiges Schreiben mit &
 - Economy System (Kompatible mit EconomyAPI) (Money.yml kann weitergenutzt werden)
-
-
+- Wolrd Managment System
 
 # Hilfe & Support
 Ich werde die Core solange wie Möglich Aktuell halten und Updaten sofern es meine Zeit zulässt

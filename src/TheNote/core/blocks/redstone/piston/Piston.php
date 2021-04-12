@@ -121,4 +121,7 @@ class Piston extends Solid implements IRedstone {
         }
         $this->getBlockEntity()->extend($power);
     }
+    public function getBreakTime(Item $item) : float{
+        return 0.8;
+    }
 }

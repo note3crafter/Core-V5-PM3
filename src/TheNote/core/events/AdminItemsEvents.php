@@ -65,9 +65,6 @@ class AdminItemsEvents implements Listener
                 $explosion->explodeA();
                 $explosion->explodeB();
             }
-        }
-        if ($entity->namedtag->hasTag("custom_data")) {
-            $value = $entity->namedtag->getString("custom_data");
             if ($value == "super_arrow") {
                 $entity->flagForDespawn();
                 $block->getLevel()->setBlock($block, BlockFactory::get(0, 0, null));
@@ -75,18 +72,6 @@ class AdminItemsEvents implements Listener
             }
             if ($value == "explode_arrow") {
                 if (!$event->getEntity() instanceof Arrow) {
-                    return;
-                }
-                $explosion = new Explosion($event->getEntity()->getPosition(), $radius);
-                $event->getEntity()->kill();
-                $explosion->explodeA();
-                $explosion->explodeB();
-            }
-        }
-        if ($entity->namedtag->hasTag("custom_data")) {
-            $value = $entity->namedtag->getString("custom_data");
-            if ($value == "explode_egg") {
-                if (!$event->getEntity() instanceof Egg) {
                     return;
                 }
                 $explosion = new Explosion($event->getEntity()->getPosition(), $radius);

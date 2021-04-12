@@ -31,7 +31,7 @@ class AdminItemsCommand extends Command implements Listener
         $l = $langsettings->get("Lang");
         $lang = new Config($this->plugin->getDataFolder() . Main::$lang . "Lang_" . $l . ".json", Config::JSON);
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
-        parent::__construct("admintiem", $config->get("prefix") . $lang->get("adminitmesprefix"), "/adminitems" , ["ai", "aitmes"]);
+        parent::__construct("adminitems", $config->get("prefix") . $lang->get("adminitemsprefix"), "/adminitems" , ["ai", "aitmes"]);
         $this->setPermission("core.command.adminitems");
     }
     public function execute(CommandSender $sender, string $commandLabel, array $args):bool

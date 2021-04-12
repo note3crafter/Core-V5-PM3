@@ -11,6 +11,6 @@
 
 namespace TheNote\core\server;
 
-interface WindowIds {
+interface Windowids {
     public const ANVIL = 2;
 }

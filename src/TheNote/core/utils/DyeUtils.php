@@ -9,11 +9,9 @@
 //   Copyright by TheNote! Not for Resale! Not for others
 //                        2017-2020
 
-declare(strict_types = 1);
-
 namespace TheNote\core\utils;
 
-use TheNote\core\utils;
+use pocketmine\utils\Utils;
 use pocketmine\utils\Color;
 
 class DyeUtils extends Utils {

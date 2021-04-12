@@ -1,10 +1,10 @@
 ---
 #Allgemeine Einstellungen
-ConfigVersion: 5.1.9 #FingerWeg!
+ConfigVersion: 5.1.11 #FingerWeg!
 
 #Commands & Funktionen
 AntiXray: false
-BoosterCommand: true
+BoosterCommand: false #Muss Überarbeitet werden jedoch aktuell keine Zeit dafür...
 StarterKit: true
 
 #Neue Items & Blöcke 1.16 ALPHA Kann Fehler enthalten da dies auserhalb der BlockID : 255 ist
@@ -38,7 +38,7 @@ networkname: "§f[§eCore§4V5§f] §eALPHA" #schreibe hier dein servername oder
 DefaultMoney: 1000
 
 #Weitere Einstellungen
-defaultspawn: true
+defaultspawn: false
 rejoinallowed: true #möchtest du das die Spieler automatich rejoinen?
 rejoinserverip: 127.0.0.1
 rejoinserverport: 19132
@@ -71,6 +71,20 @@ Y: 0
 Z: 0
 level: world
 
+#Banned events in world
+Place:
+  - world
+Break:
+  - world
+Chat:
+  - world
+Drop:
+  - world
+Bucketempty:
+  - world
+Bucketfill:
+  - world
+
 #RankShop
 RankShopCommand: true #<- Setze es auf false um dem Command zu deaktivieren!
 
@@ -78,14 +92,14 @@ Rankname1: premium #<- Setze hier die Gruppe rein (Muss genauso heißen wie die 
 Rankprice1: 125000 #<- Setze hier den Betrag fest!
 #Hier kannst du 3 Weitere Ränge einstellen!
 Rank2: false
-Rankname2: default
+Rankname2: normal
 Rankprice2: 0
 
 Rank3: false
-Rankname3: default
+Rankname3: normal
 Rankprice3: 0
 
 Rank4: false
-Rankname4: default
+Rankname4: normal
 Rankprice4: 0
 ...

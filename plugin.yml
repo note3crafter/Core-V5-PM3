@@ -1,6 +1,6 @@
 name: CoreV5
 main: TheNote\core\Main
-version: 5.1.10
+version: 5.1.11
 mcpe-protocol:
   - 431 # 1.16.220
 api:
@@ -16,8 +16,6 @@ authors:
   - LookItsAku #Hilfe
   - Hagnbrain #homesystem
   - EnderDirt #füraltecodes
-  - HyperEnte #race
-  - FlussRaplay #proxysystem, Waterfall
   - Crasher508 #Fixxer
   - CortexPE #Braustand und mehr
   - HimmelKreis4865 #AntiXray & BetterSkulls
@@ -27,8 +25,7 @@ authors:
   - muqsit #InvMenü
   - TheBalkanDev #ecinvsee, invsee
   - jasonwynn10 #Beacons
-  - CLADevs #VanillaX sachen
-description: Core v5.2.10 ALPHA
+description: Core v5.2.11 ALPHA
 
 permissions:
   core.command.adventure:
@@ -120,6 +117,9 @@ permissions:
     default: op
   core.command.group:
     description: "Stelle deine Gruppe ein"
+    default: op
+  core.command.head:
+    description: "Gebe dir dein Kopf"
     default: op
   core.command.heal:
     description: "Der lauch ist stark in dir und das heilt dich!"
@@ -221,4 +221,17 @@ permissions:
     default: op
   core.command.vanish:
     description: "Versteckt dich ohne Items in der Hand"
+    default: op
+  core.command.setstatstext:
+    description: "Setze den Statstext"
+    default: op
+  core.events.bucketfill:
+    default: op
+  core.events.bucketempty:
+    default: op
+  core.events.drop:
+    default: op
+  core.command.blockplace:
+    default: op
+  core.command.blockbreak:
     default: op

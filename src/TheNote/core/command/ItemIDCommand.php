@@ -28,7 +28,6 @@ class ItemIDCommand extends Command implements Listener
         $config = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);
         parent::__construct("id", $config->get("prefix") . "Zeige die ID unn den Namen des Items", "/id");
         $this->setPermission("core.command.id");
-
     }
 
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool

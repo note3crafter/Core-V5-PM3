@@ -32,12 +32,15 @@ use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\item\Tool;
 use pocketmine\level\ChunkManager;
+use pocketmine\level\generator\GeneratorManager;
 use pocketmine\level\generator\object\BirchTree;
 use pocketmine\level\generator\object\JungleTree;
 use pocketmine\level\generator\object\OakTree;
 use pocketmine\level\generator\object\SpruceTree;
 use pocketmine\level\particle\DustParticle;
 use pocketmine\math\Vector3;
+use pocketmine\nbt\BigEndianNBTStream;
+use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\NetworkBinaryStream;
@@ -59,9 +62,17 @@ use pocketmine\command\ConsoleCommandSender;
 use pocketmine\utils\Random;
 use pocketmine\item\ItemFactory;
 
+use TheNote\core\command\CreditsCommand;
 use TheNote\core\command\HeadCommand;
+use TheNote\core\command\WorldCommand;
+use TheNote\core\events\Eventsettings;
 use TheNote\core\events\EventsListener;
 use TheNote\core\listener\EventListener;
+use TheNote\core\server\generators\ender\EnderGenerator;
+use TheNote\core\server\generators\nether\NetherGenerator;
+use TheNote\core\server\generators\normal\NormalGenerator;
+use TheNote\core\server\generators\void\VoidGenerator;
+use TheNote\core\server\structure\StructureManager;
 use TheNote\core\session\SessionManager;
 use TheNote\core\blocks\BlockFactory;
 use TheNote\core\command\EnderInvSeeCommand;
@@ -227,12 +238,12 @@ class Main extends PluginBase implements Listener
 {
 
     //PluginVersion
-    public static $version = "5.1.10ALPHA";
+    public static $version = "5.1.11ALPHA";
     public static $protokoll = "431";
     public static $mcpeversion = "1.16.220";
-    public static $dateversion = "10.04.2021";
+    public static $dateversion = "11.04.2021";
     public static $plname = "CoreV5";
-    public static $configversion = "5.1.10";
+    public static $configversion = "5.1.11";
 
     private $clicks;
     private $message = "";
@@ -266,7 +277,7 @@ class Main extends PluginBase implements Listener
 
     //Configs
     public static $clanfile = "Cloud/players/Clans/";
-    public static $freundefile = "Cloud/players/";
+    public static $freundefile = "Cloud/players/Freunde/";
     public static $gruppefile = "Cloud/players/Gruppe/";
     public static $heifile = "Cloud/players/Heiraten/";
     public static $homefile = "Cloud/players/Homes/";
@@ -374,6 +385,23 @@ class Main extends PluginBase implements Listener
 
     public function onLoad()
     {
+        $start = (bool) !(self::$instance instanceof $this);
+        self::$instance = $this;
+
+        if($start) {
+            $generators = [
+                "ender" => EnderGenerator::class,
+                "void" => VoidGenerator::class,
+                "nether" => NetherGenerator::class,
+                "normal_mw" => NormalGenerator::class
+            ];
+
+            foreach ($generators as $name => $class) {
+                GeneratorManager::addGenerator($class, $name, true);
+            }
+
+            StructureManager::saveResources($this->getResources());
+        }
         if (!$this->isSpoon()) {
             @mkdir($this->getDataFolder() . "Setup");
             @mkdir($this->getDataFolder() . "Cloud");
@@ -409,7 +437,7 @@ class Main extends PluginBase implements Listener
             BlockManager::init();
             Tiles::init();
             if (!file_exists($this->getDataFolder() . "Setup/Config.yml")) {
-                rename("Setup/Config.yml", "Setup/ConfigOLD.yml");
+                //rename("Setup/Config.yml", "Setup/ConfigOLD.yml");
                 $this->getLogger()->alert("§cDie Config.yml ist nicht vorhanden! Der Server wird automatisch neugestartet!");
                 $this->saveResource("Setup/Config.yml", true);
                 $this->getServer()->shutdown();
@@ -450,16 +478,22 @@ class Main extends PluginBase implements Listener
                     file_put_contents($this->getDataFolder() . "Setup/minecraftpocket-servers.com.vrc", "{\"website\":\"http://minecraftpocket-servers.com/\",\"check\":\"http://minecraftpocket-servers.com/api-vrc/?object=votes&element=claim&key=" . $c["API-Key"] . "&username={USERNAME}\",\"claim\":\"http://minecraftpocket-servers.com/api-vrc/?action=post&object=votes&element=claim&key=" . $c["API-Key"] . "&username={USERNAME}\"}");
                 }
             }
+
         }
     }
 
     public function onEnable()
     {
+        foreach (scandir($this->getServer()->getDataPath()."worlds") as $file) {
+            if(Server::getInstance()->isLevelGenerated($file)) {
+                $this->getServer()->loadLevel($file);
+            }
+        }
         if (!$this->isSpoon()) {
             $this->default = "";
             $this->reload();
             if (strlen($this->default) > 1) {
-                $this->getLogger()->warning("The \"default\" property in config.yml has an error - the value is too long! Assuming as \"_\".");
+                $this->getLogger()->warning("The \"normal\" property in config.yml has an error - the value is too long! Assuming as \"_\".");
                 $this->default = "_";
             }
             $this->padding = "";
@@ -483,11 +517,13 @@ class Main extends PluginBase implements Listener
             $config = new Config($this->getDataFolder() . Main::$setup . "settings.json", Config::JSON);
             $kit = new Config($this->getDataFolder() . Main::$setup . "kitsettings.yml", Config::YAML);
             $configs = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);
-            if (!$configs->get("ConfigVersion") == Main::$configversion) {
+            if (!$configs->get("ConfigVersion") == Main::$configversion or null) {
                 $this->getLogger()->info("Die Config.yml ist veraltet! Bitte Update diese! Der Server wird automatisch neugestartet!");
-                rename("Setup/Config.yml", "Setup/ConfigOLD.yml");
+                //rename("Setup/Config.yml", "Setup/ConfigOLD.yml");
+                $this->saveResource("Setup/Config.yml", true);
                 $this->getServer()->shutdown();
             }
+            $this->buildBlockIdTable();
             $this->sellSign = new Config($this->getDataFolder() . Main::$lang . "SellSign.yml", Config::YAML, array(
                 "sell" => array(
                     "§f[§cVerkaufen§f]",
@@ -625,6 +661,8 @@ class Main extends PluginBase implements Listener
             $this->getServer()->getCommandMap()->register("enderinvsee", new EnderInvSeeCommand($this));
             $this->getServer()->getCommandMap()->register("invsee", new InvSeeCommand($this));
             $this->getServer()->getCommandMap()->register("head", new HeadCommand($this));
+            $this->getServer()->getCommandMap()->register("world", new WorldCommand($this));
+            $this->getServer()->getCommandMap()->register("credits", new CreditsCommand($this));
 
             if ($configs->get("RankShopCommand") == true) {
                 $this->getServer()->getCommandMap()->register("rankshop", new RankShopCommand($this));
@@ -658,6 +696,7 @@ class Main extends PluginBase implements Listener
             $this->getServer()->getPluginManager()->registerEvents(new EconomyShop($this), $this);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
             $this->getServer()->getPluginManager()->registerEvents(new EventsListener(), $this);
+            $this->getServer()->getPluginManager()->registerEvents(new Eventsettings($this), $this);
 
 
             if ($configs->get("AntiXray") == true) {
@@ -776,10 +815,10 @@ class Main extends PluginBase implements Listener
         $log->set("last-XboxID", $player->getPlayer()->getXuid());
         $log->set("last-online", $fj);
         if ($user->get("heistatus") === false) {
-            $player->sendMessage($config->get("heirat") . "Du bist nicht verheiratet!");
+            $player->sendMessage($settings->get("heirat") . "Du bist nicht verheiratet!");
         }
         if ($gruppe->get("Clanstatus") === false) {
-            $player->sendMessage($config->get("clans") . "Du bist im keinem Clan!");
+            $player->sendMessage($settings->get("clans") . "Du bist im keinem Clan!");
         }
 
         $this->TotemEffect($player);
@@ -1718,16 +1757,16 @@ class Main extends PluginBase implements Listener
     {
         if (!file_exists($this->getDataFolder() . Main::$cloud . "groups.yml")) {
             $groups = new Config($this->getDataFolder() . Main::$cloud . "groups.yml", Config::YAML);
-            $groups->set("DefaultGroup", "default");
+            $groups->set("DefaultGroup", "normal");
 
-            $groups->setNested("Groups.default.groupprefix", "§f[§eSpieler§f]§7");
-            $groups->setNested("Groups.default.format1", "§f[§eSpieler§f] §7{name} §r§f|§7 {msg}");
-            $groups->setNested("Groups.default.format2", "§f[§eSpieler§f] {clan} §7{name} §r§f|§7 {msg}");
-            $groups->setNested("Groups.default.format3", "§f[§eSpieler§f] {heirat} §7{name} §r§f|§7 {msg}");
-            $groups->setNested("Groups.default.format4", "§f[§eSpieler§f] {heirat} {clan} §7{name} §r§f|§7 {msg}");
-            $groups->setNested("Groups.default.nametag", "§f[§eSpieler§f] §7{name}");
-            $groups->setNested("Groups.default.displayname", "§eS§f:§7{name}");
-            $groups->setNested("Groups.default.permissions", ["CoreV5"]);
+            $groups->setNested("Groups.normal.groupprefix", "§f[§eSpieler§f]§7");
+            $groups->setNested("Groups.normal.format1", "§f[§eSpieler§f] §7{name} §r§f|§7 {msg}");
+            $groups->setNested("Groups.normal.format2", "§f[§eSpieler§f] {clan} §7{name} §r§f|§7 {msg}");
+            $groups->setNested("Groups.normal.format3", "§f[§eSpieler§f] {heirat} §7{name} §r§f|§7 {msg}");
+            $groups->setNested("Groups.normal.format4", "§f[§eSpieler§f] {heirat} {clan} §7{name} §r§f|§7 {msg}");
+            $groups->setNested("Groups.normal.nametag", "§f[§eSpieler§f] §7{name}");
+            $groups->setNested("Groups.normal.displayname", "§eS§f:§7{name}");
+            $groups->setNested("Groups.normal.permissions", ["CoreV5"]);
 
             $groups->setNested("Groups.premium.groupprefix", "§f[§6Premium§f]§6");
             $groups->setNested("Groups.premium.format1", "§f[§6Premium§f] §6{name} §r§f|§6 {msg}");
@@ -1748,7 +1787,7 @@ class Main extends PluginBase implements Listener
             $groups->setNested("Groups.owner.permissions", ["CoreV5"]);
 
             //Defaultgroup
-            $groups->set("DefaultGroup", "default");
+            $groups->set("DefaultGroup", "normal");
             $groups->save();
         }
     }
@@ -1760,5 +1799,14 @@ class Main extends PluginBase implements Listener
             $money->setNested("money.CoreV5.", 1000);
             $money->save();
         }
+    }
+    //World
+    public function buildBlockIdTable() {
+        $stream = new NetworkLittleEndianNBTStream();
+        $values = $stream->read(file_get_contents(RESOURCE_PATH . "/vanilla/canonical_block_states.nbt"));
+
+        $outputStream = new BigEndianNBTStream();
+        $compound = new CompoundTag("Data", [$values]);
+        file_put_contents("states.dat", $outputStream->write($compound));
     }
 }

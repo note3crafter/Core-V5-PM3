@@ -51,7 +51,7 @@ class HeadCommand extends Command implements PluginIdentifiableCommand {
 
         if (!$sender->hasPermission("skull.command.bypass")) Main::getInstance()->refillCooldown($sender);
         $sender->getInventory()->addItem(Main::constructPlayerHeadItem($target->getName(), $target->getSkin()));
-        $sender->sendMessage("kopf bekommen");
+        $sender->sendMessage($config->get("info") . "§6Du hast den Kopf bekommen von " . $target->getName());
         return true;
     }
 
