@@ -1,6 +1,6 @@
 ---
 #Allgemeine Einstellungen
-ConfigVersion: 5.1.11 #FingerWeg!
+ConfigVersion: 5.1.12 #FingerWeg! Dont touch this!
 
 #Commands & Funktionen
 AntiXray: false
@@ -8,7 +8,7 @@ BoosterCommand: false #Muss Überarbeitet werden jedoch aktuell keine Zeit dafü
 StarterKit: true
 
 #Neue Items & Blöcke 1.16 ALPHA Kann Fehler enthalten da dies auserhalb der BlockID : 255 ist
-NewItems: false #Setze es auf false um es zu deaktivieren
+NewItems: true
 
 #ItemDisplay
 inames: true #aktiviere/deaktiviere die ItemNamen
@@ -29,6 +29,7 @@ Titlemsg: "§dWillkommen"
 Subtitlemsg: "§e{player}"
 #Blitze beim Join
 blitze: true #aktiviere/deaktiviere Blitze beim Joinen des Servers
+totem: true #aktiviere/deaktivere den TotenEffect
 sound: true #aktiviere/deaktiviere den Donner
 
 #NetzwerkName
@@ -71,7 +72,7 @@ Y: 0
 Z: 0
 level: world
 
-#Banned events in world
+#Banned events in world i mean it dont work or waht
 Place:
   - world
 Break:

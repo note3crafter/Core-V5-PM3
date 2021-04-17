@@ -53,7 +53,7 @@ class AFKCommand extends Command implements Listener
         if (isset($this->afk[strtolower($sender->getName())])) {
             $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $sender->getLowerCaseName(), Config::JSON);
             unset($this->afk[strtolower($sender->getName())]);
-            $sender->sendMessage($config->get("afk") . $lang->get("afknoafk"));
+            $sender->sendMessage($config->get("afk") . $lang->get("afknowafk"));
             $sender->setImmobile(false);
             $cfg->set($cfg->get("afkmove") == false);
             $cfg->set($cfg->get("afkchat") == false);
@@ -61,7 +61,7 @@ class AFKCommand extends Command implements Listener
         } else {
             $cfg = new Config($this->plugin->getDataFolder() . Main::$userfile . $sender->getLowerCaseName(), Config::JSON);
             $this->afk[strtolower($sender->getName())] = strtolower($sender->getName());
-            $sender->sendMessage($config->get("afk") . $lang->get("afknowafk"));
+            $sender->sendMessage($config->get("afk") . $lang->get("afknoafk"));
             $sender->setImmobile(true);
             $cfg->set($cfg->get("afkmove") == true);
             $cfg->set($cfg->get("afkchat") == true);

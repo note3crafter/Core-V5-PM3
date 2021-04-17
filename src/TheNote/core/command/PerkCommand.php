@@ -162,9 +162,9 @@ class PerkCommand extends Command
                     } elseif ($daten->get("smokeperkpermission") == true) {
                         if ($daten->get("smoke") === false) {
                             $daten->set("explode", false);
-                            $daten->set("angry", true);
+                            $daten->set("angry", false);
                             $daten->set("redstone", false);
-                            $daten->set("smoke", false);
+                            $daten->set("smoke", true);
                             $daten->set("lava", false);
                             $daten->set("heart", false);
                             $daten->set("flame", false);
@@ -544,6 +544,16 @@ class PerkCommand extends Command
                             $money->save();
                             $daten->set("explodeperkpermission", true);
                             $daten->set("explodeperk", true);
+                            $daten->set("explode", true);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -559,6 +569,16 @@ class PerkCommand extends Command
                             $mymoney->reduceMoney($sender, $preise->get("explode"));
                             $daten->set("explodeperkpermission", true);
                             $daten->set("explodeperk", true);
+                            $daten->set("explode", true);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -579,6 +599,16 @@ class PerkCommand extends Command
                             $money->save();
                             $daten->set("angryperkpermission", true);
                             $daten->set("angryperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", true);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -594,6 +624,16 @@ class PerkCommand extends Command
                             $mymoney->reduceMoney($sender, $preise->get("angry"));
                             $daten->set("angryperkpermission", true);
                             $daten->set("angryperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", true);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -614,6 +654,16 @@ class PerkCommand extends Command
                             $money->save();
                             $daten->set("redstoneperkpermission", true);
                             $daten->set("redstoneperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", true);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -629,6 +679,16 @@ class PerkCommand extends Command
                             $mymoney->reduceMoney($sender, $preise->get("redstone"));
                             $daten->set("redstoneperkpermission", true);
                             $daten->set("redstoneperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", true);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -649,6 +709,16 @@ class PerkCommand extends Command
                             $money->save();
                             $daten->set("smokeperkpermission", true);
                             $daten->set("smokeperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", true);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -664,6 +734,16 @@ class PerkCommand extends Command
                             $mymoney->reduceMoney($sender, $preise->get("smoke"));
                             $daten->set("smokeperkpermission", true);
                             $daten->set("smokeperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", true);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -685,6 +765,16 @@ class PerkCommand extends Command
                             $money->save();
                             $daten->set("lavaperkpermission", true);
                             $daten->set("lavaperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", true);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -700,6 +790,16 @@ class PerkCommand extends Command
                             $mymoney->reduceMoney($sender, $preise->get("lava"));
                             $daten->set("lavaperkpermission", true);
                             $daten->set("lavaperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", true);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -720,6 +820,16 @@ class PerkCommand extends Command
                             $money->save();
                             $daten->set("heartperkpermission", true);
                             $daten->set("heartperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", true);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -735,6 +845,16 @@ class PerkCommand extends Command
                             $mymoney->reduceMoney($sender, $preise->get("heart"));
                             $daten->set("heartperkpermission", true);
                             $daten->set("heartperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", true);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -755,6 +875,16 @@ class PerkCommand extends Command
                             $money->save();
                             $daten->set("flameperkpermission", true);
                             $daten->set("flameperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", true);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -770,6 +900,16 @@ class PerkCommand extends Command
                             $mymoney->reduceMoney($sender, $preise->get("flame"));
                             $daten->set("flameperkpermission");
                             $daten->set("flameperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", true);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -790,6 +930,16 @@ class PerkCommand extends Command
                             $money->save();
                             $daten->set("portalperkpermission", true);
                             $daten->set("portalperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", true);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -805,6 +955,16 @@ class PerkCommand extends Command
                             $mymoney->reduceMoney($sender, $preise->get("portal"));
                             $daten->set("portalperkpermission", true);
                             $daten->set("portalperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", true);
+                            $daten->set("spore", false);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -825,6 +985,16 @@ class PerkCommand extends Command
                             $money->save();
                             $daten->set("sporeperkpermission", true);
                             $daten->set("sporeperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", true);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -840,6 +1010,16 @@ class PerkCommand extends Command
                             $mymoney->reduceMoney($sender, $preise->get("spore"));
                             $daten->set("sporeperkpermission", true);
                             $daten->set("sporeperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", true);
+                            $daten->set("splash", false);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -860,6 +1040,16 @@ class PerkCommand extends Command
                             $money->save();
                             $daten->set("splashperkpermission", true);
                             $daten->set("splashperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", true);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }
@@ -875,6 +1065,16 @@ class PerkCommand extends Command
                             $mymoney->reduceMoney($sender, $preise->get("splash"));
                             $daten->set("splashperkpermission", true);
                             $daten->set("splashperk", true);
+                            $daten->set("explode", false);
+                            $daten->set("angry", false);
+                            $daten->set("redstone", false);
+                            $daten->set("smoke", false);
+                            $daten->set("lava", false);
+                            $daten->set("heart", false);
+                            $daten->set("flame", false);
+                            $daten->set("portal", false);
+                            $daten->set("spore", false);
+                            $daten->set("splash", true);
                             $daten->save();
                             $sender->sendMessage($config->get("perks") . "§aDu hast dir deinen Perk erfolgreich gekauft!");
                         }

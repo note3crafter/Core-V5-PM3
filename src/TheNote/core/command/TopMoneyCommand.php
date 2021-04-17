@@ -42,7 +42,9 @@ class TopMoneyCommand extends Command implements Listener
         $sender->sendMessage("=======§f[§eTopMoney§f]=======");
         $money = array_slice($money, 0, 10);
         foreach ($money as $rank => $data) {
-                $sender->sendMessage("§6" . ($rank + 1) . "§f. " . $data["Player"] . " §f:§e " . $data["Money"]);
+            $datas = round($data["Money"], 2);
+            $sender->sendMessage("§6" . ($rank + 1) . "§f. " . $data["Player"] . " §f:§e " . $datas . "$");
+
         }
         return true;
     }
