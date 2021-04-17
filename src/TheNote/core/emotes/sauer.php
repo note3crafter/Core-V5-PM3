@@ -47,6 +47,6 @@ class sauer extends Command {
             $msg = str_replace("{time}", $time, str_replace("{player}", $name, $format));
             $this->plugin->sendMessage($name, $msg);
         }
-        return false;
+        return true;
     }
 }

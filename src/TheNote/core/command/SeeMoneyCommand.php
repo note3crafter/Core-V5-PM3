@@ -47,7 +47,8 @@ class SeeMoneyCommand extends Command implements Listener
         }
         $name = $target->getName();
         $mymoney = $money->getNested("money.$name");
-        $sender->sendMessage($config->get("money") . "§6Der Geldstand von§e " . $target . " §6ist §f: §e" . $mymoney . "$");
+        $roundmoney = round($mymoney, 2);
+        $sender->sendMessage($config->get("money") . "§6Der Geldstand von§e " . $name . " §6ist §f: §e" . $roundmoney . "$");
         return true;
     }
 }

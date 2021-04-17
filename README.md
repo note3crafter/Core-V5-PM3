@@ -5,43 +5,47 @@ Du willst helfen? Hier mein Discord! [![Discord](https://img.shields.io/discord/
 # Download und Wichtig 
 
 - [Hier downloaden](https://poggit.pmmp.io/ci/note3crafter/Core-V5/Core-V5)!
-  Die Core wurde Spieziell für CityBuild Server entwickelt! Beachtet bitte das es eine ALPHA Version ist und wohlmöglich instabiel ist!
+  Das Core Plugin wurde speziell für CityBuild Server entwickelt! Bitte beachtet, dass es eine ALPHA Version ist und womöglich instabil läuft.
 
 # Fehler & Bugs
-Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren kann... Ihr dürft auch Vorschläge machen was ich sonmnst noch reinmachen kann.
+Ich wäre euch dankbar, wenn ihr Fehler & Bugs melden würdet, sodass ich sie reparieren kann. Ihr dürft auch Vorschläge für neue Features oder sonstiges an mich senden.
+
 # Mindestanforderungen 
-- 2 Kern CPU (Besten Falls hohe Singelcore Performance)
+- 2 Kern CPU (Bestenfalls hohe Singlecore Performance)
 - 1GB Ram 
-- 1GB Festplatte
+- 1GB Festplatte -
 
 # Ohne dies Funktioniert die Core nicht 
-- [MyPlot](https://poggit.pmmp.io/p/MyPlot) -> Sollte drinnen sein wegen dem LiftSystem aber kein Muss
+- [MyPlot](https://poggit.pmmp.io/p/MyPlot) -> Sollte drinnen sein wegen dem LiftSystem, aber kein Muss!
 
-# Neues! v5.1.11 ALPHA
-- Neuer Command /world -> Manage deine Welten und generiere auch welche! ACHTUNG: Könnte fehler enthalten
-- Weitere Commands /credits, /setstatstext
-- Bugfixxes gefixxt
-
-# Server die die CoreV5/V4 nutzen
-- play.baufieber.net 19132
-- Hier könnte dein Server stehen
+# Neues! v5.1.12 ALPHA
+- Redstone kann man nun nur noch mit Berechtigung nutzen ([Vorschlag von AtomicCityBuild](https://github.com/note3crafter/Core-V5/issues/14))
+- Wieder paar Bugs behoben unteranderem im ServerMute Command
+- Perk & PerkShopCommand kleinigkeit überarbeitet... (Beim Kauf eines Perks wird der Perk gleich mit aktiviert!)
+- Protection für falsch abgespeicherte Configs hinzugefügt sowie wird die alte Config umbenannt und eine neue gesetzt!
+- TotemEffekt beim Join Hinzugefügt! Einstellbar in den Configs 
+  Die Open Beta wird noch etwas dauern da ich dezeit kaum Zeit dazu finde! Beachtet dies!
+  
+# Server, welche CoreV5 nutzen
+- play.baufieber.net / 19132
+- Hier könnte dein Server stehen!
 
 # Für die Zukunft Geplant :
-- ScoreBoard überarbeiten
+- ScoreBoard Feature überarbeiten
 - Weitere Commands wie : /top, /milk, /nofire
-- Neuschreiben des BoosterCommand
-- Neuschreiben des BanSystems
-- API fürs EconomySystem
-- Neue Blöcke der 1.16 hinzufügen
-- Internes WorlEdit
-- SprachenSystem (Leider sehr arbeitsintensiv daher kanns noch dauern) 
-- -> Mit Auswahl auf eigener Sprachen und erweiterung auf mehreren Sprachen!
-- Amboss & Enchantment Table -> Denke eher weniger....
-- ChestShop
+- Neuschreiben des Booster Commands
+- Neuschreiben des Ban Systems
+- API für das Economy System
+- Weitere Blöcke aus der 1.16 hinzufügen
+- Internes World Edit System
+- Language System (Sprachen System) - Da es sehr Arbeitsintensiv ist, kann dies noch dauern!
+  -> Mit Auswahl eigener Sprachen und Erweiterung auf weiterer Sprachen!
+- Amboss & Enchantment Table - Geplant aber vermutlich eher nicht
+- Chest Shop System
 
 # Features
 - [Alle Commands](https://github.com/note3crafter/Core-V5/blob/main/resources/commands.md)
-- MultiLanguage Support!!
+- Multi Language Support!
 - [Vanilla Redstone](https://github.com/tedo0627/RedstoneCircuit_PMMP-Plugin) (by [tedo0627](https://github.com/tedo0627))
 - Sämtliche Items der 1.16 sind drinne!
 - [AntiXray](https://github.com/HimmelKreis4865/AntiXray) & [HeadSystem](https://github.com/HimmelKreis4865/BetterSkulls) (by HimmelKreis4865)
@@ -61,7 +65,7 @@ Ich wäre euch dankbar wenn ihr diese Melden würdet so das ich sie Repaieren ka
 - Wolrd Managment System
 
 # Hilfe & Support
-Ich werde die Core solange wie Möglich Aktuell halten und Updaten sofern es meine Zeit zulässt
+Ich werde die Core solange wie Möglich Aktuell halten und Updaten sofern es meine Zeit zulässt...
 Beachtet die Configs etc und stellt dort eure sachen ein... 
 Und an unseren Forker! Gebt das Plugin nicht als Euers aus! Ich habe eine menge arbeit reingsteckt über Jahre!
 

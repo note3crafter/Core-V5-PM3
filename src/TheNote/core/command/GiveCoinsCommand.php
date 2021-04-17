@@ -51,5 +51,7 @@ class GiveCoinsCommand extends Command
             $sender->sendMessage($config->get("error") . "§cSpieler nicht gefunden");
             return false;
         }
+        return true;
     }
+
 }

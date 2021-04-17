@@ -64,6 +64,7 @@ use pocketmine\item\ItemFactory;
 
 use TheNote\core\command\CreditsCommand;
 use TheNote\core\command\HeadCommand;
+use TheNote\core\command\SetstatstextCommand;
 use TheNote\core\command\WorldCommand;
 use TheNote\core\events\Eventsettings;
 use TheNote\core\events\EventsListener;
@@ -238,12 +239,12 @@ class Main extends PluginBase implements Listener
 {
 
     //PluginVersion
-    public static $version = "5.1.11ALPHA";
+    public static $version = "5.1.12ALPHA";
     public static $protokoll = "431";
     public static $mcpeversion = "1.16.220";
-    public static $dateversion = "11.04.2021";
+    public static $dateversion = "17.04.2021";
     public static $plname = "CoreV5";
-    public static $configversion = "5.1.11";
+    public static $configversion = "5.1.12";
 
     private $clicks;
     private $message = "";
@@ -425,7 +426,7 @@ class Main extends PluginBase implements Listener
             $this->saveResource("Setup/PerkSettings.yml", false);
             $this->saveResource("Setup/starterkit.yml", false);
             $this->saveResource("Setup/kitsettings.yml", false);
-            $this->saveResource("permissions.md", true);
+            $this->saveResource("permissions.md", false);
             $this->saveResource("Language/LangConfig.yml", false);
             $this->saveResource("Language/Lang_deu.json", true);
             $this->craftingrecipe();
@@ -448,6 +449,7 @@ class Main extends PluginBase implements Listener
                     BlockFactory::init();
                     ItemManagerNewItems::init();
                     Tile::registerTile(PTile::class);
+                    $this->getLogger()->info("Neue Items geladen!");
                 }
             }
             //PacketPool::registerPacket(new InventoryTransactionPacketV2());
@@ -513,15 +515,19 @@ class Main extends PluginBase implements Listener
             $this->scheduledBlockUpdateLoader = new ScheduledBlockUpdateLoader();
             $this->palette = new GlobalBlockPalette();
 
-            $configs = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);
             $config = new Config($this->getDataFolder() . Main::$setup . "settings.json", Config::JSON);
             $kit = new Config($this->getDataFolder() . Main::$setup . "kitsettings.yml", Config::YAML);
             $configs = new Config($this->getDataFolder() . Main::$setup . "Config.yml", Config::YAML);
-            if (!$configs->get("ConfigVersion") == Main::$configversion or null) {
-                $this->getLogger()->info("Die Config.yml ist veraltet! Bitte Update diese! Der Server wird automatisch neugestartet!");
-                //rename("Setup/Config.yml", "Setup/ConfigOLD.yml");
+            if ($config->get("Config") == null) {
+                $this->saveResource("Setup/settings.json", true);
+                $this->getLogger()->info("§cDa die Settings.json fehlerhaft gespeichert wurde wurde sie ersetzt! ");
+            }
+            if ($configs->get("ConfigVersion") == Main::$configversion) {
+                $this->getLogger()->info("");
+            } else {
+                $this->getLogger()->info("Die Config.yml ist veraltet! Daher wurde eine neue erstellt und die alte zu : ConfigOLD geändert!");
+                rename($this->getDataFolder() . Main::$setup . "Config.yml", $this->getDataFolder() . Main::$setup . "ConfigOLD.yml");
                 $this->saveResource("Setup/Config.yml", true);
-                $this->getServer()->shutdown();
             }
             $this->buildBlockIdTable();
             $this->sellSign = new Config($this->getDataFolder() . Main::$lang . "SellSign.yml", Config::YAML, array(
@@ -663,6 +669,7 @@ class Main extends PluginBase implements Listener
             $this->getServer()->getCommandMap()->register("head", new HeadCommand($this));
             $this->getServer()->getCommandMap()->register("world", new WorldCommand($this));
             $this->getServer()->getCommandMap()->register("credits", new CreditsCommand($this));
+            $this->getServer()->getCommandMap()->register("setstatstext", new SetstatstextCommand($this));
 
             if ($configs->get("RankShopCommand") == true) {
                 $this->getServer()->getCommandMap()->register("rankshop", new RankShopCommand($this));
@@ -1182,7 +1189,7 @@ class Main extends PluginBase implements Listener
         $countdata->set("players", $count);
         $countdata->save();
         $online = new Config($this->getDataFolder() . Main::$cloud . "Count.json", Config::JSON);
-        $event->setPlayerCount($online->get("Online"));
+        $event->setPlayerCount($online->get("players"));
     }
 
     public function onPlayerLogin(PlayerLoginEvent $event)

@@ -53,6 +53,7 @@ class ServermuteCommand extends Command implements Listener
             $message = str_replace("{reason}", $reason, $configs->get("info") ."Der Chat wurde Gemutet für ALLE!");
             $player->sendMessage($message);
         }
+        return true;
     }
     public function onChat(PlayerChatEvent $event){
         $configs = new Config($this->plugin->getDataFolder() . Main::$setup . "settings" . ".json", Config::JSON);

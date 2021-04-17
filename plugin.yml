@@ -1,6 +1,6 @@
 name: CoreV5
 main: TheNote\core\Main
-version: 5.1.11
+version: 5.1.12
 mcpe-protocol:
   - 431 # 1.16.220
 api:
@@ -25,7 +25,7 @@ authors:
   - muqsit #InvMenü
   - TheBalkanDev #ecinvsee, invsee
   - jasonwynn10 #Beacons
-description: Core v5.2.11 ALPHA
+description: Core v5.2.12 ALPHA
 
 permissions:
   core.command.adventure:
@@ -231,7 +231,31 @@ permissions:
     default: op
   core.events.drop:
     default: op
-  core.command.blockplace:
+  core.events.blockplace:
     default: op
-  core.command.blockbreak:
+  core.events.blockbreak:
+    default: op
+  core.redstone.dommandblock:
+    default: op
+  core.redstone.hopper:
+    default: op
+  core.redstone.dispenser:
+    default: op
+  core.redstone.dropper:
+    default: op
+  core.redstone.wire:
+    default: op
+  core.redstone.torch:
+    default: op
+  core.redstone.observer:
+    default: op
+  core.redstone.stickypiston:
+    default: op
+  core.redstone.piston:
+    default: op
+  core.redstone.lamp:
+    default: op
+  core.redstone.repeater:
+    default: op
+  core.redstone.comparator:
     default: op
