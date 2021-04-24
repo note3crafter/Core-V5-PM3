@@ -11,6 +11,9 @@
 
 namespace TheNote\core\blocks\redstone;
 
+use pocketmine\entity\Entity;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\ListTag;
 use pocketmine\Player;
 use pocketmine\block\Block;
 use pocketmine\block\BlockToolType;

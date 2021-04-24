@@ -40,6 +40,10 @@ class TpaCommand extends Command
             return false;
         }
         $target = Server::getInstance()->getPlayer(strtolower($args[0]));
+        if ($target === $sender){
+            $sender->sendMessage($configs->get("error") . "§cDu kannst dir keine TPA´s schicken!");
+            return false;
+        }
         if ($target instanceof Player) {
             $this->plugin->setInvite($sender, $target);
             $target->sendMessage($configs->get("tpa") . "§e" . $sender->getName() . " §6hat dir eine TPA-Anfrage gesendet! Nehme sie mit /tpaccept an oder lehne sie mit /tpadeny ab!");

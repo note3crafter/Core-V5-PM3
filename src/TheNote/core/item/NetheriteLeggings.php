@@ -29,4 +29,7 @@ class NetheriteLeggings extends Armor
         return 556;
     }
 
+    public function getArmorSlot() : int{
+        return 2;
+    }
 }

@@ -1,7 +1,13 @@
 <?php
-declare(strict_types=1);
 
-// Files from multiblock namespace are borrowed from Muqsit's DimensionPortals plugin that was ported from MiNET
+//   ╔═════╗╔═╗ ╔═╗╔═════╗╔═╗    ╔═╗╔═════╗╔═════╗╔═════╗
+//   ╚═╗ ╔═╝║ ║ ║ ║║ ╔═══╝║ ╚═╗  ║ ║║ ╔═╗ ║╚═╗ ╔═╝║ ╔═══╝
+//     ║ ║  ║ ╚═╝ ║║ ╚══╗ ║   ╚══╣ ║║ ║ ║ ║  ║ ║  ║ ╚══╗
+//     ║ ║  ║ ╔═╗ ║║ ╔══╝ ║ ╠══╗   ║║ ║ ║ ║  ║ ║  ║ ╔══╝
+//     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
+//     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
+//   Copyright by TheNote! Not for Resale! Not for others
+//                        2017-2020
 
 namespace TheNote\core\blocks\multiblock;
 
@@ -16,17 +22,13 @@ use pocketmine\Player;
 use ReflectionProperty;
 use TheNote\core\blocks\EndPortalFrame;
 
-/**
- * Class EndPortalFrameMultiBlock
- * @package Xenophilicy\TableSpoon\block\multiblock
- */
 class EndPortalFrameMultiBlock implements MultiBlock {
     
     private const SIDES = [Vector3::SIDE_NORTH, Vector3::SIDE_EAST, Vector3::SIDE_SOUTH, Vector3::SIDE_WEST];
-    
+
     /** @var ReflectionProperty */
     private $property_eye;
-    
+
     public function __construct(){
         $this->property_eye = new ReflectionProperty(EndPortalFrame::class, "eye");
         $this->property_eye->setAccessible(true);

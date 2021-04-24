@@ -9,20 +9,20 @@
 //   Copyright by TheNote! Not for Resale! Not for others
 //
 
-namespace TheNote\core\entity;
+namespace TheNote\core\server\maps\renderer;
 
-use TheNote\core\entity\obejct\BoatEntity;
-use TheNote\core\entity\obejct\EnderCrystal;
-use TheNote\core\entity\projectile\ThrownTrident;
-use pocketmine\entity\Entity;
+use TheNote\core\server\maps\MapData;
+use pocketmine\Player;
 
-class EntityManager extends Entity {
-	public static function init(): void{
-		self::registerEntity(ThrownTrident::class, true, ['Trident', 'minecraft:trident']);
-        self::registerEntity(SkullEntity::class, true, ["SkullEntity", "minecraft:skull_entity"]);
-        self::registerEntity(FireworksRocket::class, true, ['FireworksRocket', 'minecraft:firework']);
-        self::registerEntity(EnderCrystal::class, true, ['EnderCrystal', 'minecraft:ender_crystal']);
-        self::registerEntity(BoatEntity::class, true, ['Boat', 'minecraft:boat']);
+abstract class MapRenderer{
 
-    }
+	public function initialize(MapData $mapData) : void{
+
+	}
+
+	public abstract function render(MapData $mapData, Player $player) : void;
+
+	public function onMapCreated(Player $player, MapData $mapData) : void{
+
+	}
 }

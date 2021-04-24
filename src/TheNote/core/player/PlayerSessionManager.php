@@ -1,5 +1,13 @@
 <?php
-declare(strict_types=1);
+
+//   ╔═════╗╔═╗ ╔═╗╔═════╗╔═╗    ╔═╗╔═════╗╔═════╗╔═════╗
+//   ╚═╗ ╔═╝║ ║ ║ ║║ ╔═══╝║ ╚═╗  ║ ║║ ╔═╗ ║╚═╗ ╔═╝║ ╔═══╝
+//     ║ ║  ║ ╚═╝ ║║ ╚══╗ ║   ╚══╣ ║║ ║ ║ ║  ║ ║  ║ ╚══╗
+//     ║ ║  ║ ╔═╗ ║║ ╔══╝ ║ ╠══╗   ║║ ║ ║ ║  ║ ║  ║ ╔══╝
+//     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
+//     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
+//   Copyright by TheNote! Not for Resale! Not for others
+//                        2017-2020
 
 namespace TheNote\core\player;
 
@@ -7,16 +15,9 @@ use pocketmine\Player;
 use TheNote\core\Main;
 use TheNote\core\task\SessionManagerTask;
 
-/**
- * Class SessionManger
- * @package Xenophilicy\TableSpoon\player
- */
 final class PlayerSessionManager {
-    
-    /** @var PlayerSession[] */
+
     public static $players = [];
-    
-    /** @var int[] */
     public static $ticking = [];
     
     public static function init(): void{

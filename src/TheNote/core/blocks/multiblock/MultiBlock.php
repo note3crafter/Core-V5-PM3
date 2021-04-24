@@ -1,7 +1,13 @@
 <?php
-declare(strict_types=1);
 
-// Files from multiblock namespace are borrowed from Muqsit's DimensionPortals plugin that was ported from MiNET
+//   ╔═════╗╔═╗ ╔═╗╔═════╗╔═╗    ╔═╗╔═════╗╔═════╗╔═════╗
+//   ╚═╗ ╔═╝║ ║ ║ ║║ ╔═══╝║ ╚═╗  ║ ║║ ╔═╗ ║╚═╗ ╔═╝║ ╔═══╝
+//     ║ ║  ║ ╚═╝ ║║ ╚══╗ ║   ╚══╣ ║║ ║ ║ ║  ║ ║  ║ ╚══╗
+//     ║ ║  ║ ╔═╗ ║║ ╔══╝ ║ ╠══╗   ║║ ║ ║ ║  ║ ║  ║ ╔══╝
+//     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
+//     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
+//   Copyright by TheNote! Not for Resale! Not for others
+//                        2017-2020
 
 namespace TheNote\core\blocks\multiblock;
 
@@ -10,31 +16,12 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 
 interface MultiBlock {
-    
-    /**
-     * @param Block $wrapping
-     * @param Player $player
-     * @param Item $item
-     * @param int $face
-     * @return bool
-     */
+
     public function interact(Block $wrapping, Player $player, Item $item, int $face): bool;
-    
-    /**
-     * @param Block $wrapping
-     * @return bool
-     */
+
     public function update(Block $wrapping): bool;
-    
-    /**
-     * @param Player $player
-     * @param Block $block
-     */
+
     public function onPlayerMoveInside(Player $player, Block $block): void;
-    
-    /**
-     * @param Player $player
-     * @param Block $block
-     */
+
     public function onPlayerMoveOutside(Player $player, Block $block): void;
 }

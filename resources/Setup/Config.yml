@@ -1,6 +1,6 @@
 ---
 #Allgemeine Einstellungen
-ConfigVersion: 5.1.12 #FingerWeg! Dont touch this!
+ConfigVersion: 5.1.13 #FingerWeg! Dont touch this!
 
 #Commands & Funktionen
 AntiXray: false
@@ -40,7 +40,7 @@ DefaultMoney: 1000
 
 #Weitere Einstellungen
 defaultspawn: false
-rejoinallowed: true #möchtest du das die Spieler automatich rejoinen?
+rejoinallowed: false #möchtest du das die Spieler automatich rejoinen?
 rejoinserverip: 127.0.0.1
 rejoinserverport: 19132
 maxhomes: 10 #Setze ein Limit für Homes

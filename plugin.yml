@@ -1,6 +1,6 @@
 name: CoreV5
 main: TheNote\core\Main
-version: 5.1.12
+version: 5.1.13
 mcpe-protocol:
   - 431 # 1.16.220
 api:
@@ -25,7 +25,7 @@ authors:
   - muqsit #InvMenü
   - TheBalkanDev #ecinvsee, invsee
   - jasonwynn10 #Beacons
-description: Core v5.2.12 ALPHA
+description: Core v5.2.13 ALPHA
 
 permissions:
   core.command.adventure:

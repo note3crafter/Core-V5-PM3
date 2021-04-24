@@ -12,33 +12,29 @@
 namespace TheNote\core\item;
 
 use pocketmine\block\Block;
-use pocketmine\block\BlockToolType;
+use pocketmine\block\Obsidian;
 use pocketmine\entity\Entity;
+use TheNote\core\entity\obejct\EnderCrystal;
+use pocketmine\item\Item;
+use pocketmine\math\Vector3;
+use pocketmine\Player;
 
-class NetheritePickaxe extends TTool
-{
+class EndCrystal extends Item{
 
-    public function getBlockToolType() : int{
-        return BlockToolType::TYPE_PICKAXE;
+    public function __construct(int $meta = 0){
+        parent::__construct(self::END_CRYSTAL, $meta, "End Crystal");
     }
 
-    public function getBlockToolHarvestLevel() : int{
-        return $this->tier;
-    }
+    public function onActivate(Player $player, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector) : bool{
+        if($player->level->getBlock($blockReplace->down()) instanceof Obsidian){
+            $crystal = new EnderCrystal($player->level, Entity::createBaseNBT($blockReplace->add(0.5, 0.5, 0.5)));
+            $crystal->spawnToAll();
 
-    public function getAttackPoints() : int{
-        return self::getBaseDamageFromTier($this->tier) - 2;
-    }
-
-    public function onDestroyBlock(Block $block) : bool{
-        if($block->getHardness() > 0){
-            return $this->applyDamage(1);
+            if($player->isSurvival()){
+                $this->pop();
+            }
+            return true;
         }
         return false;
     }
-
-    public function onAttackEntity(Entity $victim) : bool{
-        return $this->applyDamage(2);
-    }
-
 }

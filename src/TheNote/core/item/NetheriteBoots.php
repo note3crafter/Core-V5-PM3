@@ -29,4 +29,7 @@ class NetheriteBoots extends Armor
         return 482;
     }
 
+    public function getArmorSlot() : int{
+        return 3;
+    }
 }

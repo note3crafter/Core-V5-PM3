@@ -11,13 +11,11 @@
 
 namespace TheNote\core\command;
 
-
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\level\generator\Flat;
 use pocketmine\level\generator\normal\Normal;
 use pocketmine\level\Level;
-use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\utils\Config;
 use TheNote\core\Main;
@@ -128,12 +126,12 @@ class WorldCommand extends Command
         }
         if ($args[0] == "create") {
             if (empty($args[1])) {
-                $sender->sendMessage($config->get("info") . "§eBenutze : /world make (worldname) (generator) (seed)");
+                $sender->sendMessage($config->get("info") . "§eBenutze : /world create (worldname) (generator) (seed)");
                 return false;
 
             }
             if ($this->isLevelGenerated($args[1])) {
-                $sender->sendMessage($config->get("error") . "§cDie Welt mit dem Namen §f:§e" . $args[1] . " §cexistiert bereits!");
+                $sender->sendMessage($config->get("error") . "§cDie Welt mit dem Namen §f:§e " . $args[1] . " §cexistiert bereits!");
                 return false;
             }
             $seed = 0;
@@ -166,6 +164,10 @@ class WorldCommand extends Command
                 case "ender":
                     $generator = WorldCommand::GENERATOR_ENDER;
                     $generatorName = "End";
+                    break;
+                case "void":
+                    $generator = WorldCommand::GENERATOR_VOID;
+                    $generatorName = "Void";
                     break;
                 default:
                     $generator = WorldCommand::GENERATOR_NORMAL;
@@ -245,13 +247,12 @@ class WorldCommand extends Command
         }
         return self::removeDir(Server::getInstance()->getDataPath() . "/worlds/" . $name);
     }
-
-
+    
     public static function getAllLevels(): array
     {
         $levels = [];
         foreach (glob(Server::getInstance()->getDataPath() . "/worlds/*") as $world) {
-            if (count(scandir($world)) >= 4) { // don't forget to .. & .
+            if (count(scandir($world)) >= 4) {
                 $levels[] = basename($world);
             }
         }

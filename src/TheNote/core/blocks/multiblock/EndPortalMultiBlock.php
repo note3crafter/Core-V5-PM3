@@ -1,24 +1,25 @@
 <?php
-declare(strict_types=1);
 
-// Files from multiblock namespace are borrowed from Muqsit's DimensionPortals plugin that was ported from MiNET
+//   ╔═════╗╔═╗ ╔═╗╔═════╗╔═╗    ╔═╗╔═════╗╔═════╗╔═════╗
+//   ╚═╗ ╔═╝║ ║ ║ ║║ ╔═══╝║ ╚═╗  ║ ║║ ╔═╗ ║╚═╗ ╔═╝║ ╔═══╝
+//     ║ ║  ║ ╚═╝ ║║ ╚══╗ ║   ╚══╣ ║║ ║ ║ ║  ║ ║  ║ ╚══╗
+//     ║ ║  ║ ╔═╗ ║║ ╔══╝ ║ ╠══╗   ║║ ║ ║ ║  ║ ║  ║ ╔══╝
+//     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
+//     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
+//   Copyright by TheNote! Not for Resale! Not for others
+//                        2017-2020
 
-namespace Xenophilicy\TableSpoon\block\multiblock;
+namespace TheNote\core\blocks\multiblock;
 
 use pocketmine\block\Block;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\Player;
-use Xenophilicy\TableSpoon\TableSpoon;
 
-/**
- * Class EndPortalMultiblock
- * @package Xenophilicy\TableSpoon\block\multiblock
- */
 class EndPortalMultiBlock extends PortalMultiBlock {
     
     public function getTargetWorldInstance(): Level{
-        return TableSpoon::$endLevel;
+        return Main::$endLevel;
     }
     
     public function interact(Block $wrapping, Player $player, Item $item, int $face): bool{

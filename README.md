@@ -18,12 +18,11 @@ Ich wäre euch dankbar, wenn ihr Fehler & Bugs melden würdet, sodass ich sie re
 # Ohne dies Funktioniert die Core nicht 
 - [MyPlot](https://poggit.pmmp.io/p/MyPlot) -> Sollte drinnen sein wegen dem LiftSystem, aber kein Muss!
 
-# Neues! v5.1.12 ALPHA
-- Redstone kann man nun nur noch mit Berechtigung nutzen ([Vorschlag von AtomicCityBuild](https://github.com/note3crafter/Core-V5/issues/14))
-- Wieder paar Bugs behoben unteranderem im ServerMute Command
-- Perk & PerkShopCommand kleinigkeit überarbeitet... (Beim Kauf eines Perks wird der Perk gleich mit aktiviert!)
-- Protection für falsch abgespeicherte Configs hinzugefügt sowie wird die alte Config umbenannt und eine neue gesetzt!
-- TotemEffekt beim Join Hinzugefügt! Einstellbar in den Configs 
+# Neues! v5.1.13 ALPHA
+- Bugfixxes in Paar sachen
+- Feuerwerke wurden Gefixxt 
+- Netherite Werkzeug und Rüstung bekommen nun damage und funktionieren!  
+- Neue Items Hinzugefügt! (Locator Map, EndCrystal, Enchanted Books)-> Teilweise noch deaktiviert... Folgt aber in den kommenden Updates!
   Die Open Beta wird noch etwas dauern da ich dezeit kaum Zeit dazu finde! Beachtet dies!
   
 # Server, welche CoreV5 nutzen

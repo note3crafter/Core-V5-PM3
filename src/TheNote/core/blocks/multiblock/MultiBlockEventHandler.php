@@ -1,7 +1,13 @@
 <?php
-declare(strict_types=1);
 
-// Files from multiblock namespace are borrowed from Muqsit's DimensionPortals plugin that was ported from MiNET
+//   ╔═════╗╔═╗ ╔═╗╔═════╗╔═╗    ╔═╗╔═════╗╔═════╗╔═════╗
+//   ╚═╗ ╔═╝║ ║ ║ ║║ ╔═══╝║ ╚═╗  ║ ║║ ╔═╗ ║╚═╗ ╔═╝║ ╔═══╝
+//     ║ ║  ║ ╚═╝ ║║ ╚══╗ ║   ╚══╣ ║║ ║ ║ ║  ║ ║  ║ ╚══╗
+//     ║ ║  ║ ╔═╗ ║║ ╔══╝ ║ ╠══╗   ║║ ║ ║ ║  ║ ║  ║ ╔══╝
+//     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
+//     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
+//   Copyright by TheNote! Not for Resale! Not for others
+//                        2017-2020
 
 namespace TheNote\core\blocks\multiblock;
 
@@ -10,16 +16,8 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 
-/**
- * Class MultiBlockEventHandler
- * @package Xenophilicy\TableSpoon\block\multiblock
- */
 final class MultiBlockEventHandler implements Listener {
-    
-    /**
-     * @param BlockUpdateEvent $event
-     * @priority NORMAL
-     */
+
     public function onBlockUpdate(BlockUpdateEvent $event): void{
         $block = $event->getBlock();
         $multiBlock = MultiBlockFactory::get($block);
@@ -27,11 +25,7 @@ final class MultiBlockEventHandler implements Listener {
             $event->setCancelled();
         }
     }
-    
-    /**
-     * @param PlayerInteractEvent $event
-     * @priority NORMAL
-     */
+
     public function onPlayerInteract(PlayerInteractEvent $event): void{
         if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK){
             $block = $event->getBlock();
@@ -41,11 +35,7 @@ final class MultiBlockEventHandler implements Listener {
             }
         }
     }
-    
-    /**
-     * @param PlayerMoveEvent $event
-     * @priority MONITOR
-     */
+
     public function onPlayerMove(PlayerMoveEvent $event): void{
         $from = $event->getFrom();
         $fromFloor = $from->floor();

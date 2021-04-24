@@ -1,23 +1,30 @@
 <?php
-declare(strict_types=1);
+
+//   ╔═════╗╔═╗ ╔═╗╔═════╗╔═╗    ╔═╗╔═════╗╔═════╗╔═════╗
+//   ╚═╗ ╔═╝║ ║ ║ ║║ ╔═══╝║ ╚═╗  ║ ║║ ╔═╗ ║╚═╗ ╔═╝║ ╔═══╝
+//     ║ ║  ║ ╚═╝ ║║ ╚══╗ ║   ╚══╣ ║║ ║ ║ ║  ║ ║  ║ ╚══╗
+//     ║ ║  ║ ╔═╗ ║║ ╔══╝ ║ ╠══╗   ║║ ║ ║ ║  ║ ║  ║ ╔══╝
+//     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
+//     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
+//   Copyright by TheNote! Not for Resale! Not for others
+//                        2017-2020
 
 namespace TheNote\core\blocks\multiblock;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockFactory;
-use pocketmine\block\EndPortalFrame;
-use pocketmine\block\Obsidian;
+use TheNote\core\blocks\EndPortalFrame;
+use TheNote\core\blocks\Obsidian;
 use TheNote\core\blocks\EndPortal;
 use TheNote\core\blocks\Portal;
 use TheNote\core\Main;
 
 final class MultiBlockFactory {
     
-    /** @var MultiBlock[] */
     private static $blocks = [];
     
     public static function init(): void {
-        Main::getInstance()->getServer()->getPluginManager()->registerEvents(new MultiBlockEventHandler(), Main::getInstance());
+        //Main::getInstance()->getServer()->getPluginManager()->registerEvents(new MultiBlockEventHandler(), Main::getInstance());
         self::initNether();
         self::initEnd();
     }

@@ -12,26 +12,10 @@
 namespace TheNote\core\item;
 
 use pocketmine\entity\Entity;
-use pocketmine\item\Item;
-use pocketmine\item\TieredTool;
-use pocketmine\Player;
 
-class NetheriteHoe extends Item
+class NetheriteHoe extends TTool
 {
-    const NETHERITE_HOE = 747;
-
-    public function __construct(int $meta = 0)
-    {
-        parent::__construct(self::NETHERITE_HOE, $meta, "Netherite Hoe");
-    }
-
-    public function onUpdate(Player $player): void
-    {
-        $player->setGenericFlag(Entity::DATA_FLAG_BLOCKING, $player->isSneaking());
-    }
-
-    public function getMaxStackSize(): int
-    {
-        return 1;
+    public function onAttackEntity(Entity $victim) : bool{
+        return $this->applyDamage(1);
     }
 }

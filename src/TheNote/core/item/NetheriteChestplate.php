@@ -29,4 +29,8 @@ class NetheriteChestplate extends Armor
     public function getMaxDurability() : int{
         return 593;
     }
+
+    public function getArmorSlot() : int{
+        return 1;
+    }
 }

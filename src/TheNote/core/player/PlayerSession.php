@@ -1,61 +1,41 @@
 <?php
-declare(strict_types=1);
 
-namespace Xenophilicy\TableSpoon\player;
+//   ╔═════╗╔═╗ ╔═╗╔═════╗╔═╗    ╔═╗╔═════╗╔═════╗╔═════╗
+//   ╚═╗ ╔═╝║ ║ ║ ║║ ╔═══╝║ ╚═╗  ║ ║║ ╔═╗ ║╚═╗ ╔═╝║ ╔═══╝
+//     ║ ║  ║ ╚═╝ ║║ ╚══╗ ║   ╚══╣ ║║ ║ ║ ║  ║ ║  ║ ╚══╗
+//     ║ ║  ║ ╔═╗ ║║ ╔══╝ ║ ╠══╗   ║║ ║ ║ ║  ║ ║  ║ ╔══╝
+//     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
+//     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
+//   Copyright by TheNote! Not for Resale! Not for others
+//                        2017-2020
 
-use pocketmine\entity\Vehicle;
+namespace TheNote\core\player;
+
 use pocketmine\level\Location;
-use pocketmine\network\mcpe\protocol\ActorEventPacket;
 use pocketmine\Player;
 use pocketmine\Server;
-use Xenophilicy\TableSpoon\block\multiblock\PortalMultiBlock;
-use Xenophilicy\TableSpoon\entity\projectile\FishingHook;
-use Xenophilicy\TableSpoon\event\player\PlayerEnterPortalEvent;
-use Xenophilicy\TableSpoon\event\player\PlayerPortalTeleportEvent;
-use Xenophilicy\TableSpoon\item\Elytra;
-use Xenophilicy\TableSpoon\TableSpoon;
-use Xenophilicy\TableSpoon\Utils;
+use TheNote\core\blocks\multiblock\PortalMultiBlock;
+use TheNote\core\events\PlayerEnterPortalEvent;
+use TheNote\core\utils\Utils;
+use TheNote\core\events\PlayerPortalTeleportEvent;
+use TheNote\core\item\Elytra;
+use TheNote\core\Main;
 
-/**
- * Class Session
- * @package Xenophilicy\TableSpoon
- */
 class PlayerSession {
-    /** @var int */
+
     public $lastEnderPearlUse = 0, $lastChorusFruitEat = 0, $lastHeldSlot = 0;
-    /** @var bool */
     public $usingElytra = false, $allowCheats = false, $fishing = false;
-    /** @var null | FishingHook */
     public $fishingHook = null;
-    /** @var array */
     public $clientData = [];
-    /** @var Vehicle */
     public $vehicle = null;
-    /** @var Player */
     private $player;
     private $inPortal;
     private $changingDimension = false;
-    
-    /**
-     * Session constructor.
-     * @param Player $player
-     */
+
     public function __construct(Player $player){
         $this->player = $player;
     }
-    
-    public function __destruct(){
-        $this->unsetFishing();
-    }
-    
-    public function unsetFishing(){
-        $this->fishing = false;
-        if(!$this->fishingHook instanceof FishingHook) return;
-        $this->fishingHook->broadcastEntityEvent(ActorEventPacket::FISH_HOOK_TEASE, null, $this->fishingHook->getViewers());
-        if(!$this->fishingHook->isFlaggedForDespawn()) $this->fishingHook->flagForDespawn();
-        $this->fishingHook = null;
-    }
-    
+
     public function getPlayer(): Player{
         return $this->player;
     }
@@ -63,10 +43,7 @@ class PlayerSession {
     public function getServer(): Server{
         return $this->player->getServer();
     }
-    
-    /**
-     * @param int $damage
-     */
+
     public function damageElytra(int $damage = 1){
         if(!$this->player->isAlive() || !$this->player->isSurvival()) return;
         $inv = $this->player->getArmorInventory();
@@ -76,7 +53,6 @@ class PlayerSession {
     }
     
     public function isUsingElytra(): bool{
-        if(!TableSpoon::$settings["player"]["elytra"]["enabled"]) return false;
         return ($this->player->getArmorInventory()->getChestplate() instanceof Elytra);
     }
     
@@ -110,11 +86,11 @@ class PlayerSession {
     
     private function teleport(): void{
         $to = $this->inPortal->getBlock()->getTargetWorldInstance();
-        $target = Location::fromObject(($this->player->getLevel() === $to ? TableSpoon::$overworldLevel : $to)->getSpawnLocation());
+        $target = Location::fromObject(($this->player->getLevel() === $to ? Main::$overworldLevel : $to)->getSpawnLocation());
         ($ev = new PlayerPortalTeleportEvent($this->player, $this->inPortal->getBlock(), $target))->call();
         if(!$ev->isCancelled()){
             $pos = $ev->getTarget();
-            if($target->getLevel() === TableSpoon::$netherLevel){
+            if($target->getLevel() === Main::$netherLevel){
                 $pos = Utils::genNetherSpawn($this->player->asPosition(), $target->getLevel());
             }
             $this->player->teleport($pos);

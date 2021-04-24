@@ -1,5 +1,13 @@
 <?php
-declare(strict_types=1);
+
+//   ╔═════╗╔═╗ ╔═╗╔═════╗╔═╗    ╔═╗╔═════╗╔═════╗╔═════╗
+//   ╚═╗ ╔═╝║ ║ ║ ║║ ╔═══╝║ ╚═╗  ║ ║║ ╔═╗ ║╚═╗ ╔═╝║ ╔═══╝
+//     ║ ║  ║ ╚═╝ ║║ ╚══╗ ║   ╚══╣ ║║ ║ ║ ║  ║ ║  ║ ╚══╗
+//     ║ ║  ║ ╔═╗ ║║ ╔══╝ ║ ╠══╗   ║║ ║ ║ ║  ║ ║  ║ ╔══╝
+//     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
+//     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
+//   Copyright by TheNote! Not for Resale! Not for others
+//                        2017-2020
 
 namespace TheNote\core\blocks\multiblock;
 
@@ -16,21 +24,11 @@ use TheNote\core\blocks\Obsidian;
 use TheNote\core\blocks\Portal;
 use TheNote\core\utils\ArrayUtils;
 
-/**
- * Class NetherPortalFrameMultiBlock
- * @package Xenophilicy\TableSpoon\block\multiblock
- */
 class NetherPortalFrameMultiBlock implements MultiBlock {
     
-    /** @var int */
     private $frameBlock;
-    
-    /** @var float */
     private $lengthSquared;
-    
-    /**
-     * NetherPortalFrameMultiBlock constructor.
-     */
+
     public function __construct(){
         $this->frameBlock = (new Obsidian())->getId();
         $this->lengthSquared = (new Vector2(21, 21))->lengthSquared();
@@ -59,14 +57,7 @@ class NetherPortalFrameMultiBlock implements MultiBlock {
         }
         return false;
     }
-    
-    /**
-     * @param Level $Level
-     * @param Vector3 $origin
-     * @param int $radius
-     * @param int $direction
-     * @return array<int, Block>
-     */
+
     public function fill(Level $Level, Vector3 $origin, int $radius, int $direction): array{
         $blocks = [];
         $visits = new SplQueue();
@@ -93,22 +84,11 @@ class NetherPortalFrameMultiBlock implements MultiBlock {
         }
         return $blocks;
     }
-    
-    /**
-     * @param Vector3 $coords
-     * @param array<int, Block> $blocks
-     * @param int $direction
-     */
+
     public function visit(Vector3 $coords, array &$blocks, int $direction): void{
         $blocks[Level::blockHash($coords->x, $coords->y, $coords->z)] = BlockFactory::get(Block::PORTAL, $direction - 2);
     }
-    
-    /**
-     * @param Block $block
-     * @param int $bHash
-     * @param array<int, Block> $portals
-     * @return bool
-     */
+
     private function isValid(Block $block, int $bHash, array $portals): bool{
         return $block->getId() === $this->frameBlock || ArrayUtils::firstOrDefault($portals, static function(int $hash, Block $b) use ($bHash) : bool{
               return $b->getId() === Block::PORTAL;

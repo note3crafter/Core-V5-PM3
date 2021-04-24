@@ -62,6 +62,7 @@ use pocketmine\command\ConsoleCommandSender;
 use pocketmine\utils\Random;
 use pocketmine\item\ItemFactory;
 
+use TheNote\core\blocks\multiblock\MultiBlockFactory;
 use TheNote\core\command\CreditsCommand;
 use TheNote\core\command\HeadCommand;
 use TheNote\core\command\SetstatstextCommand;
@@ -69,6 +70,7 @@ use TheNote\core\command\WorldCommand;
 use TheNote\core\events\Eventsettings;
 use TheNote\core\events\EventsListener;
 use TheNote\core\listener\EventListener;
+use TheNote\core\server\FFAArena;
 use TheNote\core\server\generators\ender\EnderGenerator;
 use TheNote\core\server\generators\nether\NetherGenerator;
 use TheNote\core\server\generators\normal\NormalGenerator;
@@ -171,7 +173,6 @@ use TheNote\core\command\TakeMoneyCommand;
 //Server
 use TheNote\core\events\RegelEvent;
 use TheNote\core\formapi\SimpleForm;
-use TheNote\core\item\Fireworks;
 use TheNote\core\item\ItemManagerNewItems;
 use TheNote\core\item\NetheriteBoots;
 use TheNote\core\item\NetheriteChestplate;
@@ -239,12 +240,12 @@ class Main extends PluginBase implements Listener
 {
 
     //PluginVersion
-    public static $version = "5.1.12ALPHA";
+    public static $version = "5.1.13ALPHA";
     public static $protokoll = "431";
-    public static $mcpeversion = "1.16.220";
-    public static $dateversion = "17.04.2021";
+    public static $mcpeversion = "1.16.221";
+    public static $dateversion = "24.04.2021";
     public static $plname = "CoreV5";
-    public static $configversion = "5.1.12";
+    public static $configversion = "5.1.13";
 
     private $clicks;
     private $message = "";
@@ -267,6 +268,11 @@ class Main extends PluginBase implements Listener
     public $ores = [14, 15, 21, 22, 41, 42, 56, 57, 73, 129, 133, 152];
     public $cooldown = [];
     public $interactCooldown = [];
+
+    public static $netherLevel;
+    public static $overworldLevel;
+    public static $endLevel;
+
 
     const ITEM_NETHERITE_SCRAP = 752;
     const ITEM_NETHERITE_INGOT = 742;
@@ -377,7 +383,6 @@ class Main extends PluginBase implements Listener
                 continue;
             }
 
-            /** @see RuntimeBlockMapping::registerMapping() */
             $registerMapping = new \ReflectionMethod(RuntimeBlockMapping::class, 'registerMapping');
             $registerMapping->setAccessible(true);
             $registerMapping->invoke(null, $runtimeId, $legacyId, $meta);
@@ -436,6 +441,7 @@ class Main extends PluginBase implements Listener
             ItemManager::init();
             EntityManager::init();
             BlockManager::init();
+            MultiBlockFactory::init();
             Tiles::init();
             if (!file_exists($this->getDataFolder() . "Setup/Config.yml")) {
                 //rename("Setup/Config.yml", "Setup/ConfigOLD.yml");
@@ -704,6 +710,8 @@ class Main extends PluginBase implements Listener
             $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
             $this->getServer()->getPluginManager()->registerEvents(new EventsListener(), $this);
             $this->getServer()->getPluginManager()->registerEvents(new Eventsettings($this), $this);
+            //$this->getServer()->getPluginManager()->registerEvents(new FFAArena(), $this);
+
 
 
             if ($configs->get("AntiXray") == true) {
@@ -983,7 +991,7 @@ class Main extends PluginBase implements Listener
                 $nickname = $player->getName();
                 $this->getServer()->broadcastMessage($settings->get("prefix") . "§e" . $player->getName() . " ist neu auf dem Server! §cWillkommen");
                 $time = date('d.m.Y H:I') . date_default_timezone_set("Europe/Berlin");
-                $format = "**__WILLKOMMEN__ : {time} : Spieler : {player} ist NEU auf dem Server und ist __Herzlichst Willkommen!__**";
+                $format =  "**__WILLKOMMEN__ : {time} : Spieler : {player} ist NEU auf dem Server " . $this->getServer()->getIp() .":" . $this->getServer()->getPort() . " und ist __Herzlichst Willkommen!__**";
                 $msg = str_replace("{time}", $time, str_replace("{player}", $nickname, $format));
                 $this->sendMessage($nickname, $msg);
             }
@@ -1293,6 +1301,7 @@ class Main extends PluginBase implements Listener
                     $format = str_replace("{gruppe}", $prefix, $stp3);
                     $msg = str_replace("{time}", $time, str_replace("{player}", $playername, $format));
                     $this->sendMessage($format, $msg);
+
                 }
             }
         } elseif ($voteconfig->get("MussVoten") == false) {

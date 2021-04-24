@@ -1,7 +1,13 @@
 <?php
-declare(strict_types=1);
 
-// Files from multiblock namespace are borrowed from Muqsit's DimensionPortals plugin that was ported from MiNET
+//   ╔═════╗╔═╗ ╔═╗╔═════╗╔═╗    ╔═╗╔═════╗╔═════╗╔═════╗
+//   ╚═╗ ╔═╝║ ║ ║ ║║ ╔═══╝║ ╚═╗  ║ ║║ ╔═╗ ║╚═╗ ╔═╝║ ╔═══╝
+//     ║ ║  ║ ╚═╝ ║║ ╚══╗ ║   ╚══╣ ║║ ║ ║ ║  ║ ║  ║ ╚══╗
+//     ║ ║  ║ ╔═╗ ║║ ╔══╝ ║ ╠══╗   ║║ ║ ║ ║  ║ ║  ║ ╔══╝
+//     ║ ║  ║ ║ ║ ║║ ╚═══╗║ ║  ╚═╗ ║║ ╚═╝ ║  ║ ║  ║ ╚═══╗
+//     ╚═╝  ╚═╝ ╚═╝╚═════╝╚═╝    ╚═╝╚═════╝  ╚═╝  ╚═════╝
+//   Copyright by TheNote! Not for Resale! Not for others
+//                        2017-2020
 
 namespace TheNote\core\blocks\multiblock;
 
@@ -12,13 +18,8 @@ use pocketmine\level\Level;
 use pocketmine\Player;
 use TheNote\core\Main;
 
-/**
- * Class NetherPortalMultiBlock
- * @package Xenophilicy\TableSpoon\block\multiblock
- */
 class NetherPortalMultiBlock extends PortalMultiBlock {
     
-    /** @var int */
     private $frameID;
     
     public function __construct(){

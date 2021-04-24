@@ -29,4 +29,7 @@ class NetheriteHelmet extends Armor
         return 408;
     }
 
+    public function getArmorSlot() : int{
+        return 0;
+    }
 }
