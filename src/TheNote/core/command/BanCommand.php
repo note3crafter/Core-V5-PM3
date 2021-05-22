@@ -90,6 +90,7 @@ class BanCommand extends Command
                         $msg = str_replace("{reason}", $idList['Reason'], $msg);
                         $msg = str_replace("{banned-player}", strtolower($sender2->getName()), $msg);
                         $sender->sendMessage($config->get("ban") . $msg);
+                        $this->plugin->sendBanMessage($target->getName(), $sender->getName(), $idList['Reason']);
                         $target->kick("§cDu wurdest vom Netzwerk verbannt!\n§cRejoine um mehr Infos zu bekommen.", false);
                     }
                     $banlist->save();

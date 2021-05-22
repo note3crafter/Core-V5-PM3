@@ -14,11 +14,13 @@ Ich wäre euch dankbar, wenn ihr Fehler & Bugs melden würdet, sodass ich sie re
 
 # Mindestanforderungen 
 - 2 Kern CPU (Bestenfalls hohe Singlecore Performance)
-- 1GB Ram 
-- 1GB Festplatte -
+- 1GB Ram
+- 750mb Festplatte (Bestenfalls hohe Schreib- und Lesegeschwindigkeit)
 
 # Ohne dies Funktioniert die Core nicht 
 - [MyPlot](https://poggit.pmmp.io/p/MyPlot) -> Sollte drinnen sein wegen dem LiftSystem, aber kein Muss!
+
+# Neues! v5.1.14-DEV -> [Changelog](https://github.com/note3crafter/Core-V5/blob/main/.changelogs/V5.1.14-DEV.md)
 
 # Neues! v5.1.13 ALPHA
 - Bugfixxes in Paar sachen

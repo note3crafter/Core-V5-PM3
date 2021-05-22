@@ -1,6 +1,6 @@
 ---
 #Allgemeine Einstellungen
-ConfigVersion: 5.1.13 #FingerWeg! Dont touch this!
+ConfigVersion: "5.1.14-DEV" #FingerWeg! Dont touch this!
 
 #Commands & Funktionen
 AntiXray: false

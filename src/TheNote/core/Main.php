@@ -11,6 +11,9 @@
 
 namespace TheNote\core;
 
+use CortexPE\DiscordWebhookAPI\Embed;
+use CortexPE\DiscordWebhookAPI\Message;
+use CortexPE\DiscordWebhookAPI\Webhook;
 use pocketmine\block\Block;
 use pocketmine\block\Sapling;
 use pocketmine\command\CommandSender;
@@ -24,7 +27,6 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerKickEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\event\server\QueryRegenerateEvent;
 use pocketmine\inventory\ShapedRecipe;
 use pocketmine\inventory\ShapelessRecipe;
@@ -223,7 +225,6 @@ use TheNote\core\server\LiftSystem\PlayerJumpListener;
 use TheNote\core\server\LiftSystem\PlayerToggleSneakListener;
 use TheNote\core\inventory\BrauManager;
 use TheNote\core\tile\Tiles;
-use TheNote\core\server\packet\InventoryTransactionPacketV2;
 use pocketmine\Achievement;
 
 //Task
@@ -240,12 +241,14 @@ class Main extends PluginBase implements Listener
 {
 
     //PluginVersion
-    public static $version = "5.1.14dev ALPHA";
+    public static $version = "5.1.14-DEV ALPHA";
     public static $protokoll = "431";
     public static $mcpeversion = "1.16.221";
     public static $dateversion = "22.05.2021";
     public static $plname = "CoreV5";
-    public static $configversion = "5.1.14dev";
+    public static $configversion = "5.1.14-DEV";
+    private static $USE_DISCORD_WH = false;
+    private static $DISCORD_WEBHOOK = null;
 
     private $clicks;
     private $message = "";
@@ -457,6 +460,17 @@ class Main extends PluginBase implements Listener
                     Tile::registerTile(PTile::class);
                     $this->getLogger()->info("Neue Items geladen!");
                 }
+                if ($config->get("discord-webhooks") == "true" && $config->get("discord-webhook-url") !== "") {
+                    self::$USE_DISCORD_WH = true;
+                    self::$DISCORD_WEBHOOK = $config->get("discord-webhook-url");
+                    $this->getLogger()->info("Discord-Webhook Support aktiviert!");
+                }
+            }
+            $dcsettings = new Config($this->getDataFolder() . Main::$setup . "discordsettings" . ".yml", Config::YAML);
+            if ($dcsettings->get("DC") == true) {
+                self::$USE_DISCORD_WH = true;
+                self::$DISCORD_WEBHOOK = $config->get("webhookurl");
+                $this->getLogger()->info("Discord-Webhook Support aktiviert!");
             }
             //PacketPool::registerPacket(new InventoryTransactionPacketV2());
             Achievement::add("create_full_beacon", "Beaconator", ["Create a full beacon"]);
@@ -1824,5 +1838,29 @@ class Main extends PluginBase implements Listener
         $outputStream = new BigEndianNBTStream();
         $compound = new CompoundTag("Data", [$values]);
         file_put_contents("states.dat", $outputStream->write($compound));
+    }
+
+    public function sendBanMessage(string $name, string $source, string $reason): bool
+    {
+        if (self::$USE_DISCORD_WH) {
+            $webhook = new Webhook(self::$DISCORD_WEBHOOK);
+            $msg = new Message();
+            $embed = new Embed();
+            $embed->setColor(15158332);
+            $now = new \DateTime('now');
+            $date = $now->format('d.m.Y');
+            $time = $now->format('H.i');
+            $lang = CoreLang::getLang();
+            $descStr = str_replace(["{name}", "{source}", "{reason}"], [$name, $source, $reason], $lang->getValue("dcwebhookbandescription"));
+            $embed->setTitle($lang->getValue("dcwebhookbantitle"));
+            $embed->setDescription($descStr);
+            $footerStr = str_replace(["{date}", "{time}"], [$date, $time], $lang->getValue("dcwebhookbantime"));
+            $embed->setFooter($footerStr);
+            $embed->setImage("https://tenor.com/buOyN.gif");
+            $msg->addEmbed($embed);
+            $webhook->send($msg);
+            return true;
+        }
+        return false;
     }
 }

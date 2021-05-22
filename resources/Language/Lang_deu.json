@@ -46,5 +46,8 @@
     "clanfull": "§cDein Clan ist Voll!",
     "clanpisinclan": "§cDer Spieler {player} ist schon in einem Clan",
     "claninviteaccept": "6Der §dClan §e{clan} §6hat dir eine §dClan §6einladung geschickt§f!\n§6Nutze : /clan accept (clanname) um die Clananfrage zu bestätigen",
-    "clanaddplayer": "§6Die Clan Einladung wurde §aerfolgreich §6an {player} verschickt§f!"
+    "clanaddplayer": "§6Die Clan Einladung wurde §aerfolgreich §6an {player} verschickt§f!",
+    "dcwebhookbantitle": "BAN!",
+    "dcwebhookbandescription": "Der Spieler {name} wurde von {source} gebannt!{line}Grund: {reason}{line}",
+    "dcwebhookbantime": "**Am {date}, Um {time}Uhr**",
 }
