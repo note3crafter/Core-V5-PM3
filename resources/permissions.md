@@ -1,58 +1,58 @@
-Berechtigung zur CoreV5
+# Berechtigung zur CoreV5
 
-Commands:
-core.command.adventure
-core.command.adventure.use
-core.command.adminitems
-core.command.animation
-core.command.ban
-core.command.banlist
-core.command.burn
-core.command.chatclear
-core.command.clear
-core.command.clearlagg
-core.command.craft
-core.command.creativ
-core.command.creativ.use
-core.command.datenbank
-core.command.day
-core.command.delwarp
-core.command.enderchest
-core.command.fake
-core.command.feed
-core.command.feed.use
-core.command.fly
-core.command.fly.use
-core.command.givecoins
-core.command.group
-core.command.heal
-core.command.heal.use
-core.command.kick
-core.command.kickall
-core.command.nick
-core.command.night
-core.command.nightvision
-core.command.nuke
-core.command.paycoins
-core.command.position
-core.command.rename
-core.command.repair
-core.command.restart
-core.command.servermute
-core.command.setwarp
-core.command.sign
-core.command.size
-core.command.spectator
-core.command.spectator.use
-core.command.sudo
-core.command.supervanish
-core.command.survival
-core.command.survival.use
-core.command.tpall
-core.command.tree
-core.command.unban
-core.command.userdata
-core.command.vanish
-core.command.givemoney
-core.command.takemoney
-core.command.setmoney
+### Commands:
+- core.command.adventure
+- core.command.adventure.use
+- core.command.adminitems
+- core.command.animation
+- core.command.ban
+- core.command.banlist
+- core.command.burn
+- core.command.chatclear
+- core.command.clear
+- core.command.clearlagg
+- core.command.craft
+- core.command.creativ
+- core.command.creativ.use
+- core.command.datenbank
+- core.command.day
+- core.command.delwarp
+- core.command.enderchest
+- core.command.fake
+- core.command.feed
+- core.command.feed.use
+- core.command.fly
+- core.command.fly.use
+- core.command.givecoins
+- core.command.group
+- core.command.heal
+- core.command.heal.use
+- core.command.kick
+- core.command.kickall
+- core.command.nick
+- core.command.night
+- core.command.nightvision
+- core.command.nuke
+- core.command.paycoins
+- core.command.position
+- core.command.rename
+- core.command.repair
+- core.command.restart
+- core.command.servermute
+- core.command.setwarp
+- core.command.sign
+- core.command.size
+- core.command.spectator
+- core.command.spectator.use
+- core.command.sudo
+- core.command.supervanish
+- core.command.survival
+- core.command.survival.use
+- core.command.tpall
+- core.command.tree
+- core.command.unban
+- core.command.userdata
+- core.command.vanish
+- core.command.givemoney
+- core.command.takemoney
+- core.command.setmoney
