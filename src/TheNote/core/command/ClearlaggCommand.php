@@ -12,6 +12,8 @@
 namespace TheNote\core\command;
 
 use pocketmine\command\CommandSender;
+use pocketmine\entity\Animal;
+use pocketmine\entity\Monster;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\utils\Config;
 use TheNote\core\Main;
@@ -42,6 +44,10 @@ class ClearlaggCommand extends Command
         foreach ($this->plugin->getServer()->getLevels() as $level) {
             foreach ($level->getEntities() as $entity) {
                 if ($this->plugin->clearItems && $entity instanceof ItemEntity) {
+                    $entity->flagForDespawn();
+                }
+                //ClearLagg will now clear Monsters an Animals too
+                if ($this->plugin->clearItems && ($entity instanceof Monster || $entity instanceof Animal)) {
                     $entity->flagForDespawn();
                 }
             }
