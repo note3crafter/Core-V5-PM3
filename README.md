@@ -1,5 +1,7 @@
 <h1>CoreV5 ALPHA<img src="https://github.com/note3crafter/Core-V5/blob/main/resources/icon.png" height="64" width="64" align="left"></img></h1>
 <br />
+Wichtige Information zur Core!
+- Leider habe ich keine Zeit aktuell um das Projekt weiterzumachen was jedoch nicht heißt das ich es aufgebe! Es werden noch Updates Folgen aber wann das weis ich nicht! Habt bitte geduld! Meldet jeden Bug den ihr finden könnt. Gerne auch auf meinem Discord!
 
 Du willst helfen? Hier mein Discord! [![Discord](https://img.shields.io/discord/427472879072968714.svg?style=flat-square&label=discord&colorB=7289da)](https://discord.gg/Pebq8Wu) <br>
 # Download und Wichtig 
