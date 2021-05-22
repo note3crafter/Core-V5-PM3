@@ -460,11 +460,6 @@ class Main extends PluginBase implements Listener
                     Tile::registerTile(PTile::class);
                     $this->getLogger()->info("Neue Items geladen!");
                 }
-                if ($config->get("discord-webhooks") == "true" && $config->get("discord-webhook-url") !== "") {
-                    self::$USE_DISCORD_WH = true;
-                    self::$DISCORD_WEBHOOK = $config->get("discord-webhook-url");
-                    $this->getLogger()->info("Discord-Webhook Support aktiviert!");
-                }
             }
             $dcsettings = new Config($this->getDataFolder() . Main::$setup . "discordsettings" . ".yml", Config::YAML);
             if ($dcsettings->get("DC") == true) {
