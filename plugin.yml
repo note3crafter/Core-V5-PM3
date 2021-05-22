@@ -25,7 +25,8 @@ authors:
   - muqsit #InvMenü
   - TheBalkanDev #ecinvsee, invsee
   - jasonwynn10 #Beacons
-description: Core v5.2.13 ALPHA
+  - supercrafter333 #clearlagg comand erweiterung
+description: Core v5.2.14dev ALPHA
 
 permissions:
   core.command.adventure:
