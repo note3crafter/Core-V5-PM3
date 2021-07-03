@@ -1,14 +1,12 @@
 <h1>CoreV5 ALPHA<img src="https://github.com/note3crafter/Core-V5/blob/main/resources/icon.png" height="64" width="64" align="left"></img></h1>
 <br />
-Wichtige Information zur Core!
-- Leider habe ich keine Zeit aktuell um das Projekt weiterzumachen was jedoch nicht heißt das ich es aufgebe! Es werden noch Updates Folgen aber wann das weis ich nicht! Habt bitte geduld! Meldet jeden Bug den ihr finden könnt. Gerne auch auf meinem Discord!
 
 Du willst helfen? Hier mein Discord! [![Discord](https://img.shields.io/discord/427472879072968714.svg?style=flat-square&label=discord&colorB=7289da)](https://discord.gg/Pebq8Wu) <br>
 # Download und Wichtig 
 
 - [Hier downloaden](https://poggit.pmmp.io/ci/note3crafter/Core-V5/Core-V5)!
   Das Core Plugin wurde speziell für CityBuild Server entwickelt! Bitte beachtet, dass es eine ALPHA Version ist und womöglich instabil läuft.
-
+- Entwicklung vorerst eingestellt! Werde nur updaten und fixxen wenn was kommt! Da ich Aktuell keine Zeit habe :/
 # Fehler & Bugs
 Ich wäre euch dankbar, wenn ihr Fehler & Bugs melden würdet, sodass ich sie reparieren kann. Ihr dürft auch Vorschläge für neue Features oder sonstiges an mich senden.
 
@@ -20,13 +18,11 @@ Ich wäre euch dankbar, wenn ihr Fehler & Bugs melden würdet, sodass ich sie re
 # Ohne dies Funktioniert die Core nicht 
 - [MyPlot](https://poggit.pmmp.io/p/MyPlot) -> Sollte drinnen sein wegen dem LiftSystem, aber kein Muss!
 
-# Neues! v5.1.13 ALPHA
-- Bugfixxes in Paar sachen
-- Feuerwerke wurden Gefixxt 
-- Netherite Werkzeug und Rüstung bekommen nun damage und funktionieren!  
-- Neue Items Hinzugefügt! (Locator Map, EndCrystal, Enchanted Books)-> Teilweise noch deaktiviert... Folgt aber in den kommenden Updates!
-  Die Open Beta wird noch etwas dauern da ich dezeit kaum Zeit dazu finde! Beachtet dies!
-  
+# Neues! v5.2.0 ALPHA
+- Update auf API 3.21.0
+- Update für Minecraft v.1.17.2
+- [Issue 17](https://github.com/note3crafter/Core-V5/issues/17) Behoben
+
 # Server, welche CoreV5 nutzen
 - play.baufieber.net / 19132
 - Hier könnte dein Server stehen!

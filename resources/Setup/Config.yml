@@ -1,6 +1,6 @@
 ---
 #Allgemeine Einstellungen
-ConfigVersion: 5.1.13 #FingerWeg! Dont touch this!
+ConfigVersion: 5.2.0 #FingerWeg! Dont touch this!
 
 #Commands & Funktionen
 AntiXray: false
@@ -8,7 +8,7 @@ BoosterCommand: false #Muss Überarbeitet werden jedoch aktuell keine Zeit dafü
 StarterKit: true
 
 #Neue Items & Blöcke 1.16 ALPHA Kann Fehler enthalten da dies auserhalb der BlockID : 255 ist
-NewItems: true
+NewItems: false #experimentel
 
 #ItemDisplay
 inames: true #aktiviere/deaktiviere die ItemNamen

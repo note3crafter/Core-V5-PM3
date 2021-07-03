@@ -21,7 +21,7 @@ use pocketmine\nbt\tag\IntTag;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\tile\Spawnable;
 
-use TheNote\core\Main;
+use TheNote\core\blocks\redstone\piston\Piston;
 use TheNote\core\blocks\redstone\Moving;
 use TheNote\core\blocks\redstone\piston\Pistonarmcollision;
 use TheNote\core\blocks\redstone\IRedstone;
@@ -107,6 +107,9 @@ class PistonArm extends Spawnable {
         if ($this->extend) {
             if ($this->newState == 0) {
                 $piston = $this->getBlock();
+                if(!$piston instanceof Piston){
+                    return false;
+                }
                 $side = $this->getSide($piston->getFace());
                 if ($this->getLevel()->getBlock($side)->getId() != 0) {
                     $blocks = $this->recalculatePushBlocks();

@@ -15,7 +15,7 @@ namespace TheNote\core\blocks;
 
 use pocketmine\tile\Tile;
 use TheNote\core\Main;
-use TheNote\core\tile\Cauldron as CauldronTile;
+use TheNote\core\tile\Cauldron as Cauldrontile;
 use TheNote\core\tile\Tiles;
 use TheNote\core\utils\DyeUtils;
 use pocketmine\block\Block;
@@ -61,7 +61,7 @@ class Cauldron extends Transparent {
     }
 
     public function place(Item $item, Block $blockReplace, Block $blockClicked, int $face, Vector3 $clickVector, Player $player = null): bool{
-        Tile::createTile(Tile::CAULDRON, $this->getLevel(), CauldronTile::createNBT($this, $face, $item, $player));
+        Tile::createTile(Tiles::CAULDRON, $this->getLevel(), CauldronTile::createNBT($this, $face, $item, $player));
         return parent::place($item, $blockReplace, $blockClicked, $face, $clickVector, $player);
     }
 

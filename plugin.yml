@@ -1,10 +1,10 @@
 name: CoreV5
 main: TheNote\core\Main
-version: 5.1.14-DEV
+version: 5.2.0
 mcpe-protocol:
-  - 431 # 1.16.220
+  - 440 # 1.17.2
 api:
-  - 3.19.0
+  - 3.21.0
 author: TheNote/Rudolf2000
 authors:
   - TheNote/Rudolf2000 #Inhaber der Core
@@ -25,8 +25,7 @@ authors:
   - muqsit #InvMenü
   - TheBalkanDev #ecinvsee, invsee
   - jasonwynn10 #Beacons
-  - supercrafter333 #clearlagg comand erweiterung
-description: Core v5.2.14dev ALPHA
+description: Core v5.2.0 ALPHA
 
 permissions:
   core.command.adventure:

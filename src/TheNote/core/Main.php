@@ -240,12 +240,12 @@ class Main extends PluginBase implements Listener
 {
 
     //PluginVersion
-    public static $version = "5.1.14dev ALPHA";
-    public static $protokoll = "431";
-    public static $mcpeversion = "1.16.221";
-    public static $dateversion = "22.05.2021";
+    public static $version = "5.2.0ALPHA";
+    public static $protokoll = "440";
+    public static $mcpeversion = "1.17.2";
+    public static $dateversion = "03.07.2021";
     public static $plname = "CoreV5";
-    public static $configversion = "5.1.14dev";
+    public static $configversion = "5.2.0";
 
     private $clicks;
     private $message = "";
