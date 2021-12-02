@@ -4,6 +4,9 @@
 Du willst helfen? Hier mein Discord! [![Discord](https://img.shields.io/discord/427472879072968714.svg?style=flat-square&label=discord&colorB=7289da)](https://discord.gg/Pebq8Wu) <br>
 # Download und Wichtig 
 
+Projekt wird nicht mehr weiternetwickelt! Da eine neue Version in API 4.0.0 Existiert! 
+Du kannst sie hier downloaden! [CoreV6](https://github.com/note3crafter/CoreV6-API4/releases)
+
 - [Hier downloaden](https://poggit.pmmp.io/ci/note3crafter/Core-V5/Core-V5)!
   Das Core Plugin wurde speziell für CityBuild Server entwickelt! Bitte beachtet, dass es eine ALPHA Version ist und womöglich instabil läuft.
 - Entwicklung vorerst eingestellt! Werde nur updaten und fixxen wenn was kommt! Da ich Aktuell keine Zeit habe :/
