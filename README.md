@@ -1,6 +1,8 @@
 <h1>CoreV5 ALPHA<img src="https://github.com/note3crafter/Core-V5/blob/main/resources/icon.png" height="64" width="64" align="left"></img></h1>
 <br />
 
+CoreV5 is outdatet Please Use [ProjectCore](https://github.com/note3crafter/ProjectCore)
+
 Du willst helfen? Hier mein Discord! [![Discord](https://img.shields.io/discord/427472879072968714.svg?style=flat-square&label=discord&colorB=7289da)](https://discord.gg/Pebq8Wu) <br>
 # Download und Wichtig 
 
